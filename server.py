@@ -22,6 +22,7 @@ from engine.core import (
     IdentityComponent, DialogueComponent, StateComponent
 )
 from engine.ai import get_gemini_agent, ContextBuilder
+from engine.games import LastVoyageGame, CultivationSimGame
 
 app = FastAPI(title="Game Engine API")
 

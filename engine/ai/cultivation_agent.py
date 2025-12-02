@@ -9,6 +9,7 @@ import google.generativeai as genai
 from typing import Dict, Any, Optional
 from pathlib import Path
 from engine.ai.schemas import GameContext
+from engine.ai.cultivation_schemas import CultivationLLMResponse, CharacterCreationResponse
 
 
 class CultivationAgent:
@@ -111,36 +112,29 @@ Generate the JSON response with format:
         try:
             response = self.chat.send_message(prompt)
             
-            # Clean up response text
-            text = response.text.strip()
-            if text.startswith("```json"):
-                text = text[7:-3].strip()
-            elif text.startswith("```"):
-                text = text[3:-3].strip()
+            # Parse with strict validation and fallback
+            validated_response = CultivationLLMResponse.parse_with_fallback(response.text)
             
-            data = json.loads(text)
+            # Convert to dict for compatibility
+            data = validated_response.dict()
             
             # Save to memory
-            if 'narrative' in data:
-                memory_manager.remember_action(
-                    user_input=user_input,
-                    narrative=data['narrative'],
-                    save_id=save_id,
-                    entity_id=context.player_id if hasattr(context, 'player_id') else None,
-                    location_id=context.current_room_id,
-                    importance=0.7
-                )
+            memory_manager.remember_action(
+                user_input=user_input,
+                narrative=data['narrative'],
+                save_id=save_id,
+                entity_id=context.player_id if hasattr(context, 'player_id') else None,
+                location_id=context.current_room_id,
+                importance=0.7
+            )
             
             return data
             
         except Exception as e:
             print(f"⚠️  Cultivation Agent Error: {e}")
-            return {
-                "narrative": "Cultivation Master đang suy nghĩ... (AI Error)",
-                "choices": ["Tiếp tục tu luyện", "Nghỉ ngơi", "Khám phá", "Giao lưu"],
-                "action_intent": "ERROR",
-                "state_updates": {}
-            }
+            # Use fallback response
+            fallback = CultivationLLMResponse._create_fallback_response()
+            return fallback.dict()
 
 
 # Global instance
