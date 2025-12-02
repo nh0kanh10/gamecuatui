@@ -1,0 +1,8 @@
+ollama
+psutil
+GPUtil
+tabulate
+colorama
+
+# Optional: llama-cpp-python for comparison
+# llama-cpp-python

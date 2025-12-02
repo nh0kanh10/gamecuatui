@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Last Voyage - AI RPG</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+  <!-- Mode Selection -->
+  <div id="mode-select" class="screen active">
+    <div class="container">
+      <h1>🌊 The Last Voyage</h1>
+      <p class="subtitle">AI-Driven Text RPG</p>
+      
+      <div class="mode-cards">
+        <!-- Pre-written Story -->
+        <div class="card" onclick="selectMode('prewritten')">
+          <h2>📖 Classic Story</h2>
+          <p>Play the handcrafted adventure "The Last Voyage"</p>
+          <ul>
+            <li>✅ Consistent world & characters</li>
+            <li>✅ Crafted narrative quality</li>
+            <li>✅ Balanced gameplay</li>
+          </ul>
+          <button>Start Classic</button>
+        </div>
+        
+        <!-- Dynamic World -->
+        <div class="card" onclick="selectMode('dynamic')">
+          <h2>🌍 Create Your World</h2>
+          <p>Build your own adventure from scratch</p>
+          <ul>
+            <li>✅ Infinite possibilities</li>
+            <li>✅ Your story, your rules</li>
+            <li>✅ Unique every time</li>
+          </ul>
+          <button>Create World</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pre-written: Story Intro -->
+  <div id="prewritten-intro" class="screen">
+    <div class="container">
+      <h1>The Last Voyage</h1>
+      <div class="lore-box">
+        <p>
+          The year is 2087. Rising seas have consumed 95% of Earth's landmass. 
+          You are the captain of <strong>Horizon's Edge</strong>, one of the last 
+          ships still sailing the endless ocean.
+        </p>
+        <p>
+          Your crew:
+        </p>
+        <ul>
+          <li><strong>Marcus Chen (Engineer)</strong>: Loyal, pessimistic, skilled</li>
+          <li><strong>Elena Rodriguez (Navigator)</strong>: Brave, reckless, optimistic</li>
+          <li><strong>The Cook</strong>: Mysterious, quiet, knows too much</li>
+        </ul>
+        <p>
+          Survival depends on managing scarce resources: food, fuel, and morale.
+        </p>
+      </div>
+      
+      <button class="btn-primary" onclick="startPrewrittenGame()">
+        ⚓ Begin Adventure
+      </button>
+      <button class="btn-secondary" onclick="backToModeSelect()">
+        ← Back
+      </button>
+    </div>
+  </div>
+
+  <!-- Dynamic: World Builder -->
+  <div id="dynamic-builder" class="screen">
+    <div class="container">
+      <h1>🌍 Create Your World</h1>
+      
+      <form id="world-form" onsubmit="generateWorld(event)">
+        <div class="form-group">
+          <label for="world-setting">World Setting *</label>
+          <textarea 
+            id="world-setting" 
+            rows="3" 
+            required
+            placeholder="Mô tả thế giới của bạn (thể loại, bối cảnh, không khí)&#10;Ví dụ: Cyberpunk detective trong Neo-Tokyo mưa, năm 2157"></textarea>
+          <small>Genre, setting, atmosphere - càng chi tiết càng tốt!</small>
+        </div>
+        
+        <div class="form-group">
+          <label for="char-name">Tên Character *</label>
+          <input 
+            type="text" 
+            id="char-name" 
+            required
+            placeholder="e.g., Sarah Chen, Detective Alex">
+        </div>
+        
+        <div class="form-group">
+          <label for="char-desc">Mô Tả Character *</label>
+          <textarea 
+            id="char-desc" 
+            rows="3" 
+            required
+            placeholder="Bạn là ai? (vai trò, tính cách, background)&#10;Ví dụ: Tôi là detective cứng rắn, từng là hacker, bị truy nã bởi megacorp"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="scenario">Kịch Bản Mở Đầu (Optional)</label>
+          <input 
+            type="text" 
+            id="scenario"
+            placeholder="e.g., Tôi tỉnh dậy trong hẻm, không nhớ gì">
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">
+            🤖 Generate World
+          </button>
+          <button type="button" class="btn-secondary" onclick="backToModeSelect()">
+            ← Back
+          </button>
+        </div>
+      </form>
+      
+      <!-- Generating Loader -->
+      <div id="generating-loader" style="display:none">
+        <div class="loader">
+          <div class="spinner"></div>
+          <p>🤖 AI đang xây dựng thế giới của bạn...</p>
+          <p class="small">Có thể mất 10-20 giây</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic: World Preview -->
+  <div id="world-preview" class="screen">
+    <div class="container">
+      <h1>🌍 Your World</h1>
+      
+      <div class="preview-box">
+        <h3>World Overview</h3>
+        <div id="world-summary"></div>
+        
+        <h3>Main Characters (NPCs)</h3>
+        <div id="npc-list"></div>
+        
+        <h3>Starting Scenario</h3>
+        <div id="scenario-preview"></div>
+      </div>
+      
+      <div class="form-actions">
+        <button class="btn-primary" onclick="startDynamicGame()">
+          🚀 Start Adventure
+        </button>
+        <button class="btn-secondary" onclick="regenerateWorld()">
+          🔄 Regenerate World
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Game -->
+  <div id="game-main" class="screen">
+    <div class="game-container">
+      <!-- Stats Panel -->
+      <div class="stats-panel">
+        <h3>Ship Status</h3>
+        <div class="stat">
+          <span class="stat-label">🍞 Food:</span>
+          <div class="stat-bar">
+            <div id="food-bar" class="stat-fill" style="width: 100%"></div>
+          </div>
+          <span id="food-value">100</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">⛽ Fuel:</span>
+          <div class="stat-bar">
+            <div id="fuel-bar" class="stat-fill" style="width: 100%"></div>
+          </div>
+          <span id="fuel-value">100</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">❤️ Morale:</span>
+          <div class="stat-bar">
+            <div id="morale-bar" class="stat-fill" style="width: 50%"></div>
+          </div>
+          <span id="morale-value">50</span>
+        </div>
+        
+        <div class="stat-info">
+          <p><strong>Day:</strong> <span id="day-count">1</span></p>
+          <p><strong>Location:</strong> <span id="location">Open Sea</span></p>
+        </div>
+      </div>
+
+      <!-- Chat Area -->
+      <div class="chat-area">
+        <div id="chat-history" class="chat-history">
+          <!-- Messages will be added here -->
+        </div>
+        
+        <!-- Input -->
+        <div class="input-area">
+          <input 
+            type="text" 
+            id="player-input" 
+            placeholder="What do you do?"
+            onkeypress="if(event.key==='Enter') sendAction()">
+          <button onclick="sendAction()" id="send-btn">Send</button>
+        </div>
+        
+        <!-- Budget indicator -->
+        <div class="budget-info">
+          <small>Actions remaining: <span id="budget-remaining">200</span></small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="src/main.js" type="module"></script>
+</body>
+</html>
