@@ -155,28 +155,11 @@ async def new_game(
     # Acquire lock for initial state
     await acquire_lock(save_id, ttl=30)
     try:
-        # Get initial narrative
-        if game_request.game_mode == "cultivation_sim":
-        # For cultivation sim, AI generates character background
-        from engine.ai import get_cultivation_agent
-        agent = get_cultivation_agent()
-        context = game_instance.context_builder.build(game_instance.player_id)
-        char_data = {
-            'age': 0,
-            'gender': character_data.get('gender', 'Nam'),
-            'talent': character_data.get('talent', 'Thiên Linh Căn'),
-            'race': character_data.get('race', 'Nhân Tộc'),
-            'background': character_data.get('background', 'Gia Đình Tu Tiên')
-        }
-        response = agent.process_turn("Tạo nhân vật", context, save_id, char_data)
-        game.narrative_log = [response.get('narrative', 'Character created')]
-        game_instance.character_story = response.get('narrative', '')
-        game_instance.current_choices = response.get('choices', [])
-    else:
-            game.narrative_log = [
-                "🌍 A new adventure begins...",
-                "You find yourself standing at the entrance of a mysterious dungeon."
-            ]
+        # Initial narrative for Last Voyage
+        game.narrative_log = [
+            "🌍 A new adventure begins...",
+            "You find yourself standing at the entrance of a mysterious dungeon."
+        ]
         
         # Save initial state to Redis
         game_state = get_game_state()
