@@ -179,6 +179,8 @@ async def new_game(
             "game_mode": game_request.game_mode,
             "game_state": game_state
         }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to start game: {str(e)}")
     finally:
         await release_lock(save_id)
 
