@@ -19,3 +19,6 @@ redis>=4.6.0
 # Optional: Rate limiting
 slowapi>=0.1.9
 
+# Graph analysis
+networkx>=3.0
+

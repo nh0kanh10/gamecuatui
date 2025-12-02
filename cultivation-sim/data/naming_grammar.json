@@ -1,0 +1,21 @@
+{
+  "numbers": ["Cửu", "Vạn", "Thiên", "Vô", "Cực", "Thái", "Huyền", "Địa", "Bát", "Thất"],
+  "nouns": ["Thiên", "Địa", "Huyền", "Hoàng", "Vạn", "Cửu", "Vô", "Cực", "Thái", "Hạo"],
+  "elements": ["Lôi", "Hỏa", "Băng", "Phong", "Thổ", "Kim", "Mộc", "Thủy", "Ánh", "Bóng"],
+  "weapons": ["Kiếm", "Đao", "Thương", "Cung", "Quyền", "Chưởng", "Chỉ", "Trùy", "Tiên", "Phiến"],
+  "suffixes": ["Thuật", "Quyết", "Công", "Pháp", "Kinh", "Điển", "Chương", "Luận"],
+  "traits": {
+    "ruthless": ["Vô Tình", "Tàn Nhẫn", "Lãnh Khốc", "Tuyệt Tình"],
+    "kind": ["Thiện", "Nhân", "Từ", "Ái"],
+    "ambitious": ["Thiên", "Cực", "Vạn", "Vô"],
+    "wise": ["Huyền", "Trí", "Tuệ", "Minh"],
+    "powerful": ["Cửu", "Vạn", "Thiên", "Cực", "Vô"],
+    "mysterious": ["Huyền", "Bí", "Ẩn", "Vô"],
+    "fire_affinity": ["Hỏa", "Diễm", "Nhiệt", "Dương"],
+    "water_affinity": ["Thủy", "Băng", "Hàn", "Âm"],
+    "earth_affinity": ["Thổ", "Sơn", "Nham", "Cương"],
+    "metal_affinity": ["Kim", "Thép", "Kiếm", "Đao"],
+    "wood_affinity": ["Mộc", "Thảo", "Hoa", "Diệp"]
+  }
+}
+

@@ -1,0 +1,100 @@
+[
+  {
+    "id": "skill_fire_ball",
+    "name": "Hỏa Cầu Thuật",
+    "type": "Offensive",
+    "element": "Fire",
+    "validators": [
+      {
+        "checker_type": "CooldownChecker",
+        "params": {}
+      },
+      {
+        "checker_type": "ManaCostChecker",
+        "params": {}
+      },
+      {
+        "checker_type": "ElementalEnvironmentChecker",
+        "params": {}
+      },
+      {
+        "checker_type": "RealmRequirementChecker",
+        "params": {}
+      }
+    ],
+    "mana_cost": 20,
+    "cooldown": 3,
+    "realm_requirement": "Qi_Refining",
+    "damage_formula": "attack * 1.5",
+    "effect_type": "Damage",
+    "effect_value": 0,
+    "spawn_projectile": true,
+    "projectile_speed": 10.0,
+    "on_hit_effect": {
+      "type": "Burn",
+      "duration": 5,
+      "damage_per_tick": 5
+    },
+    "description": "Phóng một quả cầu lửa về phía kẻ thù, gây sát thương và thiêu đốt.",
+    "lore": "Kỹ năng cơ bản của tu sĩ hệ Hỏa, luyện tập từ cảnh giới Luyện Khí."
+  },
+  {
+    "id": "skill_fire_shield",
+    "name": "Hỏa Thuẫn",
+    "type": "Defensive",
+    "element": "Fire",
+    "validators": [
+      {
+        "checker_type": "CooldownChecker",
+        "params": {}
+      },
+      {
+        "checker_type": "ManaCostChecker",
+        "params": {}
+      }
+    ],
+    "mana_cost": 30,
+    "cooldown": 10,
+    "realm_requirement": "Foundation",
+    "effect_type": "Buff",
+    "effect_value": 50,
+    "description": "Tạo một lá chắn lửa, giảm 50% sát thương trong 10 giây.",
+    "lore": "Kỹ thuật phòng thủ của tu sĩ hệ Hỏa, có thể chống lại sát thương vật lý và pháp thuật."
+  },
+  {
+    "id": "skill_phoenix_flame",
+    "name": "Phượng Hoàng Hỏa Diễm",
+    "type": "Offensive",
+    "element": "Fire",
+    "validators": [
+      {
+        "checker_type": "CooldownChecker",
+        "params": {}
+      },
+      {
+        "checker_type": "ManaCostChecker",
+        "params": {}
+      },
+      {
+        "checker_type": "RealmRequirementChecker",
+        "params": {}
+      }
+    ],
+    "mana_cost": 100,
+    "cooldown": 30,
+    "realm_requirement": "Golden_Core",
+    "damage_formula": "attack * 3.0",
+    "effect_type": "Damage",
+    "effect_value": 0,
+    "spawn_projectile": true,
+    "projectile_speed": 15.0,
+    "on_hit_effect": {
+      "type": "Burn",
+      "duration": 10,
+      "damage_per_tick": 20
+    },
+    "description": "Triệu hồi lửa phượng hoàng, gây sát thương cực lớn và thiêu đốt lâu dài.",
+    "lore": "Kỹ năng bí truyền của tông môn Phượng Hoàng, chỉ có thể học được khi đạt Kim Đan."
+  }
+]
+
