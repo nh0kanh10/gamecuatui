@@ -1,0 +1,134 @@
+[
+  {
+    "id": "sect_001",
+    "name": "Thái Thanh Đạo Tông",
+    "type": "Righteous",
+    "alignment": "Lawful Good",
+    "description": "Tông môn chính đạo đệ nhất, tu luyện thuần chính, coi trọng đạo đức và kỷ luật.",
+    "location_zone": "Trung Châu",
+    "requirements": {
+      "min_int": 60,
+      "min_kar": 50,
+      "preferred_traits": ["Mọt Sách", "Công Chính"],
+      "forbidden_traits": ["Phàm Ăn"]
+    },
+    "exclusive_techniques": ["tech_taiqing_01", "tech_taiqing_02"],
+    "resources": {
+      "specialty": "Pills",
+      "wealth_rating": 5
+    },
+    "sect_hierarchy": {
+      "ranks": ["Tạp Dịch", "Ngoại Môn", "Nội Môn", "Chân Truyền", "Trưởng Lão"],
+      "promotion_requirements": {
+        "Ngoại Môn": {"cultivation": "Qi_Refining_10", "contribution": 100},
+        "Nội Môn": {"cultivation": "Foundation_4", "contribution": 500},
+        "Chân Truyền": {"cultivation": "Golden_Core_4", "contribution": 2000}
+      }
+    }
+  },
+  {
+    "id": "sect_002",
+    "name": "Huyết Ma Cung",
+    "type": "Demonic",
+    "alignment": "Chaotic Evil",
+    "description": "Lấy máu làm dẫn, tu luyện cực nhanh nhưng dễ tẩu hỏa nhập ma. Tôn sùng sức mạnh tuyệt đối.",
+    "location_zone": "Tây Mạc",
+    "requirements": {
+      "min_con": 60,
+      "min_ruthless": 50,
+      "preferred_traits": ["Kiếm Si"],
+      "forbidden_traits": ["Công Chính", "Mọt Sách"]
+    },
+    "exclusive_techniques": ["tech_blood_01", "tech_blood_02"],
+    "resources": {
+      "specialty": "Forbidden Artifacts",
+      "wealth_rating": 4
+    },
+    "sect_hierarchy": {
+      "ranks": ["Huyết Nô", "Huyết Đệ Tử", "Huyết Sư", "Huyết Ma", "Cung Chủ"],
+      "promotion_requirements": {
+        "Huyết Đệ Tử": {"cultivation": "Qi_Refining_10", "kills": 10},
+        "Huyết Sư": {"cultivation": "Foundation_4", "kills": 50}
+      }
+    }
+  },
+  {
+    "id": "sect_003",
+    "name": "Vạn Kiếm Môn",
+    "type": "Neutral",
+    "alignment": "True Neutral",
+    "description": "Kiếm tu điên cuồng, một kiếm phá vạn pháp. Không quan tâm chính tà, chỉ quan tâm kiếm đạo.",
+    "location_zone": "Đông Hải",
+    "requirements": {
+      "min_con": 50,
+      "min_per": 80,
+      "required_item": "Sword Heart",
+      "preferred_traits": ["Kiếm Si"]
+    },
+    "exclusive_techniques": ["tech_sword_01"],
+    "resources": {
+      "specialty": "Flying Swords",
+      "wealth_rating": 3
+    },
+    "sect_hierarchy": {
+      "ranks": ["Kiếm Đồ", "Kiếm Khách", "Kiếm Sư", "Kiếm Vương", "Môn Chủ"],
+      "promotion_requirements": {
+        "Kiếm Khách": {"cultivation": "Qi_Refining_10", "sword_mastery": 50},
+        "Kiếm Sư": {"cultivation": "Foundation_4", "sword_mastery": 100}
+      }
+    }
+  },
+  {
+    "id": "sect_004",
+    "name": "Vạn Độc Môn",
+    "type": "Demonic",
+    "alignment": "Neutral Evil",
+    "description": "Chuyên về độc dược và trùng thuật, nguy hiểm nhưng mạnh mẽ. Ẩn thế ở Nam Cương.",
+    "location_zone": "Nam Cương",
+    "requirements": {
+      "min_int": 70,
+      "min_per": 60,
+      "preferred_traits": ["Dược Sư", "Khéo Léo"],
+      "required_resistance": "Poison"
+    },
+    "exclusive_techniques": ["tech_poison_01", "tech_poison_02"],
+    "resources": {
+      "specialty": "Poison Pills",
+      "wealth_rating": 3
+    },
+    "sect_hierarchy": {
+      "ranks": ["Độc Đồ", "Độc Sư", "Độc Vương", "Môn Chủ"],
+      "promotion_requirements": {
+        "Độc Sư": {"cultivation": "Qi_Refining_10", "poison_mastery": 50},
+        "Độc Vương": {"cultivation": "Foundation_4", "poison_mastery": 100}
+      }
+    }
+  },
+  {
+    "id": "sect_005",
+    "name": "Bắc Minh Cung",
+    "type": "Righteous",
+    "alignment": "Lawful Neutral",
+    "description": "Tông môn ẩn thế ở Bắc Băng Nguyên, chuyên về thể tu và băng thuật. Cực kỳ bí mật.",
+    "location_zone": "Bắc Hoang",
+    "requirements": {
+      "min_con": 80,
+      "min_per": 50,
+      "preferred_traits": ["Thổ Linh Căn"],
+      "element_affinity": "Ice"
+    },
+    "exclusive_techniques": ["tech_ice_01", "tech_body_01"],
+    "resources": {
+      "specialty": "Body Cultivation",
+      "wealth_rating": 4
+    },
+    "sect_hierarchy": {
+      "ranks": ["Băng Đồ", "Băng Sư", "Băng Vương", "Cung Chủ"],
+      "promotion_requirements": {
+        "Băng Sư": {"cultivation": "Qi_Refining_10", "body_cultivation": 50},
+        "Băng Vương": {"cultivation": "Foundation_4", "body_cultivation": 100}
+      }
+    }
+  }
+]
+

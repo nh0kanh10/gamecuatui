@@ -1,0 +1,114 @@
+[
+  {
+    "id": "race_human",
+    "name": "Nhân Tộc (Human)",
+    "base_stats": {
+      "CON": 10,
+      "INT": 10,
+      "PER": 10,
+      "LUK": 10,
+      "CHA": 10,
+      "KAR": 10
+    },
+    "growth_modifiers": {
+      "all": 1.0
+    },
+    "traits": ["Adaptable"],
+    "description": "Chủng tộc cân bằng nhất, không có điểm mạnh yếu rõ ràng nhưng thích nghi tốt."
+  },
+  {
+    "id": "race_elf",
+    "name": "Tinh Linh (Elf)",
+    "base_stats": {
+      "CON": 8,
+      "INT": 20,
+      "PER": 15,
+      "LUK": 12,
+      "CHA": 15,
+      "KAR": 10
+    },
+    "growth_modifiers": {
+      "INT": 1.5,
+      "PER": 1.3,
+      "learning_speed": 1.2
+    },
+    "traits": ["Nature Affinity", "Long Lived"],
+    "description": "Thể chất yếu nhưng ngộ tính cao, khả năng thích nghi vô hạn."
+  },
+  {
+    "id": "race_dragon_blood",
+    "name": "Long Nhân (Dragonborn)",
+    "base_stats": {
+      "CON": 25,
+      "INT": 10,
+      "PER": 12,
+      "LUK": 15,
+      "CHA": 8,
+      "KAR": 10
+    },
+    "growth_modifiers": {
+      "CON": 1.5,
+      "learning_speed": 0.8
+    },
+    "traits": ["Dragon Blood", "Lightning Affinity", "Tough Skin"],
+    "description": "Hậu duệ rồng, da dày thịt béo, trời sinh điều khiển sấm sét."
+  },
+  {
+    "id": "race_fox_spirit",
+    "name": "Hồ Ly Tinh (Fox Spirit)",
+    "base_stats": {
+      "CON": 8,
+      "INT": 20,
+      "PER": 15,
+      "LUK": 12,
+      "CHA": 25,
+      "KAR": 10
+    },
+    "growth_modifiers": {
+      "CHA": 2.0,
+      "INT": 1.3
+    },
+    "traits": ["Charm", "Illusion Mastery", "Seductive"],
+    "description": "Bậc thầy ảo thuật và mê hoặc, cực kỳ nguy hiểm trong xã hội."
+  },
+  {
+    "id": "race_demon",
+    "name": "Ma Tộc (Demon)",
+    "base_stats": {
+      "CON": 20,
+      "INT": 12,
+      "PER": 10,
+      "LUK": 8,
+      "CHA": 8,
+      "KAR": 5
+    },
+    "growth_modifiers": {
+      "CON": 1.5,
+      "cultivation_speed": 1.3,
+      "karma_penalty": 0.5
+    },
+    "traits": ["Demonic Blood", "Ruthless", "Fast Cultivation"],
+    "description": "Thiên về ma đạo, tu luyện nhanh nhưng dễ mất nhân tính."
+  },
+  {
+    "id": "race_immortal_seed",
+    "name": "Tiên Căn (Immortal Seed)",
+    "base_stats": {
+      "CON": 12,
+      "INT": 18,
+      "PER": 15,
+      "LUK": 20,
+      "CHA": 15,
+      "KAR": 20
+    },
+    "growth_modifiers": {
+      "all": 1.2,
+      "cultivation_speed": 1.5,
+      "breakthrough_chance": 1.3
+    },
+    "traits": ["Immortal Seed", "Heaven's Favorite", "Natural Talent"],
+    "description": "Có tiên căn, được trời đất ưu ái, tiềm năng vô hạn.",
+    "rarity": 0.01
+  }
+]
+

@@ -1,0 +1,92 @@
+[
+  {
+    "id": "clan_lin",
+    "name": "Lâm Gia (Trung Châu)",
+    "tier": "Noble",
+    "specialty": "Alchemy",
+    "ancestor_realm": "Nascent_Soul",
+    "location": "Trung Châu",
+    "starting_perks": {
+      "spirit_stones": 1000,
+      "items": ["id_alchemy_manual", "id_starter_pills"],
+      "reputation": 500,
+      "connections": ["sect_001"]
+    },
+    "rivals": ["clan_xiao"],
+    "allies": ["clan_wang"],
+    "flag_events": ["Noble_Birth"],
+    "description": "Gia tộc cổ xưa nhất, từng có người phi thăng. Chuyên về luyện đan."
+  },
+  {
+    "id": "clan_xiao",
+    "name": "Tiêu Gia (Nam Cương)",
+    "tier": "Declining",
+    "specialty": "Fire",
+    "ancestor_realm": "Nascent_Soul",
+    "location": "Nam Cương",
+    "starting_perks": {
+      "spirit_stones": 500,
+      "items": ["id_mysterious_ring_old_grandpa"],
+      "reputation": -50,
+      "connections": []
+    },
+    "rivals": ["clan_lin"],
+    "flag_events": ["Engagement_Annulment", "Mysterious_Ring"],
+    "description": "Gia tộc suy tàn, nhưng đang nắm giữ một chiếc nhẫn bí ẩn."
+  },
+  {
+    "id": "clan_wang",
+    "name": "Vương Gia (Trung Châu)",
+    "tier": "Merchant",
+    "specialty": "Trade",
+    "ancestor_realm": "Golden_Core",
+    "location": "Trung Châu",
+    "starting_perks": {
+      "spirit_stones": 2000,
+      "items": ["id_trade_manual", "id_merchant_token"],
+      "reputation": 300,
+      "connections": ["sect_001", "sect_003"]
+    },
+    "rivals": [],
+    "allies": ["clan_lin"],
+    "flag_events": ["Merchant_Network"],
+    "description": "Gia tộc thương nhân giàu có, có mạng lưới buôn bán rộng lớn."
+  },
+  {
+    "id": "clan_ye",
+    "name": "Diệp Gia (Bắc Hoang)",
+    "tier": "Warrior",
+    "specialty": "Combat",
+    "ancestor_realm": "Golden_Core",
+    "location": "Bắc Hoang",
+    "starting_perks": {
+      "spirit_stones": 800,
+      "items": ["id_sword_manual", "id_combat_armor"],
+      "reputation": 200,
+      "connections": ["sect_003"]
+    },
+    "rivals": [],
+    "allies": [],
+    "flag_events": ["Warrior_Legacy"],
+    "description": "Gia tộc võ sĩ, có truyền thống chiến đấu lâu đời."
+  },
+  {
+    "id": "clan_commoner",
+    "name": "Thường Dân",
+    "tier": "Commoner",
+    "specialty": "None",
+    "ancestor_realm": "Qi_Refining",
+    "location": "Random",
+    "starting_perks": {
+      "spirit_stones": 100,
+      "items": [],
+      "reputation": 0,
+      "connections": []
+    },
+    "rivals": [],
+    "allies": [],
+    "flag_events": ["Rags_to_Riches"],
+    "description": "Xuất thân thường dân, không có gia tộc hỗ trợ nhưng tự do hơn."
+  }
+]
+

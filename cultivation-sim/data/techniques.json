@@ -1,0 +1,144 @@
+[
+  {
+    "id": "tech_taiqing_01",
+    "name": "Thái Thanh Vô Cực Công",
+    "type": "Cultivation",
+    "tier": "Foundation",
+    "element": "Pure",
+    "description": "Công pháp chính đạo, tu luyện chậm nhưng ổn định, ít tâm ma.",
+    "requirements": {
+      "min_realm": "Qi_Refining_5",
+      "min_int": 60,
+      "min_kar": 50,
+      "required_sect": "sect_001"
+    },
+    "effects": {
+      "cultivation_speed": 0.8,
+      "stability": 1.5,
+      "heart_demon_resistance": 1.3,
+      "max_qi_modifier": 1.2
+    },
+    "special_abilities": ["Purify Qi", "Calm Mind"]
+  },
+  {
+    "id": "tech_taiqing_02",
+    "name": "Thái Thanh Kiếm Quyết",
+    "type": "Combat",
+    "tier": "Foundation",
+    "element": "Pure",
+    "description": "Kiếm pháp chính đạo, uy lực mạnh mẽ.",
+    "requirements": {
+      "min_realm": "Foundation_2",
+      "min_per": 70,
+      "required_sect": "sect_001"
+    },
+    "effects": {
+      "sword_damage": 1.5,
+      "accuracy": 1.3
+    },
+    "special_abilities": ["Righteous Strike", "Sword Light"]
+  },
+  {
+    "id": "tech_blood_01",
+    "name": "Huyết Ma Đại Pháp",
+    "type": "Cultivation",
+    "tier": "Foundation",
+    "element": "Blood",
+    "description": "Công pháp ma đạo, tu luyện cực nhanh nhưng dễ tẩu hỏa nhập ma.",
+    "requirements": {
+      "min_realm": "Qi_Refining_5",
+      "min_con": 60,
+      "required_sect": "sect_002"
+    },
+    "effects": {
+      "cultivation_speed": 2.0,
+      "heart_demon_risk": 2.0,
+      "max_qi_modifier": 1.5
+    },
+    "special_abilities": ["Blood Drain", "Frenzy"],
+    "side_effects": {
+      "killing_innocents_penalty": 0.1,
+      "karma_reduction": 0.05
+    }
+  },
+  {
+    "id": "tech_blood_02",
+    "name": "Huyết Ma Thủ",
+    "type": "Combat",
+    "tier": "Foundation",
+    "element": "Blood",
+    "description": "Võ công ma đạo, hút máu địch để hồi phục.",
+    "requirements": {
+      "min_realm": "Foundation_2",
+      "min_con": 70,
+      "required_sect": "sect_002"
+    },
+    "effects": {
+      "damage": 1.8,
+      "lifesteal": 0.3
+    },
+    "special_abilities": ["Blood Claw", "Life Drain"]
+  },
+  {
+    "id": "tech_sword_01",
+    "name": "Vạn Kiếm Quy Nhất",
+    "type": "Combat",
+    "tier": "Golden_Core",
+    "element": "Sword",
+    "description": "Kiếm pháp tối thượng, một kiếm phá vạn pháp.",
+    "requirements": {
+      "min_realm": "Foundation_4",
+      "min_per": 80,
+      "min_con": 50,
+      "required_sect": "sect_003",
+      "required_trait": "Kiếm Si"
+    },
+    "effects": {
+      "sword_damage": 3.0,
+      "penetration": 2.0,
+      "critical_chance": 0.5
+    },
+    "special_abilities": ["Sword Domain", "One Sword"]
+  },
+  {
+    "id": "tech_poison_01",
+    "name": "Vạn Độc Chân Kinh",
+    "type": "Cultivation",
+    "tier": "Foundation",
+    "element": "Poison",
+    "description": "Công pháp độc đạo, tu luyện bằng độc dược.",
+    "requirements": {
+      "min_realm": "Qi_Refining_5",
+      "min_int": 70,
+      "required_sect": "sect_004",
+      "required_trait": "Dược Sư"
+    },
+    "effects": {
+      "cultivation_speed": 1.5,
+      "poison_resistance": 2.0,
+      "poison_damage": 1.5
+    },
+    "special_abilities": ["Poison Immunity", "Toxic Aura"]
+  },
+  {
+    "id": "tech_ice_01",
+    "name": "Bắc Minh Huyền Băng Công",
+    "type": "Cultivation",
+    "tier": "Foundation",
+    "element": "Ice",
+    "description": "Công pháp băng thuật, tu luyện chậm nhưng phòng thủ cực cao.",
+    "requirements": {
+      "min_realm": "Qi_Refining_5",
+      "min_con": 80,
+      "required_sect": "sect_005",
+      "element_affinity": "Ice"
+    },
+    "effects": {
+      "cultivation_speed": 0.7,
+      "defense": 2.0,
+      "ice_damage": 1.5
+    },
+    "special_abilities": ["Ice Shield", "Frozen Domain"]
+  }
+]
+
