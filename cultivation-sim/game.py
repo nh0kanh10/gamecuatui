@@ -13,7 +13,8 @@ import json
 from database import get_db, init_database
 from agent import CultivationAgent
 from memory_3tier import Memory3Tier
-from schemas import CharacterData, GameState, CultivationComponent, ResourceComponent
+from schemas import CharacterData, GameState
+from components import CultivationComponent, ResourceComponent
 from attributes import AttributesComponent
 from world_database import WorldDatabase
 from ecs_systems import CultivationSystem, RelationshipSystem, AIPlannerSystem, NeedsSystem
@@ -310,7 +311,7 @@ class CultivationSimulator:
         if self.current_sect_id:
             sect = self.world_db.get_sect(self.current_sect_id)
             if sect:
-                sect_context = f"Tông môn: {sect['name']} ({sect['type']})"
+                sect_context = f"Tông môn: {sect['name']} ({sect.get('type', 'Unknown')})"
         
         character_data = {
             "age": self.character_age,
