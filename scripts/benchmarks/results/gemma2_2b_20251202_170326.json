@@ -1,0 +1,47 @@
+{
+  "test_name": "gemma2_2b",
+  "model": "gemma2:2b",
+  "backend": "ollama",
+  "timestamp": "2025-12-02 17:03:26",
+  "metrics": {
+    "avg_tokens_per_second": 27.51,
+    "avg_latency_ms": 36.4,
+    "max_vram_mb": 0.0,
+    "max_ram_mb": 49.0
+  },
+  "detailed_results": [
+    {
+      "test_name": "Short Context",
+      "prompt_length": 55,
+      "tokens_generated": 127,
+      "time_seconds": 4.57,
+      "tokens_per_second": 27.81,
+      "avg_latency_ms": 36.0,
+      "vram_mb": 0.0,
+      "ram_mb": 49.0,
+      "output_preview": "The air hung thick and heavy, pregnant with the scent of decay and damp earth. A skeletal hand protr..."
+    },
+    {
+      "test_name": "Medium Context",
+      "prompt_length": 203,
+      "tokens_generated": 189,
+      "time_seconds": 6.65,
+      "tokens_per_second": 28.44,
+      "avg_latency_ms": 35.2,
+      "vram_mb": 0.0,
+      "ram_mb": 49.0,
+      "output_preview": "The air hangs heavy with the scent of damp earth and pine needles as you cautiously step into the fo..."
+    },
+    {
+      "test_name": "Long Context",
+      "prompt_length": 508,
+      "tokens_generated": 239,
+      "time_seconds": 9.1,
+      "tokens_per_second": 26.27,
+      "avg_latency_ms": 38.1,
+      "vram_mb": 0.0,
+      "ram_mb": 49.0,
+      "output_preview": "The air hangs thick and heavy around you, saturated with the smell of damp earth and decaying wood. ..."
+    }
+  ]
+}

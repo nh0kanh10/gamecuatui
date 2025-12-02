@@ -33,8 +33,8 @@ echo ✅ Node.js OK
 echo [3/5] Checking environment...
 if not exist .env (
     echo ⚠️  .env file not found!
-    echo    Creating .env.template...
     if exist .env.template (
+        echo    Creating .env from template...
         copy .env.template .env >nul
         echo    ✅ Created .env from template
         echo    ⚠️  Please edit .env and add your GEMINI_API_KEY!
@@ -69,9 +69,9 @@ echo ✅ Dependencies OK
 echo [5/5] Installing React UI dependencies...
 if not exist react-ui\node_modules (
     echo    Installing npm packages (first time, may take a while)...
-    cd react-ui
+    pushd react-ui
     call npm install --silent
-    cd ..
+    popd
     echo    ✅ React UI dependencies installed
 ) else (
     echo ✅ React UI dependencies OK
@@ -112,9 +112,9 @@ echo ✅ Server is running!
 
 :: Start React UI in new window
 echo [UI] Starting React UI...
-cd react-ui
+pushd react-ui
 start "React UI" cmd /k "npm run dev"
-cd ..
+popd
 timeout /t 5 >nul
 
 :: Open browser
@@ -137,4 +137,3 @@ echo    - Press Ctrl+C in server window to stop
 echo.
 echo Press any key to close this window...
 pause >nul
-

@@ -1,0 +1,47 @@
+{
+  "test_name": "phi3_3.8b",
+  "model": "phi3:3.8b",
+  "backend": "ollama",
+  "timestamp": "2025-12-02 17:02:42",
+  "metrics": {
+    "avg_tokens_per_second": 18.34,
+    "avg_latency_ms": 54.6,
+    "max_vram_mb": 0.0,
+    "max_ram_mb": 49.0
+  },
+  "detailed_results": [
+    {
+      "test_name": "Short Context",
+      "prompt_length": 55,
+      "tokens_generated": 107,
+      "time_seconds": 5.72,
+      "tokens_per_second": 18.71,
+      "avg_latency_ms": 53.4,
+      "vram_mb": 0.0,
+      "ram_mb": 49.0,
+      "output_preview": "As you approach the edge of an ancient, sprawling forest shrouded in twilight mist, your heart quick..."
+    },
+    {
+      "test_name": "Medium Context",
+      "prompt_length": 203,
+      "tokens_generated": 167,
+      "time_seconds": 8.81,
+      "tokens_per_second": 18.95,
+      "avg_latency_ms": 52.8,
+      "vram_mb": 0.0,
+      "ram_mb": 49.0,
+      "output_preview": "As the brave adventurer steps into the dense and shadowed forest under a moonless sky, their senses ..."
+    },
+    {
+      "test_name": "Long Context",
+      "prompt_length": 508,
+      "tokens_generated": 217,
+      "time_seconds": 12.51,
+      "tokens_per_second": 17.35,
+      "avg_latency_ms": 57.6,
+      "vram_mb": 0.0,
+      "ram_mb": 49.0,
+      "output_preview": "Aria's keen eyes survey the heavily rusted lock on the massive door before her; she can see that it ..."
+    }
+  ]
+}

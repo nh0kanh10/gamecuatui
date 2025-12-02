@@ -1,0 +1,47 @@
+{
+  "test_name": "qwen2.5_3b",
+  "model": "qwen2.5:3b",
+  "backend": "ollama",
+  "timestamp": "2025-12-02 17:03:54",
+  "metrics": {
+    "avg_tokens_per_second": 41.91,
+    "avg_latency_ms": 24.0,
+    "max_vram_mb": 0.0,
+    "max_ram_mb": 49.0
+  },
+  "detailed_results": [
+    {
+      "test_name": "Short Context",
+      "prompt_length": 55,
+      "tokens_generated": 120,
+      "time_seconds": 2.75,
+      "tokens_per_second": 43.59,
+      "avg_latency_ms": 22.9,
+      "vram_mb": 0.0,
+      "ram_mb": 49.0,
+      "output_preview": "In the heart of an ancient and dense forest lies the entrance to what appears to be an underground l..."
+    },
+    {
+      "test_name": "Medium Context",
+      "prompt_length": 203,
+      "tokens_generated": 194,
+      "time_seconds": 4.3,
+      "tokens_per_second": 45.1,
+      "avg_latency_ms": 22.2,
+      "vram_mb": 0.0,
+      "ram_mb": 49.0,
+      "output_preview": "As the player ventures deeper into the dark and mist-shrouded forest, the weight of the torch hangin..."
+    },
+    {
+      "test_name": "Long Context",
+      "prompt_length": 508,
+      "tokens_generated": 168,
+      "time_seconds": 4.53,
+      "tokens_per_second": 37.05,
+      "avg_latency_ms": 27.0,
+      "vram_mb": 0.0,
+      "ram_mb": 49.0,
+      "output_preview": "You inspect the iron gate closely for any signs of damage or weakness you might exploit. The gate is..."
+    }
+  ]
+}
