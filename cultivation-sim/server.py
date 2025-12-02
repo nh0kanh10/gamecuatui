@@ -19,6 +19,9 @@ from schemas import CharacterData, GameState
 
 app = FastAPI(title="Cultivation Simulator API")
 
+# Include advanced systems router
+app.include_router(advanced_router)
+
 # CORS
 app.add_middleware(
     CORSMiddleware,

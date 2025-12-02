@@ -23,6 +23,14 @@ from item_system import ItemSystem
 from spirit_beast_system import SpiritBeastSystem
 from herb_system import HerbSystem
 from procedural_spawn import ProceduralSpawner
+from skill_system import SkillSystem
+from economy_system import EconomySystem
+from combat_system import CombatSystem
+from breakthrough_enhanced import EnhancedBreakthroughSystem
+from naming_system import NamingSystem
+from social_graph_system import SocialGraphSystem, PersonalityFacets
+from formation_system import FormationSystem, FormationNode, ElementType
+from quest_generator import QuestGenerator
 
 
 class CultivationSimulator:
@@ -52,6 +60,16 @@ class CultivationSimulator:
         self.beast_system = SpiritBeastSystem(self.world_db)
         self.herb_system = HerbSystem(self.world_db)
         self.spawner = ProceduralSpawner(self.world_db, seed=hash(save_id) % (2**31))
+        
+        # Advanced Systems
+        self.skill_system = SkillSystem("data/skills")
+        self.economy_system = EconomySystem("data")
+        self.combat_system = CombatSystem()
+        self.breakthrough_enhanced = EnhancedBreakthroughSystem()
+        self.naming_system = NamingSystem("data")
+        self.social_graph = SocialGraphSystem()
+        self.formation_system = FormationSystem()
+        self.quest_generator = QuestGenerator(self.agent, self.social_graph)
         
         # Game state
         self.character_age = 0
