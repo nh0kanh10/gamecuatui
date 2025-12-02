@@ -14,12 +14,15 @@ from database import get_db, init_database
 from agent import CultivationAgent
 from memory_3tier import Memory3Tier
 from schemas import CharacterData, GameState
-from components import CultivationComponent, ResourceComponent
+from components import CultivationComponent, ResourceComponent, SpiritBeastComponent, SpiritHerbComponent
 from attributes import AttributesComponent
 from world_database import WorldDatabase
 from ecs_systems import CultivationSystem, RelationshipSystem, AIPlannerSystem, NeedsSystem
 from artifact_system import ArtifactSystem
 from item_system import ItemSystem
+from spirit_beast_system import SpiritBeastSystem
+from herb_system import HerbSystem
+from procedural_spawn import ProceduralSpawner
 
 
 class CultivationSimulator:
@@ -46,6 +49,9 @@ class CultivationSimulator:
         self.world_db = WorldDatabase("data")
         self.artifact_system = ArtifactSystem(self.world_db)
         self.item_system = ItemSystem(self.world_db)
+        self.beast_system = SpiritBeastSystem(self.world_db)
+        self.herb_system = HerbSystem(self.world_db)
+        self.spawner = ProceduralSpawner(self.world_db, seed=hash(save_id) % (2**31))
         
         # Game state
         self.character_age = 0
@@ -429,5 +435,8 @@ class CultivationSimulator:
             "resources": self.resources.dict() if self.resources else {},
             "attributes": self.attributes.dict() if self.attributes else {},
             "needs": self.game_state.get("needs", {}),
-            "relationships": self.relationship_system.get_all_relationships("player") if self.relationship_system else {}
+            "relationships": self.relationship_system.get_all_relationships("player") if self.relationship_system else {},
+            "location": self._get_location_data(),
+            "sect_id": self.current_sect_id,
+            "sect_context": self.game_state.get("sect_context", "")
         }

@@ -1,0 +1,208 @@
+[
+  {
+    "id": "beast_jade_mantis",
+    "name": "Ngọc Bích Đường Lang",
+    "taxonomy": {
+      "tier": "Spirit",
+      "family": "Insectoid",
+      "evolution_path": ["beast_emerald_emperor_mantis"]
+    },
+    "attributes": {
+      "qi_affinity": ["Wood", "Metal"],
+      "yin_yang": "Yang"
+    },
+    "combat_stats": {
+      "base": {
+        "hp": 80,
+        "atk": 120,
+        "def": 40,
+        "spd": 150,
+        "mp": 50
+      },
+      "growth": {
+        "hp": 1.1,
+        "atk": 1.4,
+        "def": 1.0,
+        "spd": 1.6,
+        "mp": 1.2
+      }
+    },
+    "cultivation": {
+      "can_cultivate": true,
+      "max_realm": "Golden_Core",
+      "cultivation_speed": 0.8
+    },
+    "bloodline": {
+      "base_bloodline": "Mantis",
+      "possible_bloodlines": ["Dragon", "Phoenix", "Qilin"]
+    },
+    "behavior_ai": "ai_ambush_predator",
+    "drop_table": "loot_insect_tier2",
+    "lore": "Đường lang ngọc bích, một trong những loài côn trùng tu luyện hiếm có. Tốc độ cực nhanh, sát thương cao nhưng phòng thủ yếu."
+  },
+  {
+    "id": "beast_fire_tiger",
+    "name": "Hỏa Hổ",
+    "taxonomy": {
+      "tier": "Spirit",
+      "family": "Feline",
+      "evolution_path": ["beast_flame_emperor_tiger", "beast_phoenix_tiger"]
+    },
+    "attributes": {
+      "qi_affinity": ["Fire"],
+      "yin_yang": "Yang"
+    },
+    "combat_stats": {
+      "base": {
+        "hp": 150,
+        "atk": 100,
+        "def": 80,
+        "spd": 100,
+        "mp": 60
+      },
+      "growth": {
+        "hp": 1.3,
+        "atk": 1.2,
+        "def": 1.1,
+        "spd": 1.1,
+        "mp": 1.1
+      }
+    },
+    "cultivation": {
+      "can_cultivate": true,
+      "max_realm": "Nascent_Soul",
+      "cultivation_speed": 1.0
+    },
+    "bloodline": {
+      "base_bloodline": "Tiger",
+      "possible_bloodlines": ["Dragon", "Phoenix", "White_Tiger"]
+    },
+    "behavior_ai": "ai_aggressive_hunter",
+    "drop_table": "loot_feline_tier2",
+    "lore": "Hổ lửa hung dữ, sở hữu linh trí cao và khả năng tu luyện. Thường sống đơn độc hoặc theo cặp."
+  },
+  {
+    "id": "beast_water_dragon",
+    "name": "Thủy Long",
+    "taxonomy": {
+      "tier": "Divine",
+      "family": "Draconic",
+      "evolution_path": ["beast_azure_dragon_emperor"]
+    },
+    "attributes": {
+      "qi_affinity": ["Water", "Ice"],
+      "yin_yang": "Yin"
+    },
+    "combat_stats": {
+      "base": {
+        "hp": 500,
+        "atk": 200,
+        "def": 150,
+        "spd": 80,
+        "mp": 300
+      },
+      "growth": {
+        "hp": 1.5,
+        "atk": 1.3,
+        "def": 1.4,
+        "spd": 1.0,
+        "mp": 1.5
+      }
+    },
+    "cultivation": {
+      "can_cultivate": true,
+      "max_realm": "Immortal",
+      "cultivation_speed": 1.5
+    },
+    "bloodline": {
+      "base_bloodline": "Dragon",
+      "possible_bloodlines": ["True_Dragon", "Dragon_Emperor"]
+    },
+    "behavior_ai": "ai_wise_guardian",
+    "drop_table": "loot_draconic_tier5",
+    "lore": "Rồng nước cổ xưa, sở hữu trí tuệ và sức mạnh vượt trội. Rất hiếm gặp, thường bảo vệ các bảo vật thiên địa."
+  },
+  {
+    "id": "beast_earth_bear",
+    "name": "Thổ Hùng",
+    "taxonomy": {
+      "tier": "Spirit",
+      "family": "Ursine",
+      "evolution_path": ["beast_mountain_king_bear"]
+    },
+    "attributes": {
+      "qi_affinity": ["Earth"],
+      "yin_yang": "Yang"
+    },
+    "combat_stats": {
+      "base": {
+        "hp": 300,
+        "atk": 80,
+        "def": 120,
+        "spd": 60,
+        "mp": 40
+      },
+      "growth": {
+        "hp": 1.4,
+        "atk": 1.0,
+        "def": 1.3,
+        "spd": 0.9,
+        "mp": 1.0
+      }
+    },
+    "cultivation": {
+      "can_cultivate": true,
+      "max_realm": "Spirit_Transformation",
+      "cultivation_speed": 0.7
+    },
+    "bloodline": {
+      "base_bloodline": "Bear",
+      "possible_bloodlines": ["Mountain_Spirit", "Earth_Guardian"]
+    },
+    "behavior_ai": "ai_defensive_guardian",
+    "drop_table": "loot_ursine_tier3",
+    "lore": "Gấu đất phòng thủ mạnh, máu dày như núi. Thường sống trong hang động sâu, bảo vệ lãnh địa của mình."
+  },
+  {
+    "id": "beast_wind_eagle",
+    "name": "Phong Ưng",
+    "taxonomy": {
+      "tier": "Spirit",
+      "family": "Avian",
+      "evolution_path": ["beast_sky_emperor_eagle"]
+    },
+    "attributes": {
+      "qi_affinity": ["Wind", "Lightning"],
+      "yin_yang": "Yang"
+    },
+    "combat_stats": {
+      "base": {
+        "hp": 100,
+        "atk": 90,
+        "def": 50,
+        "spd": 200,
+        "mp": 80
+      },
+      "growth": {
+        "hp": 1.1,
+        "atk": 1.2,
+        "def": 1.0,
+        "spd": 1.8,
+        "mp": 1.3
+      }
+    },
+    "cultivation": {
+      "can_cultivate": true,
+      "max_realm": "Body_Fusion",
+      "cultivation_speed": 1.2
+    },
+    "bloodline": {
+      "base_bloodline": "Eagle",
+      "possible_bloodlines": ["Phoenix", "Roc", "Thunder_Bird"]
+    },
+    "behavior_ai": "ai_sky_hunter",
+    "drop_table": "loot_avian_tier2",
+    "lore": "Đại bàng gió, tốc độ cực nhanh và khả năng bay lượn. Thường sống trên đỉnh núi cao, săn mồi từ trên không."
+  }
+]
+

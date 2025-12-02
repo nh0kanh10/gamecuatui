@@ -1,0 +1,129 @@
+[
+  {
+    "id": "herb_ginseng",
+    "name": "Nhân Sâm",
+    "type": "Root",
+    "element": "Wood",
+    "growth_logic": {
+      "base_potency": 10,
+      "age_multiplier": "Logarithmic",
+      "thresholds": {
+        "100": "tier_spirit",
+        "1000": "tier_earthly",
+        "10000": "tier_heavenly"
+      }
+    },
+    "preservation": {
+      "container_req": "Jade_Box",
+      "decay_rate": 0.05
+    },
+    "alchemy_uses": ["pill_qi_gathering", "pill_breakthrough_foundation"],
+    "lore": "Nhân sâm vạn năm, thảo dược quý hiếm. Tuổi càng cao, dược tính càng mạnh."
+  },
+  {
+    "id": "herb_vermilion_fruit",
+    "name": "Chu Quả",
+    "type": "Fruit",
+    "element": "Fire",
+    "growth_logic": {
+      "base_potency": 15,
+      "age_multiplier": "Logarithmic",
+      "thresholds": {
+        "50": "tier_spirit",
+        "500": "tier_earthly",
+        "5000": "tier_heavenly"
+      }
+    },
+    "preservation": {
+      "container_req": "Fire_Crystal_Box",
+      "decay_rate": 0.1
+    },
+    "alchemy_uses": ["pill_fire_essence", "pill_breakthrough_golden_core"],
+    "lore": "Quả đỏ như lửa, chỉ mọc ở vùng núi lửa. Dược tính hỏa hệ thuần khiết."
+  },
+  {
+    "id": "herb_ice_lotus",
+    "name": "Băng Liên",
+    "type": "Flower",
+    "element": "Water",
+    "growth_logic": {
+      "base_potency": 20,
+      "age_multiplier": "Exponential",
+      "thresholds": {
+        "200": "tier_spirit",
+        "2000": "tier_earthly",
+        "20000": "tier_heavenly"
+      }
+    },
+    "preservation": {
+      "container_req": "Ice_Crystal_Box",
+      "decay_rate": 0.02
+    },
+    "alchemy_uses": ["pill_ice_essence", "pill_detox", "pill_breakthrough_nascent_soul"],
+    "lore": "Hoa sen băng, chỉ mọc ở hồ băng vạn năm. Dược tính thủy hệ cực mạnh, có thể giải độc."
+  },
+  {
+    "id": "herb_golden_grass",
+    "name": "Hoàng Kim Thảo",
+    "type": "Grass",
+    "element": "Metal",
+    "growth_logic": {
+      "base_potency": 8,
+      "age_multiplier": "Linear",
+      "thresholds": {
+        "1000": "tier_spirit",
+        "10000": "tier_earthly",
+        "100000": "tier_heavenly"
+      }
+    },
+    "preservation": {
+      "container_req": "Metal_Box",
+      "decay_rate": 0.03
+    },
+    "alchemy_uses": ["pill_metal_essence", "pill_breakthrough_foundation"],
+    "lore": "Cỏ vàng như kim loại, mọc ở mỏ linh thạch. Dược tính kim hệ, tăng phòng thủ."
+  },
+  {
+    "id": "herb_earth_spirit_mushroom",
+    "name": "Địa Linh Nấm",
+    "type": "Mushroom",
+    "element": "Earth",
+    "growth_logic": {
+      "base_potency": 12,
+      "age_multiplier": "Logarithmic",
+      "thresholds": {
+        "500": "tier_spirit",
+        "5000": "tier_earthly",
+        "50000": "tier_heavenly"
+      }
+    },
+    "preservation": {
+      "container_req": "Earth_Spirit_Box",
+      "decay_rate": 0.04
+    },
+    "alchemy_uses": ["pill_earth_essence", "pill_breakthrough_golden_core"],
+    "lore": "Nấm địa linh, mọc ở hang động sâu. Dược tính thổ hệ, tăng thể chất."
+  },
+  {
+    "id": "herb_phoenix_flower",
+    "name": "Phượng Hoàng Hoa",
+    "type": "Flower",
+    "element": "Fire",
+    "growth_logic": {
+      "base_potency": 50,
+      "age_multiplier": "Exponential",
+      "thresholds": {
+        "1000": "tier_spirit",
+        "10000": "tier_earthly",
+        "100000": "tier_heavenly"
+      }
+    },
+    "preservation": {
+      "container_req": "Phoenix_Feather_Box",
+      "decay_rate": 0.01
+    },
+    "alchemy_uses": ["pill_phoenix_rebirth", "pill_breakthrough_immortal"],
+    "lore": "Hoa phượng hoàng, thảo dược thần cấp. Chỉ mọc ở nơi có linh khí phượng hoàng, cực kỳ hiếm."
+  }
+]
+

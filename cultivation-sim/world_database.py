@@ -27,6 +27,8 @@ class WorldDatabase:
         self.artifacts: Dict[str, Dict] = {}
         self.items: Dict[str, Dict] = {}
         self.regional_cultures: Dict[str, Dict] = {}
+        self.spirit_beasts: Dict[str, Dict] = {}
+        self.spirit_herbs: Dict[str, Dict] = {}
         
         self.load_all_data()
     
@@ -97,9 +99,26 @@ class WorldDatabase:
                     for item in data:
                         self.regional_cultures[item['region_id']] = item
             
+            # Load Spirit Beasts
+            beasts_path = self.data_dir / "spirit_beasts.json"
+            if beasts_path.exists():
+                with open(beasts_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    for item in data:
+                        self.spirit_beasts[item['id']] = item
+            
+            # Load Spirit Herbs
+            herbs_path = self.data_dir / "spirit_herbs.json"
+            if herbs_path.exists():
+                with open(herbs_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    for item in data:
+                        self.spirit_herbs[item['id']] = item
+            
             print(f"✅ Loaded: {len(self.sects)} sects, {len(self.techniques)} techniques, "
                   f"{len(self.races)} races, {len(self.clans)} clans, {len(self.locations)} locations, "
-                  f"{len(self.artifacts)} artifacts, {len(self.items)} items, {len(self.regional_cultures)} regional cultures")
+                  f"{len(self.artifacts)} artifacts, {len(self.items)} items, {len(self.regional_cultures)} regional cultures, "
+                  f"{len(self.spirit_beasts)} spirit beasts, {len(self.spirit_herbs)} spirit herbs")
         
         except Exception as e:
             print(f"❌ Error loading world data: {e}")
@@ -541,5 +560,69 @@ class WorldDatabase:
             if name_lower in item.get("name", "").lower():
                 results["items"].append(item)
         
+        for beast in self.spirit_beasts.values():
+            if name_lower in beast.get("name", "").lower():
+                results["beasts"] = results.get("beasts", [])
+                results["beasts"].append(beast)
+        
+        for herb in self.spirit_herbs.values():
+            if name_lower in herb.get("name", "").lower():
+                results["herbs"] = results.get("herbs", [])
+                results["herbs"].append(herb)
+        
         return results
+    
+    # --- SPIRIT BEAST METHODS ---
+    
+    def get_spirit_beast(self, beast_id: str) -> Optional[Dict]:
+        """Get spirit beast template by ID"""
+        return self.spirit_beasts.get(beast_id)
+    
+    def get_beasts_by_tier(self, tier: str) -> List[Dict]:
+        """Get all beasts of a specific tier"""
+        return [
+            b for b in self.spirit_beasts.values()
+            if b.get("taxonomy", {}).get("tier") == tier
+        ]
+    
+    def get_beasts_by_family(self, family: str) -> List[Dict]:
+        """Get all beasts of a specific family"""
+        return [
+            b for b in self.spirit_beasts.values()
+            if b.get("taxonomy", {}).get("family") == family
+        ]
+    
+    def get_beasts_by_region(self, region_id: str) -> List[Dict]:
+        """Get beasts that can spawn in a region"""
+        # This will be used with spawn tables
+        # For now, return all beasts (filtering done by spawn table)
+        return list(self.spirit_beasts.values())
+    
+    # --- SPIRIT HERB METHODS ---
+    
+    def get_spirit_herb(self, herb_id: str) -> Optional[Dict]:
+        """Get spirit herb template by ID"""
+        return self.spirit_herbs.get(herb_id)
+    
+    def get_herbs_by_element(self, element: str) -> List[Dict]:
+        """Get all herbs of a specific element"""
+        return [
+            h for h in self.spirit_herbs.values()
+            if h.get("element") == element
+        ]
+    
+    def get_herbs_by_type(self, herb_type: str) -> List[Dict]:
+        """Get all herbs of a specific type"""
+        return [
+            h for h in self.spirit_herbs.values()
+            if h.get("type") == herb_type
+        ]
+    
+    def get_herbs_for_alchemy(self, pill_id: str) -> List[Dict]:
+        """Get herbs that can be used to craft a specific pill"""
+        # Check which herbs have this pill in alchemy_uses
+        return [
+            h for h in self.spirit_herbs.values()
+            if pill_id in h.get("alchemy_uses", [])
+        ]
 

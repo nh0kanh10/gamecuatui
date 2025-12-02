@@ -1,0 +1,124 @@
+{
+  "spawn_tables": {
+    "region_central_plains": {
+      "seed": 12345,
+      "herbs": {
+        "herb_ginseng": {
+          "weight": 0.3,
+          "base_chance": 0.1,
+          "clustering": "high",
+          "min_level": 1,
+          "min_noise": 0.0
+        },
+        "herb_golden_grass": {
+          "weight": 0.4,
+          "base_chance": 0.15,
+          "clustering": "medium",
+          "min_level": 1,
+          "min_noise": 0.0
+        },
+        "herb_ice_lotus": {
+          "weight": 0.05,
+          "base_chance": 0.02,
+          "clustering": "very_high",
+          "min_level": 10,
+          "min_noise": 0.7
+        }
+      },
+      "beasts": {
+        "beast_jade_mantis": {
+          "weight": 0.3,
+          "base_chance": 0.08,
+          "pack_size": 1,
+          "min_level": 5,
+          "min_noise": 0.3
+        },
+        "beast_fire_tiger": {
+          "weight": 0.2,
+          "base_chance": 0.05,
+          "pack_size": 2,
+          "min_level": 10,
+          "min_noise": 0.5
+        },
+        "beast_earth_bear": {
+          "weight": 0.15,
+          "base_chance": 0.04,
+          "pack_size": 1,
+          "min_level": 8,
+          "min_noise": 0.4
+        }
+      }
+    },
+    "region_northern_tundra": {
+      "seed": 54321,
+      "herbs": {
+        "herb_ice_lotus": {
+          "weight": 0.5,
+          "base_chance": 0.2,
+          "clustering": "high",
+          "min_level": 1,
+          "min_noise": 0.0
+        },
+        "herb_earth_spirit_mushroom": {
+          "weight": 0.3,
+          "base_chance": 0.1,
+          "clustering": "medium",
+          "min_level": 5,
+          "min_noise": 0.2
+        }
+      },
+      "beasts": {
+        "beast_earth_bear": {
+          "weight": 0.4,
+          "base_chance": 0.15,
+          "pack_size": 1,
+          "min_level": 1,
+          "min_noise": 0.0
+        },
+        "beast_water_dragon": {
+          "weight": 0.01,
+          "base_chance": 0.001,
+          "pack_size": 1,
+          "min_level": 50,
+          "min_noise": 0.9
+        }
+      }
+    },
+    "region_southern_border": {
+      "seed": 98765,
+      "herbs": {
+        "herb_vermilion_fruit": {
+          "weight": 0.4,
+          "base_chance": 0.15,
+          "clustering": "high",
+          "min_level": 1,
+          "min_noise": 0.0
+        },
+        "herb_phoenix_flower": {
+          "weight": 0.005,
+          "base_chance": 0.0001,
+          "clustering": "very_high",
+          "min_level": 30,
+          "min_noise": 0.95
+        }
+      },
+      "beasts": {
+        "beast_fire_tiger": {
+          "weight": 0.3,
+          "base_chance": 0.1,
+          "pack_size": 2,
+          "min_level": 1,
+          "min_noise": 0.0
+        },
+        "beast_wind_eagle": {
+          "weight": 0.2,
+          "base_chance": 0.08,
+          "pack_size": 3,
+          "min_level": 5,
+          "min_noise": 0.3
+        }
+      }
+    }
+  }
+}
+
