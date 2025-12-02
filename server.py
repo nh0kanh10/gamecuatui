@@ -287,14 +287,14 @@ async def process_action(
             "game_state": game_state
         })
         
-    # Build response
-    result = {
-        "narrative": narrative,
-        "action_intent": response.get('action_intent', 'NONE'),
-        "game_state": game_state
-    }
-    
-    return ActionResponse(**result)
+        # Build response
+        result = {
+            "narrative": narrative,
+            "action_intent": response.get('action_intent', 'NONE'),
+            "game_state": game_state
+        }
+        
+        return ActionResponse(**result)
     
     finally:
         # Release lock
