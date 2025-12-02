@@ -8,6 +8,10 @@ const Calendar = () => <span>📅</span>;
 const Brain = () => <span>🧠</span>;
 const Send = () => <span>➤</span>;
 const Loader2 = ({ className }: { className?: string }) => <span className={className}>⏳</span>;
+const Flame = () => <span>🔥</span>;
+const Gem = () => <span>💎</span>;
+const Pill = () => <span>💊</span>;
+const Star = () => <span>⭐</span>;
 
 type View = 'menu' | 'character-creation' | 'game';
 
@@ -275,6 +279,135 @@ function App() {
               </div>
             </div>
           </div>
+
+          {/* Cultivation Stats */}
+          {gameState.cultivation && (
+            <div className="bg-gradient-to-br from-purple-900/30 to-blue-900/30 border border-purple-700/50 rounded-lg p-4 space-y-4">
+              <h3 className="text-sm font-bold text-muted-foreground mb-3 flex items-center gap-2">
+                <Flame />
+                CULTIVATION
+              </h3>
+              
+              {/* Realm */}
+              <div>
+                <div className="text-xs text-muted-foreground mb-1">Realm</div>
+                <div className="font-bold text-purple-400 text-lg">{gameState.cultivation.realm}</div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  Level {gameState.cultivation.realm_level}/10
+                </div>
+              </div>
+
+              {/* Spiritual Power */}
+              <div>
+                <div className="text-xs text-muted-foreground mb-1 flex justify-between">
+                  <span>Spiritual Power</span>
+                  <span className="text-purple-400">
+                    {gameState.cultivation.spiritual_power}/{gameState.cultivation.max_spiritual_power}
+                  </span>
+                </div>
+                <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
+                  <div
+                    className="bg-gradient-to-r from-purple-500 to-blue-500 h-full transition-all duration-300"
+                    style={{
+                      width: `${(gameState.cultivation.spiritual_power / gameState.cultivation.max_spiritual_power) * 100}%`,
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Breakthrough Progress */}
+              <div>
+                <div className="text-xs text-muted-foreground mb-1 flex justify-between">
+                  <span>Breakthrough</span>
+                  <span className="text-amber-400">
+                    {gameState.cultivation.breakthrough_progress.toFixed(1)}%
+                  </span>
+                </div>
+                <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
+                  <div
+                    className="bg-gradient-to-r from-amber-500 to-orange-500 h-full transition-all duration-300"
+                    style={{
+                      width: `${gameState.cultivation.breakthrough_progress}%`,
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Techniques */}
+              {gameState.cultivation.techniques && gameState.cultivation.techniques.length > 0 && (
+                <div>
+                  <div className="text-xs text-muted-foreground mb-1">Techniques</div>
+                  <div className="flex flex-wrap gap-1">
+                    {gameState.cultivation.techniques.map((tech, idx) => (
+                      <span
+                        key={idx}
+                        className="text-xs bg-purple-900/50 text-purple-300 px-2 py-1 rounded"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Cultivation Age */}
+              <div className="text-xs text-muted-foreground">
+                Cultivating for {gameState.cultivation.cultivation_age} years
+              </div>
+            </div>
+          )}
+
+          {/* Resources */}
+          {gameState.resources && (
+            <div className="bg-gradient-to-br from-emerald-900/30 to-teal-900/30 border border-emerald-700/50 rounded-lg p-4 space-y-3">
+              <h3 className="text-sm font-bold text-muted-foreground mb-3 flex items-center gap-2">
+                <Gem />
+                RESOURCES
+              </h3>
+
+              {/* Spirit Stones */}
+              <div className="flex items-center justify-between">
+                <div className="text-xs text-muted-foreground flex items-center gap-1">
+                  <Gem />
+                  Spirit Stones
+                </div>
+                <div className="font-bold text-emerald-400">{gameState.resources.spirit_stones}</div>
+              </div>
+
+              {/* Pills */}
+              {gameState.resources.pills && Object.keys(gameState.resources.pills).length > 0 && (
+                <div>
+                  <div className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
+                    <Pill />
+                    Pills
+                  </div>
+                  <div className="space-y-1">
+                    {Object.entries(gameState.resources.pills).map(([name, qty]) => (
+                      <div key={name} className="flex justify-between text-xs">
+                        <span className="text-foreground truncate">{name}</span>
+                        <span className="text-emerald-400 font-bold ml-2">x{qty}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Materials */}
+              {gameState.resources.materials && Object.keys(gameState.resources.materials).length > 0 && (
+                <div>
+                  <div className="text-xs text-muted-foreground mb-2">Materials</div>
+                  <div className="space-y-1">
+                    {Object.entries(gameState.resources.materials).map(([name, qty]) => (
+                      <div key={name} className="flex justify-between text-xs">
+                        <span className="text-foreground truncate">{name}</span>
+                        <span className="text-teal-400 font-bold ml-2">x{qty}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Memory */}
           <div className="bg-card border border-border rounded-lg p-4">

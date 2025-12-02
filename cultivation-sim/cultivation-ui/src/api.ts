@@ -9,6 +9,24 @@ export interface CharacterData {
   background: string;
 }
 
+export interface CultivationData {
+  realm: string;
+  realm_level: number;
+  spiritual_power: number;
+  max_spiritual_power: number;
+  breakthrough_progress: number;
+  techniques: string[];
+  pills_consumed: number;
+  spirit_stones: number;
+  cultivation_age: number;
+}
+
+export interface ResourceData {
+  spirit_stones: number;
+  pills: Record<string, number>;
+  materials: Record<string, number>;
+}
+
 export interface GameState {
   save_id: string;
   character_name: string;
@@ -20,6 +38,8 @@ export interface GameState {
   character_story: string | null;
   current_choices: string[];
   turn_count: number;
+  cultivation?: CultivationData | null;
+  resources?: ResourceData | null;
 }
 
 export interface ActionResponse {
