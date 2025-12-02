@@ -37,12 +37,9 @@ app.add_middleware(
 # Global game state
 class GameSession:
     def __init__(self):
+        self.game_mode: Optional[str] = None  # "last_voyage" or "cultivation_sim"
+        self.game_instance = None  # BaseGame instance
         self.save_id: Optional[str] = None
-        self.db_path: Optional[str] = None
-        self.em = None
-        self.context_builder = None
-        self.ai = get_gemini_agent()
-        self.player_id: Optional[int] = None
         self.turn_count = 0
         self.narrative_log: List[str] = []
 
@@ -51,6 +48,8 @@ game = GameSession()
 # Request/Response Models
 class NewGameRequest(BaseModel):
     player_name: str = "Hero"
+    game_mode: str = "last_voyage"  # "last_voyage" or "cultivation_sim"
+    character_data: Optional[Dict[str, Any]] = None  # For cultivation_sim
 
 class LoadGameRequest(BaseModel):
     save_id: str
@@ -72,91 +71,30 @@ class ActionResponse(BaseModel):
     narrative: str
     action_intent: str
     game_state: GameStateResponse
+    choices: Optional[List[str]] = None  # For cultivation sim
 
-# Helper Functions
-def init_engine(db_path: str, save_id: str):
-    """Initialize engine with specific DB"""
-    game.db_path = db_path
-    game.save_id = save_id
-    
-    # Reset global instances
-    import engine.core.database
-    import engine.core.entity
-    engine.core.database._db = None
-    engine.core.entity._em = None
-    
-    game.em = get_entity_manager(get_db(db_path))
-    game.context_builder = ContextBuilder(game.em)
-
-def setup_world():
-    """Create initial game world"""
-    game.player_id = game.em.create_player("Hero")
-    
-    # NPCs
-    guard_id = game.em.create_npc("Old Guard", "entrance", "passive")
-    guard_dialogue = game.em.get(guard_id, DialogueComponent)
-    guard_dialogue.greeting = "Welcome, traveler. Beware the dungeon ahead."
-    game.em.add(guard_id, guard_dialogue)
-    
-    goblin_id = game.em.create_npc("Goblin", "entrance", "aggressive")
-    goblin_stats = game.em.get(goblin_id, StatsComponent)
-    goblin_stats.hp = 15
-    goblin_stats.max_hp = 15
-    game.em.add(goblin_id, goblin_stats)
-    
-    # Items
-    game.em.create_weapon("Iron Sword", damage=12, room_id="entrance")
-    game.em.create_item("Torch", "A flickering torch", room_id="entrance")
-    
-    # Door
-    game.em.create_door("Heavy Door", "entrance", is_locked=False)
+# Helper Functions - Now using game instances
 
 def get_game_state() -> GameStateResponse:
     """Build current game state"""
-    if not game.player_id:
+    if not game.game_instance or not game.game_instance.player_id:
         raise HTTPException(status_code=400, detail="No active game")
     
-    context = game.context_builder.build(game.player_id)
+    state = game.game_instance.get_game_state()
+    context = game.game_instance.context_builder.build(game.game_instance.player_id)
     
     return GameStateResponse(
-        player_hp=context.player_hp,
-        player_max_hp=context.player_max_hp,
-        player_name=context.player_name,
-        current_room=context.current_room_id,
-        room_description=context.room_description,
-        inventory=context.inventory,
-        visible_entities=context.visible_entities,
+        player_hp=state.get('player_hp', context.player_hp),
+        player_max_hp=state.get('player_max_hp', context.player_max_hp),
+        player_name=state.get('player_name', context.player_name),
+        current_room=state.get('current_room', context.current_room_id),
+        room_description=state.get('room_description', context.room_description),
+        inventory=state.get('inventory', context.inventory),
+        visible_entities=state.get('visible_entities', context.visible_entities),
         narrative_log=game.narrative_log[-20:]  # Last 20 entries
     )
 
-def apply_updates(updates: dict):
-    """Apply state updates from AI"""
-    if not updates:
-        return
-
-    # Handle HP changes
-    if 'target_hp_change' in updates:
-        entities = game.em.find_at_location("entrance")
-        for eid in entities:
-            name = game.em.get_name(eid)
-            if "Goblin" in name:
-                stats = game.em.get(eid, StatsComponent)
-                if stats:
-                    stats.hp += updates['target_hp_change']
-                    stats.hp = max(0, stats.hp)
-                    game.em.add(eid, stats)
-                    
-                    if stats.hp == 0:
-                        state = game.em.get(eid, StateComponent) or StateComponent()
-                        state.is_dead = True
-                        game.em.add(eid, state)
-                break
-    
-    # Handle Movement
-    if 'new_location_id' in updates:
-        loc = game.em.get(game.player_id, LocationComponent)
-        loc.room_id = updates['new_location_id']
-        game.em.add(game.player_id, loc)
+# apply_updates is now handled by game instances
 
 # API Routes
 @app.post("/game/new")
@@ -164,45 +102,76 @@ async def new_game(request: NewGameRequest):
     """Start a new game"""
     os.makedirs("data/saves", exist_ok=True)
     
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    save_id = f"save_{timestamp}"
-    db_path = f"data/saves/{save_id}.db"
+    # Create game instance based on mode
+    if request.game_mode == "cultivation_sim":
+        game_instance = CultivationSimGame()
+        character_data = request.character_data or {}
+        character_data['player_name'] = request.player_name
+        save_id = game_instance.start_new_game(character=character_data, player_name=request.player_name)
+    else:
+        game_instance = LastVoyageGame()
+        save_id = game_instance.start_new_game(player_name=request.player_name)
     
-    init_engine(db_path, save_id)
-    setup_world()
+    game.game_mode = request.game_mode
+    game.game_instance = game_instance
+    game.save_id = save_id
     
-    game.narrative_log = [
-        "🌍 A new adventure begins...",
-        "You find yourself standing at the entrance of a mysterious dungeon."
-    ]
+    # Get initial narrative
+    if request.game_mode == "cultivation_sim":
+        # For cultivation sim, AI generates character background
+        from engine.ai import get_cultivation_agent
+        agent = get_cultivation_agent()
+        context = game_instance.context_builder.build(game_instance.player_id)
+        char_data = {
+            'age': 0,
+            'gender': character_data.get('gender', 'Nam'),
+            'talent': character_data.get('talent', 'Thiên Linh Căn'),
+            'race': character_data.get('race', 'Nhân Tộc'),
+            'background': character_data.get('background', 'Gia Đình Tu Tiên')
+        }
+        response = agent.process_turn("Tạo nhân vật", context, save_id, char_data)
+        game.narrative_log = [response.get('narrative', 'Character created')]
+        game_instance.character_story = response.get('narrative', '')
+        game_instance.current_choices = response.get('choices', [])
+    else:
+        game.narrative_log = [
+            "🌍 A new adventure begins...",
+            "You find yourself standing at the entrance of a mysterious dungeon."
+        ]
     
     return {
         "message": "Game started",
         "save_id": save_id,
+        "game_mode": request.game_mode,
         "game_state": get_game_state()
     }
 
 @app.post("/game/load")
 async def load_game(request: LoadGameRequest):
     """Load an existing game"""
-    db_path = f"data/saves/{request.save_id}.db"
+    # Determine game mode from save_id
+    if request.save_id.startswith("cultivation_sim_"):
+        game_instance = CultivationSimGame()
+        game_mode = "cultivation_sim"
+    else:
+        game_instance = LastVoyageGame()
+        game_mode = "last_voyage"
     
-    if not os.path.exists(db_path):
-        raise HTTPException(status_code=404, detail="Save file not found")
-    
-    init_engine(db_path, request.save_id)
-    
-    game.player_id = game.em.find_player()
-    if not game.player_id:
-        raise HTTPException(status_code=400, detail="Save file corrupted")
-    
-    game.narrative_log = ["📂 Game loaded successfully."]
-    
-    return {
-        "message": "Game loaded",
-        "save_id": request.save_id,
-        "game_state": get_game_state()
-    }
+    try:
+        game_instance.load_game(request.save_id)
+        game.game_mode = game_mode
+        game.game_instance = game_instance
+        game.save_id = request.save_id
+        game.narrative_log = ["📂 Game loaded successfully."]
+        
+        return {
+            "message": "Game loaded",
+            "save_id": request.save_id,
+            "game_mode": game_mode,
+            "game_state": get_game_state()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Failed to load game: {str(e)}")
 
 @app.get("/game/saves")
 async def list_saves():
@@ -215,29 +184,41 @@ async def list_saves():
 @app.post("/game/action", response_model=ActionResponse)
 async def process_action(request: ActionRequest):
     """Process a player action"""
-    if not game.player_id:
+    if not game.game_instance or not game.game_instance.player_id:
         raise HTTPException(status_code=400, detail="No active game")
     
     game.turn_count += 1
     
-    # Build context and send to AI
-    context = game.context_builder.build(game.player_id)
-    response = game.ai.process_turn(request.user_input, context, save_id=game.save_id)
-    
-    # Apply state updates
-    updates = response.get('state_updates', {})
-    apply_updates(updates)
+    # Process turn using game instance
+    if game.game_mode == "cultivation_sim":
+        # For cultivation sim, check if it's a choice selection
+        if request.user_input.isdigit():
+            choice_idx = int(request.user_input) - 1
+            response = game.game_instance.process_year_turn(choice_idx)
+        else:
+            # Regular input
+            response = game.game_instance.process_turn(request.user_input)
+    else:
+        # Last Voyage or other modes
+        response = game.game_instance.process_turn(request.user_input)
     
     # Add to narrative log
     narrative = response.get('narrative', '...')
     game.narrative_log.append(f"🎮 {request.user_input}")
     game.narrative_log.append(f"📖 {narrative}")
     
-    return ActionResponse(
-        narrative=narrative,
-        action_intent=response.get('action_intent', 'NONE'),
-        game_state=get_game_state()
-    )
+    # For cultivation sim, include choices in response
+    result = {
+        "narrative": narrative,
+        "action_intent": response.get('action_intent', 'NONE'),
+        "game_state": get_game_state()
+    }
+    
+    if game.game_mode == "cultivation_sim" and 'choices' in response:
+        result['choices'] = response['choices']
+        game.game_instance.current_choices = response['choices']
+    
+    return ActionResponse(**result)
 
 @app.get("/game/state", response_model=GameStateResponse)
 async def get_state():
@@ -254,6 +235,24 @@ async def get_memory_count():
     mm = get_memory_manager()
     count = mm.memory.get_count(game.save_id)
     return {"count": count}
+
+@app.get("/game/modes")
+async def list_game_modes():
+    """List available game modes"""
+    return {
+        "modes": [
+            {
+                "id": "last_voyage",
+                "name": "The Last Voyage",
+                "description": "Post-apocalyptic survival RPG"
+            },
+            {
+                "id": "cultivation_sim",
+                "name": "Cultivation Simulator",
+                "description": "Tu Tiên life simulation from birth to cultivation master"
+            }
+        ]
+    }
 
 @app.get("/")
 async def root():
