@@ -192,6 +192,8 @@ class CultivationSimulator:
             background=self.character_background,
             character_story=self.character_story,
             current_choices=self.current_choices,
-            turn_count=self.turn_count
+            turn_count=self.turn_count,
+            cultivation=self.cultivation.dict() if self.cultivation else None,
+            resources=self.resources.dict() if self.resources else None
         )
 
