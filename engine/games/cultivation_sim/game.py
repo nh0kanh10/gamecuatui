@@ -125,9 +125,14 @@ class CultivationSimGame(BaseGame):
         AI continues story to next year
         """
         if not self.current_choices or choice_index < 0 or choice_index >= len(self.current_choices):
-            return {"error": "Invalid choice"}
+            from engine.ai.cultivation_schemas import CultivationLLMResponse
+            fallback = CultivationLLMResponse._create_fallback_response()
+            return fallback.dict()
         
         selected_choice = self.current_choices[choice_index]
+        
+        # Sanitize choice
+        selected_choice = self._sanitize_input(selected_choice)
         
         # Build prompt for AI
         user_input = f"Lựa chọn {choice_index + 1}: {selected_choice}"
@@ -144,10 +149,38 @@ class CultivationSimGame(BaseGame):
             identity.age = self.character_age
             self.em.add(self.player_id, identity)
         
-        # AI should provide new choices for next year
-        # This will be handled in the narrative response
+        # Store new choices if provided
+        if 'choices' in response and response['choices']:
+            self.current_choices = response['choices'][:6]
         
         return response
+    
+    def _sanitize_input(self, user_input: str) -> str:
+        """Sanitize user input to prevent prompt injection"""
+        if not user_input:
+            return ""
+        
+        # Remove prompt injection patterns
+        dangerous_patterns = [
+            "```", "---", "system:", "assistant:", "user:",
+            "ignore previous", "forget", "new instructions",
+            "system prompt", "role:", "you are now"
+        ]
+        
+        text = user_input.lower()
+        for pattern in dangerous_patterns:
+            if pattern in text:
+                # Remove the dangerous part
+                user_input = user_input.replace(pattern, "", flags=1)
+        
+        # Limit length
+        if len(user_input) > 500:
+            user_input = user_input[:500]
+        
+        # Remove zero-width characters
+        user_input = ''.join(char for char in user_input if ord(char) >= 32)
+        
+        return user_input.strip()
     
     def apply_updates(self, updates: dict):
         """Apply state updates from AI"""

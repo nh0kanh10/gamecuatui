@@ -3,8 +3,9 @@ Pydantic Schemas for Cultivation Simulator LLM Responses
 Strict validation to prevent parsing crashes and injection attacks
 """
 
-from pydantic import BaseModel, Field, conlist, validator
-from typing import List, Dict, Any, Optional
+from pydantic import BaseModel, Field, field_validator
+from typing import List, Dict, Any, Optional, Annotated
+from pydantic import StringConstraints
 import json
 
 
@@ -21,12 +22,10 @@ class CultivationLLMResponse(BaseModel):
         description="Narrative text describing what happened this year"
     )
     
-    choices: conlist(
-        str,
-        min_items=4,
-        max_items=6
-    ) = Field(
+    choices: List[str] = Field(
         ...,
+        min_length=4,
+        max_length=6,
         description="List of 4-6 choices for next year"
     )
     
@@ -40,7 +39,8 @@ class CultivationLLMResponse(BaseModel):
         description="State updates (age, cultivation_realm, etc.)"
     )
     
-    @validator('narrative')
+    @field_validator('narrative')
+    @classmethod
     def validate_narrative(cls, v):
         """Sanitize narrative text"""
         if not v or not v.strip():
@@ -52,7 +52,8 @@ class CultivationLLMResponse(BaseModel):
             v = v[:5000] + "..."
         return v.strip()
     
-    @validator('choices')
+    @field_validator('choices')
+    @classmethod
     def validate_choices(cls, v):
         """Validate and sanitize choices"""
         if not v:
@@ -94,7 +95,8 @@ class CultivationLLMResponse(BaseModel):
         
         return sanitized[:6]
     
-    @validator('state_updates')
+    @field_validator('state_updates')
+    @classmethod
     def validate_state_updates(cls, v):
         """Validate state updates"""
         if not isinstance(v, dict):
@@ -221,8 +223,10 @@ class CharacterCreationResponse(BaseModel):
         description="Character background story"
     )
     
-    choices: conlist(str, min_items=4, max_items=6) = Field(
+    choices: List[str] = Field(
         ...,
+        min_length=4,
+        max_length=6,
         description="Initial choices for age 1"
     )
     
