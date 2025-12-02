@@ -420,7 +420,12 @@ class WorldDatabase:
     def get_materials_by_location(self, location_id: str) -> List[Dict]:
         """Get materials that can be found at a location"""
         materials = self.get_items_by_type("Material")
-        return [m for m in materials if location_id in m.get("locations", [])]
+        result = []
+        for m in materials:
+            locations = m.get("locations", [])
+            if isinstance(locations, list) and location_id in locations:
+                result.append(m)
+        return result
     
     # --- REGIONAL CULTURE METHODS ---
     
