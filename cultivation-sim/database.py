@@ -26,23 +26,24 @@ def init_database(db_path: str):
     cursor = conn.cursor()
     
     # Game state table
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS game_state (
-            save_id TEXT PRIMARY KEY,
-            age INTEGER DEFAULT 0,
-            gender TEXT,
-            talent TEXT,
-            race TEXT,
-            background TEXT,
-            story TEXT,
-            name TEXT,
-            choices_json TEXT,
-            cultivation_json TEXT,
-            resources_json TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS game_state (
+                save_id TEXT PRIMARY KEY,
+                age INTEGER DEFAULT 0,
+                gender TEXT,
+                talent TEXT,
+                race TEXT,
+                background TEXT,
+                story TEXT,
+                name TEXT,
+                choices_json TEXT,
+                cultivation_json TEXT,
+                resources_json TEXT,
+                attributes_json TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
     
     # Memory tables (riêng cho cultivation sim)
     cursor.execute("""
