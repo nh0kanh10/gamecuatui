@@ -52,6 +52,7 @@ GameBuild/
 │   ├── 📁 architecture/         # Kiến trúc kỹ thuật
 │   │   ├── ARCHITECTURE.md      # Full architecture (Phase 3+)
 │   │   ├── MVP_ARCHITECTURE.md  # MVP approach ⭐
+│   │   ├── LEAN_ARCHITECTURE.md # Lean architecture (Solo player) ⭐
 │   │   ├── CONTRACTS.md         # System contracts
 │   │   └── AI_INTEGRATION.md    # AI integration guide
 │   │
@@ -61,9 +62,13 @@ GameBuild/
 │   │
 │   ├── 📁 rules/                # Quy tắc dự án
 │   │   ├── update-status.md     # Update status rule
-│   │   └── file-organization.md # File này!
+│   │   ├── file-organization.md # File này!
+│   │   └── HARDWARE_AND_SCOPE.md # Hardware constraints & scope ⭐
 │   │
 │   ├── DEVELOPMENT_RULES.md     # Coding standards
+│   ├── ARCHITECTURE_SUMMARY.md  # Tổng hợp kiến trúc ⭐
+│   ├── RAG_SYSTEM_LEAN.md       # Lean RAG system (khuyến nghị) ⭐
+│   ├── RAG_SYSTEM.md            # Advanced RAG (reference only)
 │   └── CRITICAL_ISSUES.md       # Issues tracker
 │
 ├── 📁 ideas/                     # Ý TƯỞNG & BRAINSTORM

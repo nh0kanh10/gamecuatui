@@ -78,6 +78,27 @@ class EntityManager:
         """Find all entities in a room"""
         return self.db.find_entities_at_location(room_id)
     
+    def find_player(self) -> Optional[int]:
+        """Find the player entity ID"""
+        # Strategy 1: Look for entity with 'player' tag
+        # This requires querying all identities, which is slow but reliable for small DBs
+        # Optimization: We could add a specific index for tags later.
+        
+        # For now, iterate all entities with IdentityComponent
+        identities = self.find_with(IdentityComponent)
+        for eid in identities:
+            identity = self.get(eid, IdentityComponent)
+            if identity and "player" in identity.tags:
+                return eid
+        
+        # Strategy 2: Fallback to name "Hero"
+        for eid in identities:
+            identity = self.get(eid, IdentityComponent)
+            if identity and identity.name == "Hero":
+                return eid
+                
+        return None
+    
     def get_name(self, entity_id: int) -> str:
         """Get entity's display name"""
         identity = self.get(entity_id, IdentityComponent)

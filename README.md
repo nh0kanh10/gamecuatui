@@ -2,53 +2,53 @@
 
 A neurosymbolic text adventure game powered by local AI, built with custom ECS architecture.
 
-[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-
-## ✨ Features
-
-- 🤖 **Local AI** - Powered by Ollama (qwen2.5:3b)
-- 🎮 **Natural Language Input** - Write commands naturally, AI understands
-- 🏗️ **ECS Architecture** - Flexible entity-component-system design
-- 🔒 **Physics Validation** - AI cannot break game rules (no hallucinations)
-- ⚔️ **Real Combat** - Damage calculation, equipment, death detection
-- 💬 **AI Narration** - Dynamically generated story responses
-- 💾 **Auto-Save** - SQLite database persistence
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Python 3.10+
-- [Ollama](https://ollama.ai) installed and running
-
-### Installation
-
-```bash
-# Clone repository
-git clone <your-repo-url>
-cd GameBuild
-
-# Run setup
-setup_full.bat
-
-# Start Ollama (in separate terminal)
 ollama serve
 
 # Pull required model
 ollama pull qwen2.5:3b
 ```
 
-### Play
+### Setup
 
+**Install Dependencies:**
 ```bash
-play_game.bat
+# Windows
+install_all.bat
+
+# Hoặc manual
+pip install fastapi uvicorn python-dotenv google-generativeai networkx loguru
 ```
 
-Or manually:
+**Setup API Key:**
+Create `.env` file:
+```
+GEMINI_API_KEY=your_key_here
+```
+
+### Play
+
+**CLI Version:**
 ```bash
-venv\Scripts\activate
+cd play
 python play.py
+# Hoặc: play_game.bat (Windows)
+```
+
+**React UI (Recommended):**
+```bash
+# Auto start (server + UI)
+START_REACT_UI.bat
+
+# Or manual:
+# Terminal 1: python server.py
+# Terminal 2: cd react-ui && npm run dev
+# Then open: http://localhost:5173
+```
+
+**Server Mode:**
+```bash
+python server.py
+# API runs on http://localhost:8000
 ```
 
 ## 🎯 Example Commands
@@ -145,11 +145,11 @@ All exceeded 3 t/s target by **6-14x**! See [BENCHMARK_RESULTS.md](BENCHMARK_RES
 - [ ] Drama/tension manager
 - [ ] Procedural world generation
 
-### Phase 4: UI (Planned)
-- [ ] FastAPI backend
-- [ ] SvelteKit frontend
-- [ ] Real-time WebSocket updates
-- [ ] Rich visual interface
+### Phase 4: UI (✅ Complete)
+- [x] FastAPI backend
+- [x] React frontend (Vite)
+- [ ] Real-time WebSocket updates (Future)
+- [x] Rich visual interface
 
 ## 🤝 Contributing
 

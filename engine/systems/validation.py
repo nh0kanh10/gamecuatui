@@ -318,27 +318,6 @@ class PreconditionSystem:
             target_name = self.em.get_name(target_id)
             return False, ValidationError(
                 code="ERR_NOT_EQUIPPABLE",
-                message=f"You can't equip {target_name}"
-            )
-        
-        return True, None
-    
-    def _validate_drop(self, proposal: ActionProposal, actor_id: int) -> Tuple[bool, Optional[ValidationError]]:
-        """Validate dropping item"""
-        target_id = proposal.target_id
-        
-        actor_inv = self.em.get(actor_id, InventoryComponent)
-        if not actor_inv or target_id not in actor_inv.items:
-            return False, ValidationError(
-                code="ERR_NOT_IN_INVENTORY",
-                message="You don't have that item"
-            )
-        
-        return True, None
-    
-    def _validate_close(self, proposal: ActionProposal, actor_id: int) -> Tuple[bool, Optional[ValidationError]]:
-        """Validate closing something"""
-        target_id = proposal.target_id
         
         if not target_id or not self.em.exists(target_id):
             return False, ValidationError(

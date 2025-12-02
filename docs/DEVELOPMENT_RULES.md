@@ -2,10 +2,18 @@
 
 ## 🎯 Core Principles
 
+### 0. **Solo Player & Hardware Constraints** ⭐
+- **Game này CHỈ cho 1 người chơi** (bạn) - không cần multi-user support
+- **Cấu hình mục tiêu**: HP ZBook G7 (i7-10850H, 32GB RAM, Windows 10)
+- **Nguyên tắc**: Simple > Complex, Working > Perfect, Fun > Enterprise
+- **RAM Budget**: LLM (18-20GB) + Game (1GB) + Memory (100MB) + Buffer (2-4GB)
+- **Xem chi tiết**: `docs/rules/HARDWARE_AND_SCOPE.md`
+
 ### 1. **Clean Architecture First**
 - Thiết kế trước, code sau
 - Không code lung tung rồi refactor
 - Mọi feature phải fit vào architecture
+- **Tuân thủ**: Single database (SQLite), minimal dependencies
 
 ### 2. **Separation of Production & Test**
 - Code production: `src/`, `data/`, `assets/`

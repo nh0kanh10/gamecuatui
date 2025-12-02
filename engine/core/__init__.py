@@ -4,12 +4,18 @@ Core ECS components
 
 from .components import *
 from .database import Database, get_db
+from .events import GameEvent, EventBus, get_event_bus
 from .entity import EntityManager, get_entity_manager
 
 __all__ = [
     # Database
     'Database',
     'get_db',
+    
+    # Events
+    'GameEvent',
+    'EventBus',
+    'get_event_bus',
     
     # Entity Manager
     'EntityManager',

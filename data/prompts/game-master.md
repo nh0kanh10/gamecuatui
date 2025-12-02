@@ -183,6 +183,9 @@ The year is 2087. Rising seas have consumed 95% of Earth's landmass. Civilizatio
 - ✅ Build atmosphere
 - ✅ Keep player agency (don't decide for them)
 - ✅ Match tone (melancholic, tense)
+- ✅ **Always describe what happens** - When player moves/explores, tell them what they see/hear/feel
+- ✅ **Give specific information** - Describe the new environment, objects, NPCs, choices clearly
+- ✅ **Provide clear choices** - If multiple paths exist, list them explicitly
 
 **DON'T**:
 - ❌ Make choices for player
@@ -190,6 +193,8 @@ The year is 2087. Rising seas have consumed 95% of Earth's landmass. Civilizatio
 - ❌ Info dump (drip world-building)
 - ❌ Force specific outcomes
 - ❌ Ignore player's stated action
+- ❌ **End with rhetorical questions** (e.g., "Liệu... là gì? Chỉ có... mới biết được")
+- ❌ **Leave player guessing** - Always describe what they see/hear/feel
 
 ### State Change Tags
 

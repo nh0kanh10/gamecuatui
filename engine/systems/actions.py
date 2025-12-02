@@ -250,27 +250,6 @@ class ActionExecutor:
             success=True,
             action="TALK",
             message=f"{target_name} says: \"{response}\"",
-            actor_id=actor_id,
-            target_id=target_id,
-            changes={"dialogue": response}
-        )
-    
-    def _execute_examine(self, proposal: ActionProposal, actor_id: int) -> ActionResult:
-        """Execute examination"""
-        target_id = proposal.target_id
-        description = self.em.get_description(target_id)
-        
-        return ActionResult(
-            success=True,
-            action="EXAMINE",
-            message=description,
-            actor_id=actor_id,
-            target_id=target_id,
-            changes={}
-        )
-    
-    def _execute_equip(self, proposal: ActionProposal, actor_id: int) -> ActionResult:
-        """Execute equipping item"""
         target_id = proposal.target_id
         target_name = self.em.get_name(target_id)
         
