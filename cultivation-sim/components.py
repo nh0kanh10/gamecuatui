@@ -4,7 +4,7 @@ Standalone version (không phụ thuộc engine/core)
 """
 
 from pydantic import BaseModel, Field
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 from datetime import datetime
 
 
