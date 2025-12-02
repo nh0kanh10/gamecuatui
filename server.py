@@ -3,7 +3,7 @@ FastAPI Server for Game Engine
 Exposes the Game as a REST API for the React Frontend
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, Dict, Any, List
@@ -12,6 +12,24 @@ import glob
 from pathlib import Path
 from datetime import datetime
 from dotenv import load_dotenv
+import asyncio
+
+# Auth and rate limiting
+from engine.auth import require_api_key, setup_rate_limiter, create_rate_limit_decorator
+from engine.auth.rate_limiter import rate_limit_key_func
+
+# State management
+from engine.state import (
+    acquire_lock, release_lock,
+    save_state, load_state, snapshot_save,
+    periodic_snapshot_worker
+)
+
+# Cost control
+from engine.llm.cost_control import check_and_charge_tokens, estimate_tokens, get_token_usage
+
+# Moderation
+from engine.moderator import moderate_content, is_safe_content
 
 # Load environment variables from .env file
 load_dotenv()
@@ -26,6 +44,9 @@ from engine.games import LastVoyageGame, CultivationSimGame
 
 app = FastAPI(title="Game Engine API")
 
+# Setup rate limiting
+limiter = setup_rate_limiter(app)
+
 # Enable CORS for React frontend
 app.add_middleware(
     CORSMiddleware,
@@ -34,6 +55,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Background task: Start periodic snapshot worker
+@app.on_event("startup")
+async def startup_event():
+    """Start background workers on startup"""
+    # Start snapshot worker in background
+    asyncio.create_task(periodic_snapshot_worker(interval_seconds=60))
 
 # Global game state
 class GameSession:
@@ -99,26 +127,35 @@ def get_game_state() -> GameStateResponse:
 
 # API Routes
 @app.post("/game/new")
-async def new_game(request: NewGameRequest):
+@create_rate_limit_decorator("5/minute")  # Limit new game creation
+async def new_game(
+    request: Request,
+    game_request: NewGameRequest,
+    api_key: str = Depends(require_api_key)
+):
     """Start a new game"""
+    request.state.api_key = api_key
     os.makedirs("data/saves", exist_ok=True)
     
     # Create game instance based on mode
-    if request.game_mode == "cultivation_sim":
+    if game_request.game_mode == "cultivation_sim":
         game_instance = CultivationSimGame()
-        character_data = request.character_data or {}
-        character_data['player_name'] = request.player_name
-        save_id = game_instance.start_new_game(character=character_data, player_name=request.player_name)
+        character_data = game_request.character_data or {}
+        character_data['player_name'] = game_request.player_name
+        save_id = game_instance.start_new_game(character=character_data, player_name=game_request.player_name)
     else:
         game_instance = LastVoyageGame()
-        save_id = game_instance.start_new_game(player_name=request.player_name)
+        save_id = game_instance.start_new_game(player_name=game_request.player_name)
     
-    game.game_mode = request.game_mode
+    game.game_mode = game_request.game_mode
     game.game_instance = game_instance
     game.save_id = save_id
     
-    # Get initial narrative
-    if request.game_mode == "cultivation_sim":
+    # Acquire lock for initial state
+    await acquire_lock(save_id, ttl=30)
+    try:
+        # Get initial narrative
+        if game_request.game_mode == "cultivation_sim":
         # For cultivation sim, AI generates character background
         from engine.ai import get_cultivation_agent
         agent = get_cultivation_agent()
@@ -135,17 +172,31 @@ async def new_game(request: NewGameRequest):
         game_instance.character_story = response.get('narrative', '')
         game_instance.current_choices = response.get('choices', [])
     else:
-        game.narrative_log = [
-            "🌍 A new adventure begins...",
-            "You find yourself standing at the entrance of a mysterious dungeon."
-        ]
-    
-    return {
-        "message": "Game started",
-        "save_id": save_id,
-        "game_mode": request.game_mode,
-        "game_state": get_game_state()
-    }
+            game.narrative_log = [
+                "🌍 A new adventure begins...",
+                "You find yourself standing at the entrance of a mysterious dungeon."
+            ]
+        
+        # Save initial state to Redis
+        game_state = get_game_state()
+        await save_state(save_id, {
+            "game_mode": game.game_mode,
+            "turn_count": game.turn_count,
+            "narrative_log": game.narrative_log,
+            "game_state": game_state
+        })
+        
+        # Snapshot to SQLite immediately
+        await snapshot_save(save_id)
+        
+        return {
+            "message": "Game started",
+            "save_id": save_id,
+            "game_mode": game_request.game_mode,
+            "game_state": game_state
+        }
+    finally:
+        await release_lock(save_id)
 
 @app.post("/game/load")
 async def load_game(request: LoadGameRequest):
@@ -183,43 +234,89 @@ async def list_saves():
     }
 
 @app.post("/game/action", response_model=ActionResponse)
-async def process_action(request: ActionRequest):
-    """Process a player action"""
+@create_rate_limit_decorator("20/minute")  # Per-IP limit
+@create_rate_limit_decorator("60/minute", key_func=rate_limit_key_func)  # Per-API-key limit
+async def process_action(
+    request: Request,
+    action_request: ActionRequest,
+    api_key: str = Depends(require_api_key)
+):
+    """Process a player action with rate limiting and cost control"""
     if not game.game_instance or not game.game_instance.player_id:
         raise HTTPException(status_code=400, detail="No active game")
     
-    game.turn_count += 1
+    # Store API key in request state for rate limiting
+    request.state.api_key = api_key
     
-    # Process turn using game instance
-    if game.game_mode == "cultivation_sim":
-        # For cultivation sim, check if it's a choice selection
-        if request.user_input.isdigit():
-            choice_idx = int(request.user_input) - 1
-            response = game.game_instance.process_year_turn(choice_idx)
+    # Estimate tokens for cost control
+    user_input = action_request.user_input
+    tokens_estimate = estimate_tokens(user_input)
+    
+    # Check token budget
+    allowed, remaining = await check_and_charge_tokens(api_key, tokens_estimate)
+    if not allowed:
+        raise HTTPException(
+            status_code=429,
+            detail=f"Token limit exceeded. Remaining: {remaining} tokens this month."
+        )
+    
+    # Acquire lock for state update
+    save_id = game.save_id
+    if not await acquire_lock(save_id, ttl=30):
+        raise HTTPException(status_code=409, detail="Game is being updated by another request")
+    
+    try:
+        game.turn_count += 1
+        
+        # Process turn using game instance
+        if game.game_mode == "cultivation_sim":
+            # For cultivation sim, check if it's a choice selection
+            if user_input.isdigit():
+                choice_idx = int(user_input) - 1
+                response = game.game_instance.process_year_turn(choice_idx)
+            else:
+                # Regular input
+                response = game.game_instance.process_turn(user_input)
         else:
-            # Regular input
-            response = game.game_instance.process_turn(request.user_input)
-    else:
-        # Last Voyage or other modes
-        response = game.game_instance.process_turn(request.user_input)
+            # Last Voyage or other modes
+            response = game.game_instance.process_turn(user_input)
+        
+        # Moderate narrative content
+        narrative = response.get('narrative', '...')
+        is_safe, reason = moderate_content(narrative)
+        if not is_safe:
+            narrative = "Nội dung đã được lọc để đảm bảo an toàn."
+            print(f"⚠️  Content moderated: {reason}")
+        
+        # Add to narrative log
+        game.narrative_log.append(f"🎮 {user_input}")
+        game.narrative_log.append(f"📖 {narrative}")
+        
+        # Save state to Redis
+        game_state = get_game_state()
+        await save_state(save_id, {
+            "game_mode": game.game_mode,
+            "turn_count": game.turn_count,
+            "narrative_log": game.narrative_log[-50:],  # Last 50 entries
+            "game_state": game_state
+        })
+        
+        # For cultivation sim, include choices in response
+        result = {
+            "narrative": narrative,
+            "action_intent": response.get('action_intent', 'NONE'),
+            "game_state": game_state
+        }
+        
+        if game.game_mode == "cultivation_sim" and 'choices' in response:
+            result['choices'] = response['choices']
+            game.game_instance.current_choices = response['choices']
+        
+        return ActionResponse(**result)
     
-    # Add to narrative log
-    narrative = response.get('narrative', '...')
-    game.narrative_log.append(f"🎮 {request.user_input}")
-    game.narrative_log.append(f"📖 {narrative}")
-    
-    # For cultivation sim, include choices in response
-    result = {
-        "narrative": narrative,
-        "action_intent": response.get('action_intent', 'NONE'),
-        "game_state": get_game_state()
-    }
-    
-    if game.game_mode == "cultivation_sim" and 'choices' in response:
-        result['choices'] = response['choices']
-        game.game_instance.current_choices = response['choices']
-    
-    return ActionResponse(**result)
+    finally:
+        # Release lock
+        await release_lock(save_id)
 
 @app.get("/game/state", response_model=GameStateResponse)
 async def get_state():
@@ -238,7 +335,7 @@ async def get_memory_count():
     return {"count": count}
 
 @app.get("/game/modes")
-async def list_game_modes():
+async def list_game_modes(api_key: str = Depends(require_api_key)):
     """List available game modes"""
     return {
         "modes": [
@@ -254,6 +351,35 @@ async def list_game_modes():
             }
         ]
     }
+
+@app.get("/billing/usage")
+async def get_billing_usage(api_key: str = Depends(require_api_key)):
+    """Get token usage for API key"""
+    usage = await get_token_usage(api_key)
+    return usage
+
+@app.post("/game/save")
+@create_rate_limit_decorator("10/minute")
+async def save_game(
+    request: Request,
+    api_key: str = Depends(require_api_key)
+):
+    """Explicitly save game state to SQLite"""
+    if not game.save_id:
+        raise HTTPException(status_code=400, detail="No active game to save")
+    
+    request.state.api_key = api_key
+    
+    # Acquire lock
+    if not await acquire_lock(game.save_id, ttl=10):
+        raise HTTPException(status_code=409, detail="Game is being updated")
+    
+    try:
+        # Snapshot to SQLite
+        await snapshot_save(game.save_id)
+        return {"message": "Game saved successfully", "save_id": game.save_id}
+    finally:
+        await release_lock(game.save_id)
 
 @app.get("/")
 async def root():

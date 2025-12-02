@@ -118,15 +118,24 @@ Generate the JSON response with format:
             # Convert to dict for compatibility
             data = validated_response.dict()
             
-            # Save to memory
-            memory_manager.remember_action(
-                user_input=user_input,
-                narrative=data['narrative'],
-                save_id=save_id,
-                entity_id=context.player_id if hasattr(context, 'player_id') else None,
-                location_id=context.current_room_id,
-                importance=0.7
-            )
+            # Moderate narrative before saving
+            from engine.moderator import moderate_content
+            narrative = data['narrative']
+            is_safe, reason = moderate_content(narrative)
+            if not is_safe:
+                data['narrative'] = "Nội dung đã được lọc để đảm bảo an toàn."
+                print(f"⚠️  LLM output moderated: {reason}")
+            
+            # Save to memory (only if safe)
+            if is_safe:
+                memory_manager.remember_action(
+                    user_input=user_input,
+                    narrative=data['narrative'],
+                    save_id=save_id,
+                    entity_id=context.player_id if hasattr(context, 'player_id') else None,
+                    location_id=context.current_room_id,
+                    importance=0.7
+                )
             
             return data
             
