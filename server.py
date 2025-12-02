@@ -40,7 +40,8 @@ from engine.core import (
     IdentityComponent, DialogueComponent, StateComponent
 )
 from engine.ai import get_gemini_agent, ContextBuilder
-from engine.games import LastVoyageGame, CultivationSimGame
+from engine.games import LastVoyageGame
+# Cultivation Simulator đã tách ra thành project riêng: cultivation-sim/
 
 app = FastAPI(title="Game Engine API")
 
@@ -210,7 +211,7 @@ async def load_game(request: LoadGameRequest):
         game_mode = "last_voyage"
     
     try:
-        game_instance.load_game(request.save_id)
+        game_instance.load_game(load_request.save_id)
         game.game_mode = game_mode
         game.game_instance = game_instance
         game.save_id = request.save_id
@@ -218,7 +219,7 @@ async def load_game(request: LoadGameRequest):
         
         return {
             "message": "Game loaded",
-            "save_id": request.save_id,
+            "save_id": load_request.save_id,
             "game_mode": game_mode,
             "game_state": get_game_state()
         }
@@ -301,18 +302,14 @@ async def process_action(
             "game_state": game_state
         })
         
-        # For cultivation sim, include choices in response
-        result = {
-            "narrative": narrative,
-            "action_intent": response.get('action_intent', 'NONE'),
-            "game_state": game_state
-        }
-        
-        if game.game_mode == "cultivation_sim" and 'choices' in response:
-            result['choices'] = response['choices']
-            game.game_instance.current_choices = response['choices']
-        
-        return ActionResponse(**result)
+    # Build response
+    result = {
+        "narrative": narrative,
+        "action_intent": response.get('action_intent', 'NONE'),
+        "game_state": game_state
+    }
+    
+    return ActionResponse(**result)
     
     finally:
         # Release lock
@@ -343,13 +340,9 @@ async def list_game_modes(api_key: str = Depends(require_api_key)):
                 "id": "last_voyage",
                 "name": "The Last Voyage",
                 "description": "Post-apocalyptic survival RPG"
-            },
-            {
-                "id": "cultivation_sim",
-                "name": "Cultivation Simulator",
-                "description": "Tu Tiên life simulation from birth to cultivation master"
             }
-        ]
+        ],
+        "note": "Cultivation Simulator đã tách ra thành project riêng: cultivation-sim/"
     }
 
 @app.get("/billing/usage")
