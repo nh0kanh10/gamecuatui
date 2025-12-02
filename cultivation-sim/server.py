@@ -54,20 +54,26 @@ async def new_game(request: NewGameRequest):
     """Start new game"""
     global _game_instance
     
-    save_id = f"cultivation_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-    _game_instance = CultivationSimulator(save_id)
-    
-    # Create character
-    response = _game_instance.create_character(request.character_data)
-    
-    return {
-        "message": "Game started",
-        "save_id": save_id,
-        "narrative": response.get('narrative', ''),
-        "choices": response.get('choices', []),
-        "character_name": response.get('character_name', request.player_name),
-        "game_state": _game_instance.get_game_state().dict()
-    }
+    try:
+        save_id = f"cultivation_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        _game_instance = CultivationSimulator(save_id)
+        
+        # Create character
+        response = _game_instance.create_character(request.character_data)
+        
+        return {
+            "message": "Game started",
+            "save_id": save_id,
+            "narrative": response.get('narrative', ''),
+            "choices": response.get('choices', []),
+            "character_name": response.get('character_name', request.player_name),
+            "game_state": _game_instance.get_game_state().dict()
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to start game: {str(e)}"
+        )
 
 
 @app.post("/game/action", response_model=ActionResponse)
@@ -76,30 +82,55 @@ async def process_action(request: ActionRequest):
     global _game_instance
     
     if not _game_instance:
-        raise HTTPException(status_code=400, detail="No active game")
+        raise HTTPException(status_code=400, detail="No active game. Please start a new game first.")
     
-    # Check if it's a choice index
-    if request.user_input.isdigit():
-        choice_idx = int(request.user_input) - 1
-        response = _game_instance.process_year_turn(choice_idx)
-    else:
-        # Text input (future: custom actions)
-        raise HTTPException(status_code=400, detail="Please select a choice (1-6)")
-    
-    return ActionResponse(
-        narrative=response.get('narrative', ''),
-        choices=response.get('choices', []),
-        game_state=_game_instance.get_game_state().dict()
-    )
+    try:
+        # Check if it's a choice index
+        if request.user_input.isdigit():
+            choice_idx = int(request.user_input) - 1
+            if choice_idx < 0 or choice_idx >= len(_game_instance.current_choices):
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Invalid choice index. Please select 1-{len(_game_instance.current_choices)}"
+                )
+            response = _game_instance.process_year_turn(choice_idx)
+        else:
+            # Text input (future: custom actions)
+            raise HTTPException(
+                status_code=400,
+                detail="Please select a choice by number (1-6)"
+            )
+        
+        return ActionResponse(
+            narrative=response.get('narrative', ''),
+            choices=response.get('choices', []),
+            game_state=_game_instance.get_game_state().dict()
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to process action: {str(e)}"
+        )
 
 
 @app.get("/game/state")
 async def get_state():
     """Get current game state"""
     if not _game_instance:
-        raise HTTPException(status_code=400, detail="No active game")
+        raise HTTPException(
+            status_code=400,
+            detail="No active game. Please start a new game first."
+        )
     
-    return _game_instance.get_game_state().dict()
+    try:
+        return _game_instance.get_game_state().dict()
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get game state: {str(e)}"
+        )
 
 
 @app.get("/memory/count")
