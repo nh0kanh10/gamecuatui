@@ -27,6 +27,8 @@ class GameState(BaseModel):
     character_story: Optional[str] = None
     current_choices: List[str] = []
     turn_count: int = 0
+    cultivation: Optional[Dict[str, Any]] = None
+    resources: Optional[Dict[str, Any]] = None
 
 
 class CultivationLLMResponse(BaseModel):

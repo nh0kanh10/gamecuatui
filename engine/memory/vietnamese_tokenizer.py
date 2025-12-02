@@ -8,9 +8,9 @@ from typing import List
 
 try:
     from underthesea import word_tokenize
-    HAS_UNDERTHE SEA = True
+    HAS_UNDERTHESEA = True
 except ImportError:
-    HAS_UNDERTHE SEA = False
+    HAS_UNDERTHESEA = False
 
 
 def tokenize_vietnamese(text: str) -> str:
@@ -28,7 +28,7 @@ def tokenize_vietnamese(text: str) -> str:
     text = ''.join(char for char in text if ord(char) >= 32)
     
     # Try to use underthesea if available
-    if HAS_UNDERTHE SEA:
+    if HAS_UNDERTHESEA:
         try:
             tokens = word_tokenize(text)
             return ' '.join(tokens)

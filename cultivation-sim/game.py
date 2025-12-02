@@ -9,10 +9,10 @@ from pathlib import Path
 from datetime import datetime
 import json
 
-from .database import get_db, init_database
-from .agent import CultivationAgent
-from .memory import CultivationMemory
-from .schemas import CharacterData, GameState
+from database import get_db, init_database
+from agent import CultivationAgent
+from memory import CultivationMemory
+from schemas import CharacterData, GameState
 
 
 class CultivationSimulator:
@@ -44,6 +44,10 @@ class CultivationSimulator:
         self.current_choices: List[str] = []
         self.turn_count = 0
         
+        # Cultivation components
+        self.cultivation: CultivationComponent = CultivationComponent()
+        self.resources: ResourceComponent = ResourceComponent()
+        
         # Load from database if exists
         self._load_state()
     
@@ -51,7 +55,7 @@ class CultivationSimulator:
         """Load game state from database"""
         cursor = self.db.cursor()
         cursor.execute("""
-            SELECT age, gender, talent, race, background, story, name, choices_json
+            SELECT age, gender, talent, race, background, story, name, choices_json, cultivation_json, resources_json
             FROM game_state
             WHERE save_id = ?
         """, (self.save_id,))
@@ -67,14 +71,20 @@ class CultivationSimulator:
             self.character_name = row[6]
             if row[7]:
                 self.current_choices = json.loads(row[7])
+            if row[8]:
+                cultivation_data = json.loads(row[8])
+                self.cultivation = CultivationComponent(**cultivation_data)
+            if row[9]:
+                resources_data = json.loads(row[9])
+                self.resources = ResourceComponent(**resources_data)
     
     def _save_state(self):
         """Save game state to database"""
         cursor = self.db.cursor()
         cursor.execute("""
             INSERT OR REPLACE INTO game_state 
-            (save_id, age, gender, talent, race, background, story, name, choices_json, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (save_id, age, gender, talent, race, background, story, name, choices_json, cultivation_json, resources_json, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             self.save_id,
             self.character_age,
@@ -85,6 +95,8 @@ class CultivationSimulator:
             self.character_story,
             self.character_name,
             json.dumps(self.current_choices, ensure_ascii=False),
+            json.dumps(self.cultivation.dict(), ensure_ascii=False),
+            json.dumps(self.resources.dict(), ensure_ascii=False),
             datetime.now().isoformat()
         ))
         self.db.commit()
@@ -120,7 +132,7 @@ class CultivationSimulator:
         Returns: {narrative, choices, state_updates}
         """
         if not self.current_choices or choice_index < 0 or choice_index >= len(self.current_choices):
-            from .schemas import create_fallback_response
+            from schemas import create_fallback_response
             return create_fallback_response()
         
         selected_choice = self.current_choices[choice_index]

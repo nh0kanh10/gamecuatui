@@ -29,7 +29,7 @@ if not exist .env (
 
 :: Install dependencies
 echo [1/2] Installing dependencies...
-pip install -q -r requirements.txt 2>nul
+pip install -r requirements.txt
 
 :: Start server
 echo [2/2] Starting server...

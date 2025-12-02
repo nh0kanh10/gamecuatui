@@ -9,71 +9,18 @@
 
 | Priority | Task | Current | Target | Effort | Impact |
 |----------|------|---------|--------|--------|--------|
-| P1 | Testing Infrastructure | 4/10 | 8/10 | High | Critical |
-| P1 | Documentation | 6/10 | 9/10 | Medium | High |
-| P2 | CultivationComponent | N/A | 9/10 | Medium | High |
-| P2 | Error Handling | 7/10 | 9/10 | Medium | Medium |
-| P3 | Quest System | 5/10 | 8/10 | High | Medium |
-| P3 | Redis Migration | 8/10 | 9/10 | High | Low |
+| P1 | CultivationComponent | N/A | 9/10 | Medium | High |
+| P1 | Resource System | N/A | 9/10 | Medium | High |
+| P1 | Error Handling | 7/10 | 9/10 | Medium | Medium |
+| P2 | Documentation | 6/10 | 9/10 | Medium | High |
+| P2 | Quest System | 5/10 | 8/10 | High | Medium |
+| P3 | UI Improvements | 8/10 | 9/10 | Low | Medium |
 
 ---
 
-## 🔥 Priority 1: Critical (Week 1-2)
+## 🔥 Priority 1: Critical Features (Week 1)
 
-### 1.1 Testing Infrastructure (4/10 → 8/10)
-
-**Goal**: Comprehensive test coverage cho core modules
-
-#### Tasks
-
-**1.1.1 Setup Testing Framework**
-```bash
-# Install pytest
-pip install pytest pytest-asyncio pytest-cov
-
-# Create test structure
-tests/
-├── unit/
-│   ├── test_components.py
-│   ├── test_entity.py
-│   ├── test_memory.py
-│   └── test_ai_agents.py
-├── integration/
-│   ├── test_api_endpoints.py
-│   └── test_game_flow.py
-└── conftest.py
-```
-
-**1.1.2 Unit Tests - Core ECS**
-- [ ] `test_components.py`: Test all 13 components
-- [ ] `test_entity.py`: Test entity manager CRUD
-- [ ] `test_database.py`: Test SQLite operations
-
-**1.1.3 Unit Tests - Memory System**
-- [ ] `test_memory.py`: Test FTS5 search, BM25 ranking
-- [ ] `test_compression.py`: Test memory cleanup
-- [ ] Performance tests (10K records)
-
-**1.1.4 Unit Tests - AI Agents**
-- [ ] `test_gemini_agent.py`: Mock Gemini API
-- [ ] `test_cultivation_agent.py`: Test JSON parsing
-- [ ] `test_schemas.py`: Test Pydantic validation
-
-**1.1.5 Integration Tests**
-- [ ] `test_api_endpoints.py`: Test all API routes
-- [ ] `test_game_flow.py`: Test full game loop
-- [ ] `test_auth.py`: Test authentication flow
-
-**Deliverables**:
-- ✅ pytest setup complete
-- ✅ 80%+ code coverage
-- ✅ CI/CD integration ready
-
-**Estimated Time**: 3-4 days
-
----
-
-### 1.2 Documentation (6/10 → 9/10)
+### 1.1 CultivationComponent (N/A → 9/10)
 
 **Goal**: Comprehensive documentation cho developers và users
 

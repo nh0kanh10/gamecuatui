@@ -111,9 +111,22 @@ CHARACTER INFO:
 - Background: {character_data.get('background', 'Unknown')}
 """
         
+        # Get cultivation info if available
+        cultivation_info = ""
+        if 'cultivation' in character_data:
+            cult = character_data['cultivation']
+            cultivation_info = f"""
+CULTIVATION STATUS:
+- Realm: {cult.get('realm', 'Mortal')} (Level {cult.get('realm_level', 0)}/10)
+- Spiritual Power: {cult.get('spiritual_power', 0)}/{cult.get('max_spiritual_power', 100)}
+- Breakthrough Progress: {cult.get('breakthrough_progress', 0.0)}%
+- Spirit Stones: {cult.get('spirit_stones', 0)}
+- Techniques: {', '.join(cult.get('techniques', []))}
+"""
+        
         prompt = f"""
 {char_info}
-
+{cultivation_info}
 RELEVANT MEMORIES:
 {memory_context}
 
@@ -123,13 +136,22 @@ QUAN TRỌNG:
 - Mô tả những gì xảy ra trong năm đó
 - Đưa ra 4-6 lựa chọn cho năm tiếp theo
 - KHÔNG kết thúc bằng câu hỏi tu từ
+- Có thể update cultivation realm, spiritual power, resources trong state_updates
 
 Format JSON:
 {{
   "narrative": "Câu chuyện năm này...",
   "choices": ["Lựa chọn 1", "Lựa chọn 2", "Lựa chọn 3", "Lựa chọn 4"],
   "action_intent": "YEAR_PROGRESS",
-  "state_updates": {{}}
+  "state_updates": {{
+    "age": {character_data.get('age', 0) + 1},
+    "cultivation_realm": "Qi Refining" (optional),
+    "realm_level": 1 (optional, 0-10),
+    "spiritual_power": 50 (optional),
+    "breakthrough_progress": 10.0 (optional, 0-100),
+    "spirit_stones": 100 (optional),
+    "pills": {{"Qi Gathering Pill": 2}} (optional)
+  }}
 }}
 """
         try:

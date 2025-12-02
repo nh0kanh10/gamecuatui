@@ -37,6 +37,8 @@ def init_database(db_path: str):
             story TEXT,
             name TEXT,
             choices_json TEXT,
+            cultivation_json TEXT,
+            resources_json TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
