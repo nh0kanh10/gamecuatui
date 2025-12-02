@@ -24,6 +24,9 @@ class WorldDatabase:
         self.races: Dict[str, Dict] = {}
         self.clans: Dict[str, Dict] = {}
         self.locations: Dict[str, Dict] = {}
+        self.artifacts: Dict[str, Dict] = {}
+        self.items: Dict[str, Dict] = {}
+        self.regional_cultures: Dict[str, Dict] = {}
         
         self.load_all_data()
     
@@ -70,8 +73,33 @@ class WorldDatabase:
                     for item in data:
                         self.locations[item['id']] = item
             
+            # Load Artifacts
+            artifacts_path = self.data_dir / "artifacts.json"
+            if artifacts_path.exists():
+                with open(artifacts_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    for item in data:
+                        self.artifacts[item['id']] = item
+            
+            # Load Items
+            items_path = self.data_dir / "items.json"
+            if items_path.exists():
+                with open(items_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    for item in data:
+                        self.items[item['id']] = item
+            
+            # Load Regional Cultures
+            cultures_path = self.data_dir / "regional_cultures.json"
+            if cultures_path.exists():
+                with open(cultures_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    for item in data:
+                        self.regional_cultures[item['region_id']] = item
+            
             print(f"✅ Loaded: {len(self.sects)} sects, {len(self.techniques)} techniques, "
-                  f"{len(self.races)} races, {len(self.clans)} clans, {len(self.locations)} locations")
+                  f"{len(self.races)} races, {len(self.clans)} clans, {len(self.locations)} locations, "
+                  f"{len(self.artifacts)} artifacts, {len(self.items)} items, {len(self.regional_cultures)} regional cultures")
         
         except Exception as e:
             print(f"❌ Error loading world data: {e}")
@@ -333,6 +361,137 @@ class WorldDatabase:
         """Get all locations"""
         return list(self.locations.values())
     
+    # --- ARTIFACT METHODS ---
+    
+    def get_artifact(self, artifact_id: str) -> Optional[Dict]:
+        """Get artifact by ID"""
+        return self.artifacts.get(artifact_id)
+    
+    def get_artifacts_by_tier(self, tier: str) -> List[Dict]:
+        """Get all artifacts of a specific tier"""
+        return [a for a in self.artifacts.values() if a.get("tier") == tier]
+    
+    def get_artifacts_by_realm(self, realm: str) -> List[Dict]:
+        """Get all artifacts usable at a specific realm"""
+        return [a for a in self.artifacts.values() if a.get("realm_requirement") == realm]
+    
+    def check_artifact_requirements(
+        self,
+        artifact_id: str,
+        current_realm: str,
+        attributes: Dict[str, float]
+    ) -> Dict[str, Any]:
+        """Check if player can use artifact"""
+        artifact = self.artifacts.get(artifact_id)
+        if not artifact:
+            return {
+                "can_use": False,
+                "missing_requirements": ["Artifact not found"]
+            }
+        
+        required_realm = artifact.get("realm_requirement", "")
+        missing = []
+        
+        # Check realm (simplified - can be enhanced with realm hierarchy)
+        if required_realm and current_realm != required_realm:
+            # TODO: Implement realm hierarchy check
+            missing.append(f"Realm too low: need {required_realm}, have {current_realm}")
+        
+        return {
+            "can_use": len(missing) == 0,
+            "missing_requirements": missing,
+            "artifact": artifact
+        }
+    
+    # --- ITEM METHODS ---
+    
+    def get_item(self, item_id: str) -> Optional[Dict]:
+        """Get item by ID"""
+        return self.items.get(item_id)
+    
+    def get_items_by_type(self, item_type: str) -> List[Dict]:
+        """Get all items of a specific type"""
+        return [i for i in self.items.values() if i.get("type") == item_type]
+    
+    def get_items_by_rarity(self, rarity: str) -> List[Dict]:
+        """Get all items of a specific rarity"""
+        return [i for i in self.items.values() if i.get("rarity") == rarity]
+    
+    def get_materials_by_location(self, location_id: str) -> List[Dict]:
+        """Get materials that can be found at a location"""
+        materials = self.get_items_by_type("Material")
+        return [m for m in materials if location_id in m.get("locations", [])]
+    
+    # --- REGIONAL CULTURE METHODS ---
+    
+    def get_regional_culture(self, region_id: str) -> Optional[Dict]:
+        """Get regional culture by region ID"""
+        return self.regional_cultures.get(region_id)
+    
+    def get_culture_by_location(self, location_id: str) -> Optional[Dict]:
+        """Get regional culture for a location"""
+        location = self.locations.get(location_id)
+        if location:
+            region = location.get("region")
+            return self.regional_cultures.get(region)
+        return None
+    
+    def get_npc_behavior(
+        self,
+        region_id: str,
+        player_reputation: int = 0,
+        player_realm: str = "Qi_Refining"
+    ) -> Dict[str, Any]:
+        """
+        Generate NPC behavior based on regional culture
+        
+        Returns:
+            {
+                "attitude": "Neutral|Hostile|Friendly|Respectful",
+                "greeting": str,
+                "interaction_style": str
+            }
+        """
+        culture = self.regional_cultures.get(region_id)
+        if not culture:
+            return {
+                "attitude": "Neutral",
+                "greeting": "Xin chào",
+                "interaction_style": "Standard"
+            }
+        
+        social_rules = culture.get("social_rules", {})
+        traits = culture.get("cultural_traits", [])
+        
+        # Determine attitude based on region
+        attitude = "Neutral"
+        if region_id == "region_central_plains":
+            if player_reputation < 0:
+                attitude = "Hostile_Hidden"
+            else:
+                attitude = "Polite"
+        elif region_id == "region_northern_tundra":
+            if player_reputation > 1000:
+                attitude = "Respectful"
+            else:
+                attitude = "Aggressive_Test"
+        elif region_id == "region_southern_border":
+            attitude = "Cautious"
+        elif region_id == "region_western_desert":
+            attitude = "Merchant_Focused"
+        elif region_id == "region_eastern_sea":
+            attitude = "Adventurous"
+        
+        return {
+            "attitude": attitude,
+            "greeting": social_rules.get("greeting_style", "Standard"),
+            "interaction_style": culture.get("vibe", "Neutral"),
+            "cultural_traits": traits,
+            "unique_activities": culture.get("unique_activities", [])
+        }
+    
+    # --- UTILITY METHODS (Updated) ---
+    
     def search_by_name(self, name: str) -> Dict[str, List[Dict]]:
         """
         Tìm kiếm theo tên (fuzzy search)
@@ -342,7 +501,9 @@ class WorldDatabase:
             "techniques": [],
             "races": [],
             "clans": [],
-            "locations": []
+            "locations": [],
+            "artifacts": [],
+            "items": []
         }
         
         name_lower = name.lower()
@@ -366,6 +527,14 @@ class WorldDatabase:
         for loc in self.locations.values():
             if name_lower in loc.get("name", "").lower():
                 results["locations"].append(loc)
+        
+        for artifact in self.artifacts.values():
+            if name_lower in artifact.get("name", "").lower():
+                results["artifacts"].append(artifact)
+        
+        for item in self.items.values():
+            if name_lower in item.get("name", "").lower():
+                results["items"].append(item)
         
         return results
 

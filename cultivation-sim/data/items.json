@@ -1,0 +1,147 @@
+[
+  {
+    "id": "currency_spirit_stone_low",
+    "name": "Hạ Phẩm Linh Thạch",
+    "type": "Currency",
+    "rarity": "Common",
+    "value": 1,
+    "xp_value": 10,
+    "description": "Tiền tệ cơ bản của giới tu chân. Chứa một lượng nhỏ linh khí tạp chất.",
+    "stackable": true,
+    "max_stack": 9999
+  },
+  {
+    "id": "currency_spirit_stone_mid",
+    "name": "Trung Phẩm Linh Thạch",
+    "type": "Currency",
+    "rarity": "Uncommon",
+    "value": 100,
+    "xp_value": 1000,
+    "description": "Linh thạch chất lượng cao, chứa linh khí tinh khiết hơn.",
+    "stackable": true,
+    "max_stack": 999
+  },
+  {
+    "id": "currency_spirit_stone_high",
+    "name": "Thượng Phẩm Linh Thạch",
+    "type": "Currency",
+    "rarity": "Rare",
+    "value": 10000,
+    "xp_value": 100000,
+    "description": "Linh thạch cực phẩm, chỉ có ở các mỏ linh thạch lớn.",
+    "stackable": true,
+    "max_stack": 99
+  },
+  {
+    "id": "pill_qi_gathering",
+    "name": "Tụ Khí Đan",
+    "type": "Pill",
+    "rarity": "Common",
+    "effect": {
+      "target": "spiritual_power",
+      "value": 50,
+      "duration": "instant"
+    },
+    "toxicity": 5,
+    "lore": "Đan dược cơ bản giúp tăng linh khí. Dùng nhiều sẽ tích độc.",
+    "stackable": true,
+    "max_stack": 99
+  },
+  {
+    "id": "pill_breakthrough_foundation",
+    "name": "Trúc Cơ Đan",
+    "type": "Pill",
+    "rarity": "Rare",
+    "effect": {
+      "target": "breakthrough_chance",
+      "value": 0.2,
+      "duration": "instant"
+    },
+    "toxicity": 30,
+    "lore": "Đan dược màu xanh lam, chìa khóa để người phàm bước vào cánh cửa tiên đạo. Rất đắt đỏ.",
+    "stackable": true,
+    "max_stack": 10
+  },
+  {
+    "id": "pill_detox",
+    "name": "Giải Độc Đan",
+    "type": "Pill",
+    "rarity": "Uncommon",
+    "effect": {
+      "target": "toxicity",
+      "value": -20,
+      "duration": "instant"
+    },
+    "toxicity": 0,
+    "lore": "Đan dược giải độc, giảm độc tính tích tụ trong cơ thể.",
+    "stackable": true,
+    "max_stack": 50
+  },
+  {
+    "id": "mat_dragon_scale",
+    "name": "Vảy Rồng Đất",
+    "type": "Material",
+    "element": "Earth",
+    "grade": 3,
+    "crafting_tags": ["armor", "defense", "earth"],
+    "locations": ["loc_forbidden_01", "loc_mountain_02"],
+    "lore": "Vảy cứng như thép của loài rồng đất (Địa Long), dùng để rèn giáp cực tốt.",
+    "stackable": true,
+    "max_stack": 99
+  },
+  {
+    "id": "mat_fire_crystal",
+    "name": "Hỏa Tinh Thạch",
+    "type": "Material",
+    "element": "Fire",
+    "grade": 2,
+    "crafting_tags": ["weapon", "attack", "fire"],
+    "locations": ["loc_volcano_01", "loc_fire_cave"],
+    "lore": "Tinh thạch chứa linh khí hỏa, dùng để rèn vũ khí hỏa hệ.",
+    "stackable": true,
+    "max_stack": 99
+  },
+  {
+    "id": "mat_phoenix_feather",
+    "name": "Phượng Hoàng Vũ",
+    "type": "Material",
+    "element": "Fire",
+    "grade": 5,
+    "crafting_tags": ["weapon", "treasure", "fire", "legendary"],
+    "locations": ["loc_phoenix_nest"],
+    "lore": "Lông của Phượng Hoàng, vật liệu cực kỳ quý hiếm để chế tạo pháp bảo cấp cao.",
+    "stackable": true,
+    "max_stack": 10
+  },
+  {
+    "id": "talisman_teleport_100li",
+    "name": "Tiểu Na Di Phù",
+    "type": "Talisman",
+    "rarity": "Rare",
+    "usage_type": "One_Time",
+    "effect": {
+      "action": "teleport_random",
+      "radius": 100,
+      "unit": "li"
+    },
+    "lore": "Bùa dịch chuyển tức thời ngẫu nhiên trong bán kính 100 dặm. Dùng để chạy trốn khi gặp kẻ thù mạnh.",
+    "stackable": true,
+    "max_stack": 10
+  },
+  {
+    "id": "talisman_protection_shield",
+    "name": "Hộ Thân Phù",
+    "type": "Talisman",
+    "rarity": "Uncommon",
+    "usage_type": "One_Time",
+    "effect": {
+      "action": "shield",
+      "damage_absorb": 200,
+      "duration": 3600
+    },
+    "lore": "Bùa tạo lá chắn bảo vệ, hấp thụ 200 điểm sát thương.",
+    "stackable": true,
+    "max_stack": 20
+  }
+]
+

@@ -1,0 +1,113 @@
+[
+  {
+    "id": "artifact_wooden_sword",
+    "name": "Kiếm Gỗ Luyện Khí",
+    "tier": "Artifact",
+    "realm_requirement": "Qi_Refining",
+    "element": "Wood",
+    "stats": {
+      "attack": 15,
+      "defense": 5,
+      "durability": 100,
+      "max_durability": 100
+    },
+    "special_mechanic": null,
+    "lore": "Kiếm gỗ đơn giản dành cho người mới bắt đầu tu luyện. Tuy thô sơ nhưng vẫn có thể chém đứt cây cối.",
+    "crafting_materials": ["wood_common", "iron_common"],
+    "upgrade_path": "artifact_iron_sword"
+  },
+  {
+    "id": "spirit_tool_fire_blade",
+    "name": "Hỏa Diễm Đao",
+    "tier": "Spirit_Tool",
+    "realm_requirement": "Foundation",
+    "element": "Fire",
+    "stats": {
+      "attack": 45,
+      "defense": 10,
+      "durability": 200,
+      "max_durability": 200,
+      "spirit_consciousness": 10
+    },
+    "special_mechanic": "Elemental_Burn",
+    "special_effect": {
+      "type": "burn",
+      "damage_per_turn": 5,
+      "duration": 3
+    },
+    "lore": "Đao lửa có ý thức sơ khai, tự động phát ra hỏa diễm khi chiến đấu. Cần nuôi dưỡng bằng linh khí hỏa hệ.",
+    "crafting_materials": ["fire_crystal", "iron_refined", "spirit_beast_core_low"],
+    "upgrade_path": "magic_treasure_phoenix_blade"
+  },
+  {
+    "id": "magic_treasure_phoenix_blade",
+    "name": "Phượng Hoàng Đao",
+    "tier": "Magic_Treasure",
+    "realm_requirement": "Golden_Core",
+    "element": "Fire",
+    "stats": {
+      "attack": 120,
+      "defense": 30,
+      "durability": 500,
+      "max_durability": 500,
+      "spirit_consciousness": 50
+    },
+    "special_mechanic": "Phoenix_Rebirth",
+    "special_effect": {
+      "type": "resurrection",
+      "chance": 0.1,
+      "cooldown": 86400
+    },
+    "can_store_in_body": true,
+    "lore": "Pháp bảo cấp Kim Đan, có thể thu vào cơ thể. Khi chủ nhân chết, có 10% cơ hội hồi sinh như Phượng Hoàng.",
+    "crafting_materials": ["phoenix_feather", "fire_essence", "golden_core_crystal"],
+    "upgrade_path": null
+  },
+  {
+    "id": "ancient_treasure_dragon_slayer",
+    "name": "Trảm Long Kiếm",
+    "tier": "Ancient_Treasure",
+    "realm_requirement": "Nascent_Soul",
+    "element": "Metal",
+    "stats": {
+      "attack": 500,
+      "defense": 100,
+      "durability": 1000,
+      "max_durability": 1000
+    },
+    "special_mechanic": "Dragon_Slayer",
+    "special_effect": {
+      "type": "damage_multiplier",
+      "multiplier": 3.0,
+      "target_type": "dragon"
+    },
+    "cannot_upgrade": true,
+    "lore": "Cổ bảo từ thời cổ đại, từng chém đầu một con rồng. Sát thương cực cao nhưng không thể nâng cấp.",
+    "crafting_materials": null,
+    "upgrade_path": null
+  },
+  {
+    "id": "heavenly_treasure_soul_stacker",
+    "name": "Vạn Hồn Tháp",
+    "tier": "Heavenly_Treasure",
+    "realm_requirement": "Spirit_Transformation",
+    "element": "Dark",
+    "stats": {
+      "attack": 0,
+      "defense": 0,
+      "durability": 9999,
+      "max_durability": 9999
+    },
+    "special_mechanic": "Soul_Stacking",
+    "special_effect": {
+      "type": "damage_bonus",
+      "formula": "current_souls * 0.5",
+      "max_souls": 10000
+    },
+    "heavenly_law": "Mỗi linh hồn bị thu thập sẽ tăng sát thương. Càng nhiều linh hồn, càng mạnh.",
+    "lore": "Thông Thiên Linh Bảo có quy tắc riêng. Thu thập linh hồn để tăng sức mạnh, nhưng cẩn thận với nghiệp chướng.",
+    "crafting_materials": null,
+    "upgrade_path": null
+  }
+]
+

@@ -6,6 +6,7 @@ Enhanced với World Bible và World Database integration
 import os
 import json
 from typing import Dict, Any, Optional, List
+from pathlib import Path
 from dotenv import load_dotenv
 import google.generativeai as genai
 
@@ -171,29 +172,55 @@ QUAN TRỌNG:
         else:
             ai_context = "Attributes not available"
         
-        # Location context
+        # Location context từ World Database
         location_id = character_data.get("location_id")
         location_context = ""
         if location_id:
             location = self.world_db.get_location(location_id)
             if location:
+                # Get regional culture
+                culture = self.world_db.get_culture_by_location(location_id)
+                culture_info = ""
+                if culture:
+                    culture_info = f"""
+Văn hóa vùng: {culture.get('name', 'Unknown')} - {culture.get('vibe', 'Unknown')}
+Quy tắc xã hội: {json.dumps(culture.get('social_rules', {}), ensure_ascii=False)}
+Đặc điểm văn hóa: {', '.join([t.get('effect', '') for t in culture.get('cultural_traits', [])[:3]])}
+"""
+                
                 location_context = f"""
-Địa điểm: {location['name']} ({location['region']})
-Mật độ linh khí: {location['qi_density']}
+Địa điểm: {location['name']} ({location.get('region', 'Unknown')})
+Loại: {location.get('type', 'Unknown')}
+Mật độ linh khí: {location.get('qi_density', 1.0)}x
 Dịch vụ: {', '.join(location.get('services', []))}
 Nguy hiểm: {location.get('danger_level', 'Unknown')}
+Kết nối: {', '.join([self.world_db.get_location(lid).get('name', lid) for lid in location.get('connected_to', []) if self.world_db.get_location(lid)])}
+{culture_info}
 """
         
-        # Sect context
+        # Sect context từ World Database
         sect_id = character_data.get("sect_id")
-        sect_context = ""
-        if sect_id:
+        sect_context = character_data.get("sect_context", "")
+        if not sect_context and sect_id:
             sect = self.world_db.get_sect(sect_id)
             if sect:
                 sect_context = f"""
-Tông môn: {sect['name']} ({sect['type']})
-Triết lý: {sect['description']}
+Tông môn: {sect['name']} ({sect.get('type', 'Unknown')})
+Triết lý: {sect.get('description', '')}
 Kỹ thuật độc quyền: {', '.join(sect.get('exclusive_techniques', []))}
+Yêu cầu: {json.dumps(sect.get('requirements', {}), ensure_ascii=False)}
+"""
+        
+        # Race context từ World Database
+        race_id = character_data.get("race")
+        race_context = ""
+        if race_id:
+            race = self.world_db.get_race(race_id)
+            if race:
+                race_context = f"""
+Chủng tộc: {race.get('name', race_id)}
+Mô tả: {race.get('description', '')}
+Đặc điểm: {', '.join(race.get('traits', []))}
 """
         
         # Build full prompt
@@ -219,6 +246,9 @@ Tiến độ đột phá: {cultivation.get('breakthrough_progress', 0.0)}%
 
 === SECT ===
 {sect_context}
+
+=== RACE ===
+{race_context}
 
 === MEMORY ===
 {memory_context or "Không có ký ức"}

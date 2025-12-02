@@ -1,0 +1,158 @@
+[
+  {
+    "region_id": "region_central_plains",
+    "name": "Trung Châu",
+    "vibe": "Văn minh, Lễ nghi, Phức tạp",
+    "social_rules": {
+      "face_value": "High",
+      "law_enforcement": "Strict (Sect Law)",
+      "greeting_style": "Formal bow, exchange name cards"
+    },
+    "cultural_traits": [
+      {
+        "id": "trait_face_matters",
+        "effect": "NPC rất coi trọng thể diện. Nếu bạn làm mất mặt họ, họ sẽ âm thầm trả thù sau, không đánh trực tiếp."
+      },
+      {
+        "id": "trait_hierarchy_respect",
+        "effect": "NPC tự động tôn trọng người có cảnh giới cao hơn. Không được phép nói chuyện ngang hàng với trưởng lão."
+      },
+      {
+        "id": "trait_gift_exchange",
+        "effect": "Tặng quà là cách tốt nhất để tăng thiện cảm. Quà càng đắt, thiện cảm càng cao."
+      }
+    ],
+    "unique_activities": [
+      "Tea ceremony with sect elders",
+      "Poetry competitions",
+      "Scholarly debates about cultivation techniques",
+      "Formal sect meetings"
+    ],
+    "fashion_prompt": "Robes with intricate embroidery, jade accessories, hair tied up neatly with guan (crowns)."
+  },
+  {
+    "region_id": "region_northern_tundra",
+    "name": "Bắc Băng Nguyên",
+    "vibe": "Hoang dã, Tàn khốc, Thẳng thắn",
+    "social_rules": {
+      "face_value": "Low",
+      "law_enforcement": "None (Might makes Right)",
+      "greeting_style": "Show weapon or aura"
+    },
+    "cultural_traits": [
+      {
+        "id": "trait_survival_respect",
+        "effect": "NPC tôn trọng kẻ mạnh. Nếu bạn đánh bại họ, họ có thể mời rượu thay vì gọi hội trả thù."
+      },
+      {
+        "id": "trait_guest_rights",
+        "effect": "Nếu được mời vào lều, bạn sẽ an toàn tuyệt đối. Nhưng ra khỏi lều là có thể bị giết."
+      },
+      {
+        "id": "trait_direct_challenge",
+        "effect": "NPC sẽ thách đấu trực tiếp nếu nghi ngờ sức mạnh của bạn. Không có chuyện âm thầm."
+      }
+    ],
+    "unique_activities": [
+      "Arena battles",
+      "Hunting spirit beasts together",
+      "Drinking contests",
+      "Strength competitions"
+    ],
+    "fashion_prompt": "Thick fur coats made from spirit beasts, leather armor, rugged appearance, visible scars."
+  },
+  {
+    "region_id": "region_southern_border",
+    "name": "Nam Cương",
+    "vibe": "Bí ẩn, Ma mị, Nguy hiểm",
+    "social_rules": {
+      "face_value": "Medium",
+      "law_enforcement": "Tribal Law",
+      "greeting_style": "Exchange small gifts (insects/herbs)"
+    },
+    "cultural_traits": [
+      {
+        "id": "trait_poison_test",
+        "effect": "NPC có thể thử độc bạn để kiểm tra sức mạnh. Nếu sống sót, họ sẽ tôn trọng bạn."
+      },
+      {
+        "id": "trait_tribal_alliance",
+        "effect": "Nếu bạn giúp một bộ lạc, các bộ lạc khác sẽ tự động coi bạn là đồng minh hoặc kẻ thù."
+      },
+      {
+        "id": "trait_shaman_respect",
+        "effect": "NPC rất tôn trọng thầy phù thủy (shaman). Nếu bạn là shaman, bạn sẽ được đối xử đặc biệt."
+      }
+    ],
+    "unique_activities": [
+      "Poison resistance tests",
+      "Tribal rituals",
+      "Spirit communication",
+      "Herb gathering expeditions"
+    ],
+    "fashion_prompt": "Minimalist tribal wear, silver jewelry, tattoos glowing with qi, colorful fabrics."
+  },
+  {
+    "region_id": "region_western_desert",
+    "name": "Tây Sa Mạc",
+    "vibe": "Khắc nghiệt, Độc lập, Thực dụng",
+    "social_rules": {
+      "face_value": "Low",
+      "law_enforcement": "Merchant Law",
+      "greeting_style": "Trade goods or information"
+    },
+    "cultural_traits": [
+      {
+        "id": "trait_merchant_respect",
+        "effect": "NPC tôn trọng thương nhân giàu có. Tiền là quyền lực ở đây."
+      },
+      {
+        "id": "trait_oasis_safety",
+        "effect": "Ốc đảo là nơi an toàn tuyệt đối. Không ai được phép đánh nhau trong ốc đảo."
+      },
+      {
+        "id": "trait_information_trade",
+        "effect": "Thông tin có giá trị như vàng. NPC sẽ trao đổi thông tin thay vì đánh nhau."
+      }
+    ],
+    "unique_activities": [
+      "Caravan trading",
+      "Oasis markets",
+      "Information brokerage",
+      "Desert navigation"
+    ],
+    "fashion_prompt": "Loose robes to protect from sand, head wraps, practical accessories, visible wealth (gold jewelry)."
+  },
+  {
+    "region_id": "region_eastern_sea",
+    "name": "Đông Hải",
+    "vibe": "Tự do, Phiêu lưu, Đa dạng",
+    "social_rules": {
+      "face_value": "Medium",
+      "law_enforcement": "Pirate Code",
+      "greeting_style": "Share stories or treasures"
+    },
+    "cultural_traits": [
+      {
+        "id": "trait_pirate_code",
+        "effect": "NPC tuân theo luật cướp biển: Không phản bội đồng đội, chia đều chiến lợi phẩm."
+      },
+      {
+        "id": "trait_treasure_respect",
+        "effect": "NPC tôn trọng người tìm được bảo vật. Nếu bạn có bảo vật, họ sẽ muốn hợp tác thay vì cướp."
+      },
+      {
+        "id": "trait_story_value",
+        "effect": "Câu chuyện phiêu lưu có giá trị. NPC sẽ tôn trọng bạn nếu bạn có nhiều câu chuyện hay."
+      }
+    ],
+    "unique_activities": [
+      "Treasure hunting",
+      "Sea battles",
+      "Island exploration",
+      "Pirate gatherings"
+    ],
+    "fashion_prompt": "Nautical themed clothing, sea creature accessories, weather-worn appearance, treasure trinkets."
+  }
+]
+

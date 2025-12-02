@@ -17,6 +17,8 @@ from schemas import CharacterData, GameState, CultivationComponent, ResourceComp
 from attributes import AttributesComponent
 from world_database import WorldDatabase
 from ecs_systems import CultivationSystem, RelationshipSystem, AIPlannerSystem, NeedsSystem
+from artifact_system import ArtifactSystem
+from item_system import ItemSystem
 
 
 class CultivationSimulator:
@@ -41,6 +43,8 @@ class CultivationSimulator:
         self.agent = CultivationAgent()
         self.memory = Memory3Tier(self.db_path, save_id)
         self.world_db = WorldDatabase("data")
+        self.artifact_system = ArtifactSystem(self.world_db)
+        self.item_system = ItemSystem(self.world_db)
         
         # Game state
         self.character_age = 0
@@ -52,6 +56,8 @@ class CultivationSimulator:
         self.character_name: Optional[str] = None
         self.current_choices: List[str] = []
         self.turn_count = 0
+        self.current_location_id: Optional[str] = None
+        self.current_sect_id: Optional[str] = None
         
         # Components
         self.cultivation: CultivationComponent = CultivationComponent()
@@ -91,11 +97,32 @@ class CultivationSimulator:
     
     def _get_location_data(self) -> Dict[str, Any]:
         """Get current location data from World Database"""
-        # TODO: Get from character location_id
+        # Get location from character state or default
+        location_id = getattr(self, 'current_location_id', None) or "loc_village_01"
+        
+        location = self.world_db.get_location(location_id)
+        if location:
+            return {
+                "location_id": location_id,
+                "name": location.get("name", "Unknown"),
+                "type": location.get("type", "Unknown"),
+                "region": location.get("region", "Unknown"),
+                "qi_density": location.get("qi_density", 1.0),
+                "danger_level": location.get("danger_level", "Safe"),
+                "services": location.get("services", []),
+                "connected_to": location.get("connected_to", [])
+            }
+        
+        # Default fallback
         return {
-            "location_id": "loc_village_01",
+            "location_id": location_id,
+            "name": "Unknown Location",
+            "type": "Unknown",
+            "region": "Unknown",
             "qi_density": 1.0,
-            "danger_level": "Safe"
+            "danger_level": "Safe",
+            "services": [],
+            "connected_to": []
         }
     
     def _load_state(self):
@@ -184,6 +211,18 @@ class CultivationSimulator:
             # Apply starting perks
             if "spirit_stones" in starting_perks:
                 self.resources.spirit_stones = starting_perks["spirit_stones"]
+            if "items" in starting_perks:
+                for item_name, quantity in starting_perks["items"].items():
+                    self.resources.add_material(item_name, quantity)
+        
+        # Set default location from World Database
+        # Try to find a safe starting location
+        all_locations = self.world_db.get_all_locations()
+        safe_locations = [loc for loc in all_locations if loc.get("danger_level") == "Safe"]
+        if safe_locations:
+            self.current_location_id = safe_locations[0].get("id", "loc_village_01")
+        else:
+            self.current_location_id = "loc_village_01"
         
         # Call AI for character story
         character_data = {
@@ -194,7 +233,8 @@ class CultivationSimulator:
             "background": background,
             "attributes": self.attributes.dict() if self.attributes else {},
             "cultivation": self.cultivation.dict(),
-            "resources": self.resources.dict()
+            "resources": self.resources.dict(),
+            "location_id": self.current_location_id
         }
         
         # Get memory context
@@ -264,7 +304,14 @@ class CultivationSimulator:
         # Progress age
         self.character_age += 1
         
-        # Build character data
+        # Build character data với World Database context
+        location_data = self._get_location_data()
+        sect_context = ""
+        if self.current_sect_id:
+            sect = self.world_db.get_sect(self.current_sect_id)
+            if sect:
+                sect_context = f"Tông môn: {sect['name']} ({sect['type']})"
+        
         character_data = {
             "age": self.character_age,
             "gender": self.character_gender,
@@ -277,7 +324,10 @@ class CultivationSimulator:
             "cultivation": self.cultivation.dict(),
             "resources": self.resources.dict(),
             "choices": self.current_choices,
-            "location_id": self.game_state.get("location", {}).get("location_id")
+            "location_id": location_data.get("location_id"),
+            "location_name": location_data.get("name"),
+            "sect_id": self.current_sect_id,
+            "sect_context": sect_context
         }
         
         # Get memory context
@@ -318,15 +368,16 @@ class CultivationSimulator:
     
     def _tick_ecs_systems(self):
         """Tick all ECS Systems"""
-        # Update game state dict
+        # Update game state dict với latest data
         self.game_state["cultivation"] = self.cultivation.dict()
         self.game_state["attributes"] = self.attributes.dict() if self.attributes else {}
         self.game_state["resources"] = self.resources.dict()
+        self.game_state["location"] = self._get_location_data()  # Update location từ World Database
         
         # Tick systems
         if self.cultivation_system:
             self.cultivation_system.tick(delta_time=1.0)
-            # Update cultivation component
+            # Update cultivation component từ game_state
             self.cultivation = CultivationComponent(**self.game_state["cultivation"])
         
         if self.needs_system:
