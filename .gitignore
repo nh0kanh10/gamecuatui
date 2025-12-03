@@ -57,3 +57,10 @@ benchmarks/results/
 # Old/unused folders
 gamecuatoi/*.json
 benchmarks/results/*.md
+
+# Temporary/unused files
+linhtinh/
+temp/
+unused/
+*.bak
+*.backup
