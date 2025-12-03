@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Debug Test - Cultivation Simulator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+            color: #e0e0e0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 2em;
+        }
+        
+        .section {
+            background: rgba(30, 30, 46, 0.8);
+            border: 2px solid #4a4a6a;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .section h2 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #a0a0a0;
+            font-weight: bold;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            background: #1a1a2e;
+            border: 1px solid #4a4a6a;
+            border-radius: 5px;
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+        
+        textarea {
+            min-height: 100px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: scale(1.05);
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .response-box {
+            background: #0f0f1e;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .error-box {
+            background: #2d1b1b;
+            border: 2px solid #ff4444;
+            color: #ff8888;
+        }
+        
+        .success-box {
+            background: #1b2d1b;
+            border: 2px solid #44ff44;
+            color: #88ff88;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 1200px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status.connected {
+            background: #1b2d1b;
+            color: #88ff88;
+        }
+        
+        .status.disconnected {
+            background: #2d1b1b;
+            color: #ff8888;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 AI Debug Test Tool</h1>
+        
+        <!-- Server Status -->
+        <div class="section">
+            <h2>Server Status</h2>
+            <div>
+                <span class="status disconnected" id="serverStatus">Checking...</span>
+                <button onclick="checkServer()" style="margin-left: 10px;">Check Server</button>
+            </div>
+        </div>
+        
+        <!-- Quick Test -->
+        <div class="section">
+            <h2>Quick Test - Send Action</h2>
+            <div class="form-group">
+                <label>Choice Index (1-4):</label>
+                <input type="number" id="choiceIndex" value="1" min="1" max="4">
+            </div>
+            <div class="btn-group">
+                <button class="btn-primary" onclick="sendAction()">🚀 Send Action</button>
+                <button onclick="getGameState()">📊 Get Game State</button>
+                <button onclick="startNewGame()">🆕 Start New Game</button>
+            </div>
+            <div id="actionResponse" class="response-box" style="display: none;"></div>
+        </div>
+        
+        <!-- Full Debug Info -->
+        <div class="section">
+            <h2>Debug Info Display</h2>
+            <div class="grid">
+                <div>
+                    <h3 style="color: #4facfe; margin-bottom: 10px;">📤 Prompt Sent to AI</h3>
+                    <div id="promptDisplay" class="response-box" style="min-height: 200px;">
+                        <em style="color: #666;">No prompt data yet. Send an action first.</em>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color: #4facfe; margin-bottom: 10px;">🤖 AI Raw Response</h3>
+                    <div id="aiResponseDisplay" class="response-box" style="min-height: 200px;">
+                        <em style="color: #666;">No AI response yet. Send an action first.</em>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <h3 style="color: #4facfe; margin-bottom: 10px;">✅ Parsed Result</h3>
+                <div id="parsedResultDisplay" class="response-box" style="min-height: 150px;">
+                    <em style="color: #666;">No parsed result yet. Send an action first.</em>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <h3 style="color: #ff4444; margin-bottom: 10px;">❌ Errors (if any)</h3>
+                <div id="errorDisplay" class="response-box error-box" style="min-height: 100px; display: none;">
+                    <em style="color: #666;">No errors.</em>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Manual Prompt Test -->
+        <div class="section">
+            <h2>Manual Prompt Test (Advanced)</h2>
+            <div class="form-group">
+                <label>Character Data (JSON):</label>
+                <textarea id="characterData" placeholder='{"age": 1, "talent": "Thiên Linh Căn", ...}'>{
+  "age": 1,
+  "talent": "Thiên Linh Căn",
+  "race": "Nhân Tộc",
+  "background": "Gia Đình Tu Tiên",
+  "cultivation": {
+    "realm": "Luyện Khí Kỳ",
+    "level": 1,
+    "spiritual_power": 50
+  },
+  "choices": [
+    "Tiếp tục tu luyện",
+    "Đi khám phá khu vực xung quanh",
+    "Tìm kiếm tông môn để gia nhập",
+    "Nghỉ ngơi và suy ngẫm"
+  ]
+}</textarea>
+            </div>
+            <div class="form-group">
+                <label>Choice Index:</label>
+                <input type="number" id="manualChoiceIndex" value="0" min="0" max="3">
+            </div>
+            <button class="btn-success" onclick="testManualPrompt()">🧪 Test Manual Prompt</button>
+            <div id="manualTestResponse" class="response-box" style="display: none; margin-top: 10px;"></div>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = 'http://localhost:8001';
+        
+        // Check server status
+        async function checkServer() {
+            const statusEl = document.getElementById('serverStatus');
+            statusEl.textContent = 'Checking...';
+            statusEl.className = 'status disconnected';
+            
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                statusEl.textContent = `Connected - ${data.status || 'OK'}`;
+                statusEl.className = 'status connected';
+            } catch (error) {
+                statusEl.textContent = `Disconnected - ${error.message}`;
+                statusEl.className = 'status disconnected';
+            }
+        }
+        
+        // Send action
+        async function sendAction() {
+            const choiceIndex = document.getElementById('choiceIndex').value;
+            const responseEl = document.getElementById('actionResponse');
+            responseEl.style.display = 'block';
+            responseEl.textContent = 'Loading...';
+            responseEl.className = 'response-box';
+            
+            try {
+                const response = await fetch(`${API_BASE}/game/action`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_input: choiceIndex })
+                });
+                
+                const data = await response.json();
+                
+                // Display response
+                responseEl.textContent = JSON.stringify(data, null, 2);
+                responseEl.className = 'response-box success-box';
+                
+                // Update debug displays
+                if (data.debug_info) {
+                    updateDebugDisplays(data.debug_info);
+                } else {
+                    // Try to extract from response
+                    updateDebugDisplays({
+                        prompt: data.prompt || 'Not available',
+                        ai_raw_response: data.ai_response || data.narrative || 'Not available',
+                        parsed_result: {
+                            narrative: data.narrative,
+                            choices: data.choices,
+                            game_state: data.game_state
+                        }
+                    });
+                }
+                
+            } catch (error) {
+                responseEl.textContent = `Error: ${error.message}\n\nMake sure server is running on port 8001.`;
+                responseEl.className = 'response-box error-box';
+            }
+        }
+        
+        // Get game state
+        async function getGameState() {
+            const responseEl = document.getElementById('actionResponse');
+            responseEl.style.display = 'block';
+            responseEl.textContent = 'Loading...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/game/state`);
+                const data = await response.json();
+                responseEl.textContent = JSON.stringify(data, null, 2);
+                responseEl.className = 'response-box success-box';
+            } catch (error) {
+                responseEl.textContent = `Error: ${error.message}`;
+                responseEl.className = 'response-box error-box';
+            }
+        }
+        
+        // Start new game
+        async function startNewGame() {
+            const responseEl = document.getElementById('actionResponse');
+            responseEl.style.display = 'block';
+            responseEl.textContent = 'Loading...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/game/new`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        player_name: "Test Player",
+                        character_data: {
+                            gender: "Nam",
+                            talent: "Thiên Linh Căn",
+                            race: "Nhân Tộc",
+                            background: "Gia Đình Tu Tiên"
+                        }
+                    })
+                });
+                
+                const data = await response.json();
+                responseEl.textContent = JSON.stringify(data, null, 2);
+                responseEl.className = 'response-box success-box';
+            } catch (error) {
+                responseEl.textContent = `Error: ${error.message}`;
+                responseEl.className = 'response-box error-box';
+            }
+        }
+        
+        // Update debug displays
+        function updateDebugDisplays(debugInfo) {
+            // Prompt
+            const promptEl = document.getElementById('promptDisplay');
+            if (debugInfo.prompt) {
+                promptEl.textContent = debugInfo.prompt;
+                promptEl.style.color = '#e0e0e0';
+            } else {
+                promptEl.innerHTML = '<em style="color: #666;">No prompt data available</em>';
+            }
+            
+            // AI Response
+            const aiResponseEl = document.getElementById('aiResponseDisplay');
+            if (debugInfo.ai_raw_response) {
+                aiResponseEl.textContent = debugInfo.ai_raw_response;
+                aiResponseEl.style.color = '#e0e0e0';
+            } else {
+                aiResponseEl.innerHTML = '<em style="color: #666;">No AI response available</em>';
+            }
+            
+            // Parsed Result
+            const parsedEl = document.getElementById('parsedResultDisplay');
+            if (debugInfo.parsed_result) {
+                parsedEl.textContent = JSON.stringify(debugInfo.parsed_result, null, 2);
+                parsedEl.style.color = '#e0e0e0';
+            } else {
+                parsedEl.innerHTML = '<em style="color: #666;">No parsed result available</em>';
+            }
+            
+            // Error
+            const errorEl = document.getElementById('errorDisplay');
+            if (debugInfo.error) {
+                errorEl.textContent = debugInfo.error;
+                errorEl.style.display = 'block';
+            } else {
+                errorEl.style.display = 'none';
+            }
+        }
+        
+        // Manual prompt test
+        async function testManualPrompt() {
+            const characterDataText = document.getElementById('characterData').value;
+            const choiceIndex = parseInt(document.getElementById('manualChoiceIndex').value);
+            const responseEl = document.getElementById('manualTestResponse');
+            responseEl.style.display = 'block';
+            responseEl.textContent = 'Loading...';
+            
+            try {
+                const characterData = JSON.parse(characterDataText);
+                
+                // This would need a special endpoint, but for now just show what would be sent
+                responseEl.textContent = `This would test with:\n\nCharacter Data: ${JSON.stringify(characterData, null, 2)}\n\nChoice Index: ${choiceIndex}\n\nNote: This requires a special test endpoint on the server.`;
+                responseEl.className = 'response-box';
+            } catch (error) {
+                responseEl.textContent = `JSON Parse Error: ${error.message}`;
+                responseEl.className = 'response-box error-box';
+            }
+        }
+        
+        // Auto-check server on load
+        window.addEventListener('load', () => {
+            checkServer();
+            setInterval(checkServer, 30000); // Check every 30 seconds
+        });
+    </script>
+</body>
+</html>
+

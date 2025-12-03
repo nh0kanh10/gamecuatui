@@ -1,0 +1,611 @@
+[
+  {
+    "id": "physique_kim_01",
+    "name": "Kim Cốt Cường Thân",
+    "element": "Kim",
+    "tier": "Linh",
+    "description": "Xương cứng như thép, phòng thủ cao.",
+    "effects": {
+      "defense_percent": 0.25,
+      "stability": 0.1,
+      "hp_multiplier": 1.2
+    }
+  },
+  {
+    "id": "physique_kim_02",
+    "name": "Bách Luyện Kim Thai",
+    "element": "Kim",
+    "tier": "Dị",
+    "description": "Cơ thể tự rèn khi chịu thương tổn, càng đánh càng cứng.",
+    "effects": {
+      "defense_growth_per_hit": 0.01,
+      "max_defense_bonus": 0.5,
+      "cultivation_speed": 1.1
+    }
+  },
+  {
+    "id": "physique_kim_03",
+    "name": "Kim Diệu Tinh Phách",
+    "element": "Kim",
+    "tier": "Thần",
+    "description": "Khả năng xuyên phá phòng ngự cực mạnh.",
+    "effects": {
+      "armor_penetration": 0.4,
+      "crit_chance": 0.15,
+      "attack_power": 1.3
+    }
+  },
+  {
+    "id": "physique_kim_04",
+    "name": "Lưu Kim Khí Mạch",
+    "element": "Kim",
+    "tier": "Linh",
+    "description": "Khí lưu chuyển như dòng kim chảy → công kích sắc bén.",
+    "effects": {
+      "attack_speed": 1.25,
+      "qi_efficiency": 1.2,
+      "cultivation_speed": 1.15
+    }
+  },
+  {
+    "id": "physique_kim_05",
+    "name": "Kim Tâm Trảm Đạo",
+    "element": "Kim",
+    "tier": "Huyền",
+    "description": "Tâm trí sắc, tăng crit và phá giáp rất mạnh.",
+    "effects": {
+      "crit_chance": 0.25,
+      "crit_damage": 1.5,
+      "armor_penetration": 0.3,
+      "mental_resistance": 0.2
+    }
+  },
+  {
+    "id": "physique_moc_01",
+    "name": "Thanh Mộc Sinh Cơ",
+    "element": "Mộc",
+    "tier": "Linh",
+    "description": "Phục hồi nhanh, khó chết.",
+    "effects": {
+      "hp_regen_percent": 0.05,
+      "hp_regen_speed": 2.0,
+      "survival_bonus": 0.3
+    }
+  },
+  {
+    "id": "physique_moc_02",
+    "name": "Vạn Diệp Linh Thai",
+    "element": "Mộc",
+    "tier": "Dị",
+    "description": "Hợp tu trận pháp cây, buff đồng đội.",
+    "effects": {
+      "formation_bonus": 0.3,
+      "team_buff_radius": 1.5,
+      "support_power": 1.25
+    }
+  },
+  {
+    "id": "physique_moc_03",
+    "name": "Mộc Hóa Thiên Canh",
+    "element": "Mộc",
+    "tier": "Linh",
+    "description": "Thân thể nhẹ, né tránh cao.",
+    "effects": {
+      "dodge_chance": 0.2,
+      "movement_speed": 1.3,
+      "agility": 1.2
+    }
+  },
+  {
+    "id": "physique_moc_04",
+    "name": "Sinh Mệnh Trường Xuân",
+    "element": "Mộc",
+    "tier": "Thần",
+    "description": "Tuổi thọ dài, chống độc mạnh.",
+    "effects": {
+      "lifespan_multiplier": 2.0,
+      "poison_resistance": 0.8,
+      "hp_multiplier": 1.5
+    }
+  },
+  {
+    "id": "physique_moc_05",
+    "name": "Thụ Tâm Thần Ý",
+    "element": "Mộc",
+    "tier": "Linh",
+    "description": "Tăng sức mạnh tinh thần, dễ luyện thần thức.",
+    "effects": {
+      "perception_bonus": 0.3,
+      "spiritual_power": 1.2,
+      "cultivation_speed": 1.1
+    }
+  },
+  {
+    "id": "physique_thuy_01",
+    "name": "Hàn Tủy Băng Tâm",
+    "element": "Thủy",
+    "tier": "Linh",
+    "description": "Kháng băng, kháng tâm ma.",
+    "effects": {
+      "ice_resistance": 0.7,
+      "mental_resistance": 0.4,
+      "calm_mind": 0.3
+    }
+  },
+  {
+    "id": "physique_thuy_02",
+    "name": "Thủy Linh Hoàn Thể",
+    "element": "Thủy",
+    "tier": "Dị",
+    "description": "Chuyển hóa khí linh hoạt, phù hợp pháp thuật.",
+    "effects": {
+      "spell_power": 1.4,
+      "qi_flexibility": 1.3,
+      "cultivation_speed": 1.2
+    }
+  },
+  {
+    "id": "physique_thuy_03",
+    "name": "Lưu Thủy Thần Thể",
+    "element": "Thủy",
+    "tier": "Linh",
+    "description": "Tốc độ cao, di chuyển mượt.",
+    "effects": {
+      "movement_speed": 1.5,
+      "attack_speed": 1.2,
+      "dodge_chance": 0.15
+    }
+  },
+  {
+    "id": "physique_thuy_04",
+    "name": "Tuyệt Hàn Huyết",
+    "element": "Thủy",
+    "tier": "Huyền",
+    "description": "Băng sát thương mạnh nhưng cơ thể yếu.",
+    "effects": {
+      "ice_damage": 1.8,
+      "attack_power": 1.4,
+      "hp_multiplier": 0.8,
+      "defense_percent": -0.1
+    }
+  },
+  {
+    "id": "physique_thuy_05",
+    "name": "Thủy Nguyệt Mộng Thai",
+    "element": "Thủy",
+    "tier": "Thần",
+    "description": "Mạnh trong ảo thuật và thần niệm.",
+    "effects": {
+      "illusion_power": 1.6,
+      "mental_attack": 1.5,
+      "perception_bonus": 0.4
+    }
+  },
+  {
+    "id": "physique_hoa_01",
+    "name": "Hỏa Diễm Chân Mạch",
+    "element": "Hỏa",
+    "tier": "Linh",
+    "description": "Sức tấn công bộc phát mạnh.",
+    "effects": {
+      "attack_power": 1.35,
+      "burst_damage": 1.5,
+      "fire_damage": 1.3
+    }
+  },
+  {
+    "id": "physique_hoa_02",
+    "name": "Liệt Viêm Chi Tâm",
+    "element": "Hỏa",
+    "tier": "Dị",
+    "description": "Tấn công càng đau càng mạnh.",
+    "effects": {
+      "rage_bonus_per_hp_lost": 0.02,
+      "max_rage_bonus": 1.0,
+      "attack_power": 1.2
+    }
+  },
+  {
+    "id": "physique_hoa_03",
+    "name": "Hỏa Vẫn Thánh Thai",
+    "element": "Hỏa",
+    "tier": "Thần",
+    "description": "Miễn dịch hỏa độc, luyện đan nhanh.",
+    "effects": {
+      "fire_resistance": 0.8,
+      "poison_resistance": 0.5,
+      "alchemy_speed": 1.5,
+      "alchemy_quality": 1.2
+    }
+  },
+  {
+    "id": "physique_hoa_04",
+    "name": "Hồng Liêm Phẫn Thể",
+    "element": "Hỏa",
+    "tier": "Huyền",
+    "description": "Sát thương lan, nhưng khó kiểm soát.",
+    "effects": {
+      "aoe_damage": 1.4,
+      "splash_damage": 0.3,
+      "control_penalty": -0.2
+    }
+  },
+  {
+    "id": "physique_hoa_05",
+    "name": "Dương Viêm Hộ Thể",
+    "element": "Hỏa",
+    "tier": "Linh",
+    "description": "Lớp giáp năng lượng khi giao chiến.",
+    "effects": {
+      "energy_shield": 0.3,
+      "defense_percent": 0.2,
+      "fire_aura": 0.15
+    }
+  },
+  {
+    "id": "physique_tho_01",
+    "name": "Thạch Cốt Trầm Uy",
+    "element": "Thổ",
+    "tier": "Linh",
+    "description": "Đỡ đòn mạnh, sát thương chậm nhưng nặng.",
+    "effects": {
+      "defense_percent": 0.4,
+      "stability": 0.3,
+      "attack_speed": 0.8,
+      "attack_power": 1.3
+    }
+  },
+  {
+    "id": "physique_tho_02",
+    "name": "Hoàng Thổ Trấn Nguyên",
+    "element": "Thổ",
+    "tier": "Dị",
+    "description": "Định khí tốt, khó bị khống chế.",
+    "effects": {
+      "cc_resistance": 0.6,
+      "stability": 0.4,
+      "mental_resistance": 0.3
+    }
+  },
+  {
+    "id": "physique_tho_03",
+    "name": "Sa Vân Ẩn Thể",
+    "element": "Thổ",
+    "tier": "Linh",
+    "description": "Ẩn thân trong môi trường thổ.",
+    "effects": {
+      "stealth_bonus": 0.5,
+      "detection_resistance": 0.4,
+      "ambush_damage": 1.4
+    }
+  },
+  {
+    "id": "physique_tho_04",
+    "name": "Trọng Thổ Quy Nguyên",
+    "element": "Thổ",
+    "tier": "Thần",
+    "description": "Công kích tạo lực chấn động.",
+    "effects": {
+      "shockwave_damage": 1.3,
+      "aoe_radius": 1.5,
+      "stun_chance": 0.2
+    }
+  },
+  {
+    "id": "physique_tho_05",
+    "name": "Thổ Linh Thân Thai",
+    "element": "Thổ",
+    "tier": "Linh",
+    "description": "Dễ phát trận pháp địa mạch.",
+    "effects": {
+      "formation_power": 1.4,
+      "earth_qi_affinity": 1.5,
+      "defense_percent": 0.15
+    }
+  },
+  {
+    "id": "physique_huyet_01",
+    "name": "Huyết Khí Trường Sinh",
+    "element": "Huyết",
+    "tier": "Linh",
+    "description": "Tự hồi máu mạnh.",
+    "effects": {
+      "hp_regen_percent": 0.08,
+      "lifesteal": 0.15,
+      "hp_multiplier": 1.3
+    }
+  },
+  {
+    "id": "physique_huyet_02",
+    "name": "Huyết Vương Tà Thể",
+    "element": "Huyết",
+    "tier": "Huyền",
+    "description": "Hút máu và buff khi giết địch.",
+    "effects": {
+      "lifesteal": 0.25,
+      "kill_bonus": 0.2,
+      "attack_power": 1.2,
+      "moral_penalty": -0.3
+    }
+  },
+  {
+    "id": "physique_huyet_03",
+    "name": "Huyết Mạch Phệ Nguyên",
+    "element": "Huyết",
+    "tier": "Dị",
+    "description": "Tăng sát thương theo thời gian giao chiến.",
+    "effects": {
+      "ramp_damage_per_second": 0.01,
+      "max_ramp_bonus": 0.5,
+      "attack_power": 1.1
+    }
+  },
+  {
+    "id": "physique_huyet_04",
+    "name": "Huyết Tinh Linh Phách",
+    "element": "Huyết",
+    "tier": "Thần",
+    "description": "Sinh ra tinh cầu huyết tinh hỗ trợ.",
+    "effects": {
+      "summon_power": 1.4,
+      "support_units": 1,
+      "hp_regen_percent": 0.05
+    }
+  },
+  {
+    "id": "physique_huyet_05",
+    "name": "Huyết Chú Dị Thai",
+    "element": "Huyết",
+    "tier": "Huyền",
+    "description": "Kỹ năng mạnh nhưng gây phản phệ.",
+    "effects": {
+      "skill_power": 1.6,
+      "self_damage_percent": 0.1,
+      "attack_power": 1.4
+    }
+  },
+  {
+    "id": "physique_linh_01",
+    "name": "Linh Mạch Thuần Khiết",
+    "element": "Linh",
+    "tier": "Linh",
+    "description": "Tu luyện nhanh, ít tẩu hỏa.",
+    "effects": {
+      "cultivation_speed": 1.4,
+      "qi_deviation_resistance": 0.8,
+      "breakthrough_chance": 0.15
+    }
+  },
+  {
+    "id": "physique_linh_02",
+    "name": "Linh Khí Dẫn Đạo",
+    "element": "Linh",
+    "tier": "Dị",
+    "description": "Tăng khả năng tụ linh vào khu vực.",
+    "effects": {
+      "qi_gathering": 1.6,
+      "formation_power": 1.3,
+      "cultivation_speed": 1.2
+    }
+  },
+  {
+    "id": "physique_linh_03",
+    "name": "Linh Thức Minh Khiếu",
+    "element": "Linh",
+    "tier": "Thần",
+    "description": "Tăng nhận thức – phá ảo cảnh.",
+    "effects": {
+      "perception_bonus": 0.5,
+      "illusion_resistance": 0.7,
+      "detection_range": 1.5
+    }
+  },
+  {
+    "id": "physique_linh_04",
+    "name": "Linh Thai Vô Nhiễm",
+    "element": "Linh",
+    "tier": "Tiên",
+    "description": "Kháng tất cả trạng thái xấu.",
+    "effects": {
+      "debuff_resistance": 0.8,
+      "poison_resistance": 0.9,
+      "cc_resistance": 0.7,
+      "hp_multiplier": 1.2
+    }
+  },
+  {
+    "id": "physique_linh_05",
+    "name": "Linh Ảnh Hóa Thân",
+    "element": "Linh",
+    "tier": "Dị",
+    "description": "Tạo phân ảnh chiến đấu.",
+    "effects": {
+      "clone_count": 1,
+      "clone_power": 0.7,
+      "dodge_chance": 0.2
+    }
+  },
+  {
+    "id": "physique_hon_don_01",
+    "name": "Hỗn Độn Thể",
+    "element": "Hỗn Độn",
+    "tier": "Huyền",
+    "description": "Miễn nhiễm đạo tắc yếu, thích hợp công pháp hỗn loạn.",
+    "effects": {
+      "chaos_affinity": 1.5,
+      "law_resistance": 0.6,
+      "cultivation_speed": 1.1,
+      "stability": -0.2
+    }
+  },
+  {
+    "id": "physique_hon_don_02",
+    "name": "Nguyên Khí Phản Chấn",
+    "element": "Hỗn Độn",
+    "tier": "Dị",
+    "description": "Kẻ tấn công bị phản sát thương.",
+    "effects": {
+      "reflect_damage": 0.3,
+      "defense_percent": 0.2,
+      "counter_attack": 1.3
+    }
+  },
+  {
+    "id": "physique_hon_don_03",
+    "name": "Hỗn Nguyên Tam Động",
+    "element": "Hỗn Độn",
+    "tier": "Thần",
+    "description": "Ba luồng nguyên khí xoay vòng, burst mạnh.",
+    "effects": {
+      "burst_damage": 1.8,
+      "qi_efficiency": 1.4,
+      "attack_power": 1.3
+    }
+  },
+  {
+    "id": "physique_hon_don_04",
+    "name": "Vô Cực Diệt Thai",
+    "element": "Hỗn Độn",
+    "tier": "Huyền",
+    "description": "Sức mạnh vô hạn nhưng tự hao tổn.",
+    "effects": {
+      "power_multiplier": 2.0,
+      "self_damage_percent": 0.15,
+      "attack_power": 1.6
+    }
+  },
+  {
+    "id": "physique_hon_don_05",
+    "name": "Thái Sơ Linh Mệnh",
+    "element": "Hỗn Độn",
+    "tier": "Tiên",
+    "description": "Tương thích mọi loại công pháp.",
+    "effects": {
+      "technique_compatibility": 1.5,
+      "cultivation_speed": 1.3,
+      "breakthrough_chance": 0.2
+    }
+  },
+  {
+    "id": "physique_co_than_01",
+    "name": "Long Huyết Kim Lân",
+    "element": "Cổ Thần",
+    "tier": "Cổ",
+    "description": "Kháng vật lý cực cao.",
+    "effects": {
+      "physical_resistance": 0.7,
+      "defense_percent": 0.5,
+      "hp_multiplier": 1.8
+    }
+  },
+  {
+    "id": "physique_co_than_02",
+    "name": "Huyền Quy Thần Giáp",
+    "element": "Cổ Thần",
+    "tier": "Cổ",
+    "description": "Giảm damage theo % cực mạnh.",
+    "effects": {
+      "damage_reduction": 0.4,
+      "defense_percent": 0.6,
+      "stability": 0.5
+    }
+  },
+  {
+    "id": "physique_co_than_03",
+    "name": "Phượng Hoàng Hồi Diễm",
+    "element": "Cổ Thần",
+    "tier": "Cổ",
+    "description": "Tự hồi sinh 1 lần/tuần.",
+    "effects": {
+      "revive_chance": 1.0,
+      "revive_cooldown_days": 7,
+      "hp_regen_percent": 0.1
+    }
+  },
+  {
+    "id": "physique_co_than_04",
+    "name": "Bạch Hổ Sát Thể",
+    "element": "Cổ Thần",
+    "tier": "Cổ",
+    "description": "Công sát thương chí mạng liên tiếp.",
+    "effects": {
+      "crit_chance": 0.3,
+      "crit_damage": 2.0,
+      "attack_power": 1.5
+    }
+  },
+  {
+    "id": "physique_co_than_05",
+    "name": "Kỳ Lân Hộ Thân",
+    "element": "Cổ Thần",
+    "tier": "Cổ",
+    "description": "Buff phòng thủ + may mắn.",
+    "effects": {
+      "defense_percent": 0.4,
+      "luck_bonus": 0.3,
+      "hp_multiplier": 1.5
+    }
+  },
+  {
+    "id": "physique_ma_01",
+    "name": "Ma Đồng Huyết Cốt",
+    "element": "Ma Thể",
+    "tier": "Huyền",
+    "description": "Sát thương + hút máu mạnh.",
+    "effects": {
+      "attack_power": 1.4,
+      "lifesteal": 0.3,
+      "dark_damage": 1.3
+    }
+  },
+  {
+    "id": "physique_ma_02",
+    "name": "Ma Ảnh Ẩn Hành",
+    "element": "Ma Thể",
+    "tier": "Dị",
+    "description": "Tàng hình tự nhiên.",
+    "effects": {
+      "stealth_bonus": 0.7,
+      "dodge_chance": 0.25,
+      "ambush_damage": 1.6
+    }
+  },
+  {
+    "id": "physique_ma_03",
+    "name": "Ma Khí Xâm Tâm",
+    "element": "Ma Thể",
+    "tier": "Huyền",
+    "description": "Damage cao nhưng tâm ma mạnh.",
+    "effects": {
+      "attack_power": 1.5,
+      "mental_attack": 1.4,
+      "mental_resistance": -0.3,
+      "temptation_resistance": -0.2
+    }
+  },
+  {
+    "id": "physique_ma_04",
+    "name": "Ma Thai Thực Chấp",
+    "element": "Ma Thể",
+    "tier": "Dị",
+    "description": "Hấp thu linh khí của kẻ địch.",
+    "effects": {
+      "qi_absorption": 0.3,
+      "enemy_qi_drain": 0.2,
+      "cultivation_speed": 1.2
+    }
+  },
+  {
+    "id": "physique_ma_05",
+    "name": "U Minh Vong Hồn Thể",
+    "element": "Ma Thể",
+    "tier": "Huyền",
+    "description": "Miễn thương từ linh hồn, mạnh khi đêm xuống.",
+    "effects": {
+      "soul_damage_immunity": 0.8,
+      "night_power_bonus": 0.4,
+      "dark_affinity": 1.5
+    }
+  }
+]
+

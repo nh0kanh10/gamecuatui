@@ -15,6 +15,26 @@ class CharacterData(BaseModel):
     background: str = Field(..., description="Bối cảnh")
 
 
+class CultivationComponent(BaseModel):
+    """Cultivation progression data"""
+    realm: str = "Luyện Khí Kỳ"
+    realm_level: int = 1  # 1-10
+    spiritual_power: int = 0
+    max_spiritual_power: int = 100
+    breakthrough_progress: float = 0.0  # 0-100
+    techniques: List[str] = []
+    pills_consumed: int = 0
+    spirit_stones: int = 0
+    cultivation_age: int = 0
+
+
+class ResourceComponent(BaseModel):
+    """Resources and inventory"""
+    spirit_stones: int = 0
+    pills: Dict[str, int] = {}
+    materials: Dict[str, int] = {}
+
+
 class GameState(BaseModel):
     """Game state"""
     save_id: str
@@ -81,6 +101,14 @@ class CultivationLLMResponse(BaseModel):
             action_intent="ERROR",
             state_updates={}
         )
+
+
+class CharacterCreationResponse(BaseModel):
+    """Character creation response"""
+    narrative: str
+    choices: List[str]
+    character_name: str
+    starting_stats: Dict[str, Any] = {}
 
 
 def create_fallback_response() -> Dict[str, Any]:

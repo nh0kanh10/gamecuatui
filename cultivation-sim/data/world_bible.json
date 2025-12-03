@@ -1,0 +1,163 @@
+{
+  "world_rules": {
+    "max_realm": "Mahayana",
+    "resurrection": "impossible",
+    "flying_requires": "Foundation",
+    "teleportation": "impossible",
+    "time_travel": "impossible",
+    "immortality": "requires_Immortal_realm"
+  },
+  "realms": [
+    {
+      "name": "Qi_Refining",
+      "display": "Luyện Khí",
+      "tier": 1,
+      "levels": 13,
+      "lifespan": [
+        100,
+        120
+      ],
+      "abilities": [
+        "Talismans",
+        "5-10x strength"
+      ],
+      "next": "Foundation"
+    },
+    {
+      "name": "Foundation",
+      "display": "Trúc Cơ",
+      "tier": 2,
+      "levels": 4,
+      "lifespan": [
+        200,
+        250
+      ],
+      "abilities": [
+        "Divine Sense",
+        "Sword Flight",
+        "Fasting"
+      ],
+      "next": "Golden_Core"
+    },
+    {
+      "name": "Golden_Core",
+      "display": "Kim Đan",
+      "tier": 3,
+      "levels": 4,
+      "lifespan": [
+        500,
+        800
+      ],
+      "abilities": [
+        "Golden Core",
+        "Longevity",
+        "Soul Projection"
+      ],
+      "next": "Nascent_Soul"
+    },
+    {
+      "name": "Nascent_Soul",
+      "display": "Nguyên Anh",
+      "tier": 4,
+      "levels": 4,
+      "lifespan": [
+        2000,
+        5000
+      ],
+      "abilities": [
+        "Nascent Soul",
+        "Soul Separation",
+        "Reincarnation"
+      ],
+      "next": "Spirit_Transformation"
+    },
+    {
+      "name": "Spirit_Transformation",
+      "display": "Hóa Thần",
+      "tier": 5,
+      "levels": 4,
+      "lifespan": [
+        10000,
+        50000
+      ],
+      "abilities": [
+        "Spirit Transformation",
+        "Divine Sense Range"
+      ],
+      "next": "Body_Fusion"
+    },
+    {
+      "name": "Body_Fusion",
+      "display": "Hợp Thể",
+      "tier": 6,
+      "levels": 4,
+      "lifespan": [
+        100000,
+        1000000
+      ],
+      "abilities": [
+        "Body Fusion",
+        "Immortality"
+      ],
+      "next": "Great_Multiplication"
+    },
+    {
+      "name": "Great_Multiplication",
+      "display": "Đại Thừa",
+      "tier": 7,
+      "levels": 4,
+      "lifespan": [
+        1000000,
+        "infinite"
+      ],
+      "abilities": [
+        "Great Multiplication",
+        "World Creation"
+      ],
+      "next": "Immortal"
+    },
+    {
+      "name": "Immortal",
+      "display": "Tiên",
+      "tier": 8,
+      "levels": 4,
+      "lifespan": "immortal",
+      "abilities": [
+        "True Immortality",
+        "Reality Manipulation"
+      ],
+      "next": "Mahayana"
+    },
+    {
+      "name": "Mahayana",
+      "display": "Đại Thừa",
+      "tier": 9,
+      "levels": 4,
+      "lifespan": "transcendent",
+      "abilities": [
+        "Transcendence",
+        "Universe Creation"
+      ],
+      "next": null
+    }
+  ],
+  "cultivation_rules": {
+    "breakthrough_never_guaranteed": true,
+    "tribulation_on_failure": true,
+    "death_on_tribulation_failure": true,
+    "cultivation_crippled_on_failure": true,
+    "max_breakthrough_attempts": null
+  },
+  "social_rules": {
+    "killing_innocents_penalty": true,
+    "karma_affects_realm_limit": true,
+    "relationships_matter": true,
+    "sect_hierarchy": true
+  },
+  "item_rules": {
+    "artifacts_have_history": true,
+    "pills_have_side_effects": true,
+    "weapons_can_break": true,
+    "spirit_stones_are_currency": true
+  }
+}

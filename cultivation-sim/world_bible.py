@@ -4,7 +4,8 @@ Dựa trên đánh giá: Better validation, auto-correct, realm hierarchy
 """
 
 from pydantic import BaseModel, Field
-from typing import Dict, List, Literal, Optional, Set
+from typing import Dict, List, Literal, Optional, Set, Any
+from enum import Enum
 from pathlib import Path
 import json
 
@@ -34,7 +35,7 @@ class WorldBible(BaseModel):
     """
     
     # World Rules
-    world_rules: Dict[str, any] = Field(default_factory=lambda: {
+    world_rules: Dict[str, Any] = Field(default_factory=lambda: {
         "max_realm": "Mahayana",
         "resurrection": "impossible",
         "flying_requires": "Foundation",  # Bay được từ Trúc Cơ trở lên
@@ -44,7 +45,7 @@ class WorldBible(BaseModel):
     })
     
     # Realm System với hierarchy
-    realms: List[Dict[str, any]] = Field(default_factory=lambda: [
+    realms: List[Dict[str, Any]] = Field(default_factory=lambda: [
         {
             "name": "Qi_Refining",
             "display": "Luyện Khí",
@@ -129,7 +130,7 @@ class WorldBible(BaseModel):
     ])
     
     # Cultivation Rules
-    cultivation_rules: Dict[str, any] = Field(default_factory=lambda: {
+    cultivation_rules: Dict[str, Any] = Field(default_factory=lambda: {
         "breakthrough_never_guaranteed": True,
         "tribulation_on_failure": True,
         "death_on_tribulation_failure": True,
@@ -138,7 +139,7 @@ class WorldBible(BaseModel):
     })
     
     # Social Rules
-    social_rules: Dict[str, any] = Field(default_factory=lambda: {
+    social_rules: Dict[str, Any] = Field(default_factory=lambda: {
         "killing_innocents_penalty": True,
         "karma_affects_realm_limit": True,
         "relationships_matter": True,
@@ -146,14 +147,14 @@ class WorldBible(BaseModel):
     })
     
     # Item Rules
-    item_rules: Dict[str, any] = Field(default_factory=lambda: {
+    item_rules: Dict[str, Any] = Field(default_factory=lambda: {
         "artifacts_have_history": True,
         "pills_have_side_effects": True,
         "weapons_can_break": True,
         "spirit_stones_are_currency": True,
     })
     
-    def get_realm_by_name(self, realm_name: str) -> Optional[Dict[str, any]]:
+    def get_realm_by_name(self, realm_name: str) -> Optional[Dict[str, Any]]:
         """Get realm data by name"""
         return next((r for r in self.realms if r["name"] == realm_name), None)
     
@@ -219,7 +220,7 @@ World Rules:
         
         return text
     
-    def verify_output(self, ai_output: Dict[str, any]) -> Dict[str, any]:
+    def verify_output(self, ai_output: Dict[str, Any]) -> Dict[str, Any]:
         """
         Kiểm tra AI output có vi phạm World Bible không
         

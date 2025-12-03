@@ -1,37 +1,290 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Cinzel:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --border: 217.2 32.6% 17.5%;
+:root {
+  --color-primary: #d4af37;
+  --color-secondary: #ff6b35;
+  --color-accent: #00d4ff;
+  --color-spiritual: #a78bfa;
+  --color-jade: #4ade80;
+
+  --bg-dark: #0a0e1a;
+  --bg-darker: #050811;
+  --bg-card: rgba(15, 23, 42, 0.7);
+
+  --gradient-gold: linear-gradient(135deg, #ffd700, #ffed4e, #c9a300);
+  --gradient-spiritual: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-jade: linear-gradient(135deg, #06ffa5 0%, #00b074 100%);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Serif SC', serif;
+  background: radial-gradient(circle at 50% 0%, #1a1f3a 0%, #0a0e1a 50%, #000000 100%);
+  background-attachment: fixed;
+  color: #e2e8f0;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Starfield */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, white, transparent),
+    radial-gradient(2px 2px at 60% 70%, white, transparent),
+    radial-gradient(1px 1px at 50% 50%, white, transparent),
+    radial-gradient(1px 1px at 80% 10%, white, transparent),
+    radial-gradient(2px 2px at 90% 60%, white, transparent),
+    radial-gradient(1px 1px at 10% 90%, rgba(255, 215, 0, 0.8), transparent),
+    radial-gradient(2px 2px at 70% 20%, rgba(138, 43, 226, 0.6), transparent);
+  background-size: 200% 200%;
+  animation: twinkle 5s ease-in-out infinite;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes twinkle {
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 0.8;
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
+/* Glow Effects */
+.glow-text {
+  text-shadow:
+    0 0 10px rgba(212, 175, 55, 0.5),
+    0 0 20px rgba(212, 175, 55, 0.3),
+    0 0 30px rgba(212, 175, 55, 0.1);
+}
+
+.glow-gold {
+  box-shadow:
+    0 0 20px rgba(212, 175, 55, 0.3),
+    0 0 40px rgba(212, 175, 55, 0.1),
+    inset 0 0 20px rgba(212, 175, 55, 0.05);
+}
+
+.glow-spiritual {
+  box-shadow:
+    0 0 20px rgba(167, 139, 250, 0.3),
+    0 0 40px rgba(167, 139, 250, 0.1);
+}
+
+.glow-jade {
+  box-shadow:
+    0 0 20px rgba(74, 222, 128, 0.3),
+    0 0 40px rgba(74, 222, 128, 0.1);
+}
+
+/* Cultivation Borders */
+.border-cultivation {
+  border: 2px solid;
+  border-image: linear-gradient(135deg, #d4af37, #ff6b35, #00d4ff) 1;
+  position: relative;
+}
+
+.border-cultivation::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #d4af37, #ff6b35, #00d4ff);
+  opacity: 0.1;
+  filter: blur(10px);
+  z-index: -1;
+  animation: pulse-border 3s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+
+  0%,
+  100% {
+    opacity: 0.1;
   }
-  body {
-    @apply bg-background text-foreground;
+
+  50% {
+    opacity: 0.3;
   }
 }
 
-@keyframes fade-in {
+/* Spiritual Energy Particles */
+.spiritual-particles {
+  position: relative;
+  overflow: hidden;
+}
+
+.spiritual-particles::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(circle, #a78bfa 1px, transparent 1px),
+    radial-gradient(circle, #4ade80 1px, transparent 1px);
+  background-size: 50px 50px, 80px 80px;
+  background-position: 0 0, 40px 40px;
+  animation: float-particles 20s linear infinite;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+@keyframes float-particles {
+  0% {
+    background-position: 0 0, 40px 40px;
+  }
+
+  100% {
+    background-position: 50px 50px, 90px 90px;
+  }
+}
+
+/* Choice Boxes */
+.choice-box {
+  position: relative;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-left: 4px solid #d4af37;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.choice-box:hover {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: #d4af37;
+  transform: translateX(4px);
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+}
+
+.choice-box::before {
+  content: '⚔';
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.choice-box:hover::before {
+  opacity: 1;
+  left: -10px;
+}
+
+/* Progress Bars */
+.progress-bar {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  transition: width 0.5s ease;
+  position: relative;
+}
+
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Realm Badge */
+.realm-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: var(--gradient-spiritual);
+  color: white;
+  border-radius: 2rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  box-shadow: 0 4px 15px rgba(167, 139, 250, 0.4);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 4px 15px rgba(167, 139, 250, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 4px 25px rgba(167, 139, 250, 0.6);
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #d4af37, #ff6b35);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ffd700, #ff8c55);
+}
+
+/* Animations */
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -39,6 +292,35 @@
 }
 
 .animate-fade-in {
-  animation: fade-in 0.3s ease-out;
+  animation: fadeIn 0.5s ease-out;
 }
 
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 60s linear infinite;
+}

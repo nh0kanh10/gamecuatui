@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultivation Simulator - Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .status {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #ffd700;
+        }
+        
+        .status.connected {
+            border-color: #4caf50;
+        }
+        
+        .status.disconnected {
+            border-color: #f44336;
+        }
+        
+        .game-area {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .main-content {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 25px;
+            border-radius: 10px;
+            border: 2px solid #4a4a6a;
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .panel {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #4a4a6a;
+        }
+        
+        .panel h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .narrative {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ffd700;
+            margin-bottom: 20px;
+            line-height: 1.8;
+            min-height: 150px;
+            white-space: pre-wrap;
+        }
+        
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .choice-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            text-align: left;
+        }
+        
+        .choice-btn:hover:not(:disabled) {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .choice-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .character-creation {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 25px;
+            border-radius: 10px;
+            border: 2px solid #4a4a6a;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffd700;
+        }
+        
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #4a4a6a;
+            border-radius: 5px;
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #ffd700;
+        }
+        
+        .error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 2px solid #f44336;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #ffcdd2;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Cultivation Simulator</h1>
+        
+        <div id="status" class="status disconnected">
+            <strong>Status:</strong> <span id="statusText">Checking server...</span>
+        </div>
+        
+        <div id="error" class="error hidden"></div>
+        
+        <!-- Character Creation -->
+        <div id="characterCreation" class="character-creation">
+            <h2 style="color: #ffd700; margin-bottom: 20px;">Tạo Nhân Vật</h2>
+            <div class="form-group">
+                <label>Giới Tính:</label>
+                <select id="gender">
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Thiên Phú:</label>
+                <select id="talent">
+                    <option value="Thiên Linh Căn">Thiên Linh Căn</option>
+                    <option value="Địa Linh Căn">Địa Linh Căn</option>
+                    <option value="Huyền Linh Căn">Huyền Linh Căn</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Chủng Tộc:</label>
+                <select id="race">
+                    <option value="Nhân Tộc">Nhân Tộc</option>
+                    <option value="Yêu Tộc">Yêu Tộc</option>
+                    <option value="Ma Tộc">Ma Tộc</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Bối Cảnh:</label>
+                <select id="background">
+                    <option value="Gia Đình Tu Tiên">Gia Đình Tu Tiên</option>
+                    <option value="Thường Dân">Thường Dân</option>
+                    <option value="Mồ Côi">Mồ Côi</option>
+                </select>
+            </div>
+            <button id="startGameBtn" class="btn-primary" onclick="startNewGame()">Bắt Đầu Tu Luyện</button>
+        </div>
+        
+        <!-- Game Area -->
+        <div id="gameArea" class="game-area hidden">
+            <div class="main-content">
+                <div class="narrative" id="narrative">
+                    Đang tải...
+                </div>
+                <div class="choices" id="choices"></div>
+            </div>
+            
+            <div class="sidebar">
+                <div class="panel">
+                    <h3>📊 Thông Tin</h3>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-label">Nhân Vật</div>
+                            <div class="stat-value" id="characterName">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Tuổi</div>
+                            <div class="stat-value" id="age">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Cảnh Giới</div>
+                            <div class="stat-value" id="realm">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Linh Lực</div>
+                            <div class="stat-value" id="spiritualPower">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Vị Trí</div>
+                            <div class="stat-value" id="location">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Spirit Stones</div>
+                            <div class="stat-value" id="spiritStones">-</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <h3>⚡ Hành Động</h3>
+                    <button class="choice-btn" onclick="checkServer()">🔄 Kiểm Tra Server</button>
+                    <button class="choice-btn" onclick="getGameState()">📊 Xem Trạng Thái</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8001';
+        let gameState = null;
+
+        // Check server on load
+        window.onload = function() {
+            checkServer();
+        };
+
+        async function checkServer() {
+            const statusEl = document.getElementById('status');
+            const statusText = document.getElementById('statusText');
+            
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                
+                if (data.status === 'healthy') {
+                    statusEl.className = 'status connected';
+                    statusText.textContent = '✅ Đã kết nối';
+                } else {
+                    statusEl.className = 'status disconnected';
+                    statusText.textContent = '⚠️ Server không khỏe mạnh';
+                }
+            } catch (error) {
+                statusEl.className = 'status disconnected';
+                statusText.textContent = '❌ Không thể kết nối server';
+                showError('Không thể kết nối server. Hãy chắc server đang chạy trên port 8001.');
+            }
+        }
+
+        function showError(message) {
+            const errorEl = document.getElementById('error');
+            errorEl.textContent = message;
+            errorEl.classList.remove('hidden');
+            setTimeout(() => {
+                errorEl.classList.add('hidden');
+            }, 5000);
+        }
+
+        async function startNewGame() {
+            const btn = document.getElementById('startGameBtn');
+            btn.disabled = true;
+            btn.textContent = 'Đang tạo nhân vật...';
+
+            const characterData = {
+                gender: document.getElementById('gender').value,
+                talent: document.getElementById('talent').value,
+                race: document.getElementById('race').value,
+                background: document.getElementById('background').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/game/new`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        player_name: 'Người Tu Tiên',
+                        character_data: characterData
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                gameState = data.game_state;
+
+                // Hide character creation, show game area
+                document.getElementById('characterCreation').classList.add('hidden');
+                document.getElementById('gameArea').classList.remove('hidden');
+
+                // Update UI with character story first, then narrative
+                const initialNarrative = data.narrative || gameState.character_story || 'Chào mừng đến với Cultivation Simulator!';
+                updateGameUI(initialNarrative, data.choices || data.game_state?.current_choices || gameState.current_choices || []);
+
+            } catch (error) {
+                showError(`Lỗi: ${error.message}`);
+                btn.disabled = false;
+                btn.textContent = 'Bắt Đầu Tu Luyện';
+            }
+        }
+
+        async function selectChoice(choiceIndex) {
+            const choices = document.querySelectorAll('.choice-btn');
+            choices.forEach(btn => btn.disabled = true);
+
+            const narrativeEl = document.getElementById('narrative');
+            narrativeEl.textContent = 'Đang xử lý...';
+
+            try {
+                const response = await fetch(`${API_BASE}/game/action`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        user_input: String(choiceIndex + 1)
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                gameState = data.game_state;
+
+                updateGameUI(data.narrative, data.choices || data.game_state.current_choices || []);
+
+            } catch (error) {
+                showError(`Lỗi: ${error.message}`);
+                choices.forEach(btn => btn.disabled = false);
+            }
+        }
+
+        function updateGameUI(narrative, choices) {
+            // Update narrative
+            const narrativeEl = document.getElementById('narrative');
+            if (narrative) {
+                narrativeEl.textContent = narrative;
+            } else if (gameState && gameState.character_story) {
+                narrativeEl.textContent = gameState.character_story;
+            } else {
+                narrativeEl.textContent = 'Không có mô tả';
+            }
+
+            // Update choices
+            const choicesEl = document.getElementById('choices');
+            choicesEl.innerHTML = '';
+            
+            if (choices && choices.length > 0) {
+                choices.forEach((choice, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'choice-btn';
+                    btn.textContent = `${index + 1}. ${choice}`;
+                    btn.onclick = () => selectChoice(index);
+                    choicesEl.appendChild(btn);
+                });
+            } else {
+                choicesEl.innerHTML = '<div class="loading">Đang chờ lựa chọn...</div>';
+            }
+
+            // Update stats
+            if (gameState) {
+                document.getElementById('characterName').textContent = gameState.character_name || gameState.name || '-';
+                document.getElementById('age').textContent = gameState.age !== undefined ? `${gameState.age} tuổi` : '-';
+                document.getElementById('realm').textContent = gameState.cultivation?.realm || 'Mortal';
+                document.getElementById('spiritualPower').textContent = gameState.cultivation?.spiritual_power || 0;
+                document.getElementById('location').textContent = gameState.location?.name || '-';
+                document.getElementById('spiritStones').textContent = gameState.resources?.spirit_stones || 0;
+            }
+        }
+
+        async function getGameState() {
+            try {
+                const response = await fetch(`${API_BASE}/game/state`);
+                const data = await response.json();
+                gameState = data;
+                console.log('Game State:', data);
+                alert('Game state đã được log vào console (F12 để xem)');
+            } catch (error) {
+                showError(`Lỗi: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html>
+

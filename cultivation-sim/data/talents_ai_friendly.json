@@ -1,0 +1,87 @@
+[
+  {
+    "id": "thien_linh_can",
+    "name": "Thiên Linh Căn",
+    "description": "Thiên phú trời ban, hấp thu linh khí tự nhiên như cá gặp nước. Người sở hữu có khí chất thanh tao, dễ được các tông môn chú ý.",
+    "ai_effect": "Có khí chất thanh tao, linh khí tự nhiên quy tụ xung quanh. NPC có thể cảm nhận và có thiện cảm hơn.",
+    "emoji": "⭐"
+  },
+  {
+    "id": "nghien_nuoc_nghien_thanh",
+    "name": "Nghiêng Nước Nghiêng Thành",
+    "description": "Dung nhan tuyệt thế, một nụ cười có thể khiến cả thành phố say mê. Không chỉ đẹp về ngoại hình mà còn có sức hút tự nhiên.",
+    "ai_effect": "Ngoại hình xuất chúng, có sức hút tự nhiên. NPC có thể bị thu hút, có thiện cảm hoặc muốn giúp đỡ.",
+    "emoji": "💋"
+  },
+  {
+    "id": "thien_van_chi_tu",
+    "name": "Thiên Văn Chi Tử",
+    "description": "Có thể nhìn thấy vận mệnh trong các vì sao, dự đoán tương lai qua thiên tượng. Trực giác cực kỳ nhạy bén.",
+    "ai_effect": "Có khả năng cảm nhận điềm báo, nhìn thấy dấu hiệu từ thiên nhiên. Trực giác nhạy bén.",
+    "emoji": "🔮"
+  },
+  {
+    "id": "van_thu_chi_tu",
+    "name": "Vạn Thú Chi Tử",
+    "description": "Có thể giao tiếp với muôn thú, được các linh thú yêu mến. Có thể thuần phục và huấn luyện linh thú dễ dàng hơn.",
+    "ai_effect": "Có khả năng giao tiếp với động vật và linh thú. Linh thú có thể đến gần, giúp đỡ hoặc cảnh báo.",
+    "emoji": "🐺"
+  },
+  {
+    "id": "duoc_thien_chi_tu",
+    "name": "Dược Thiên Chi Tử",
+    "description": "Có khả năng cảm nhận và phân biệt các loại dược thảo, linh dược. Có thể tìm thấy những loại thuốc quý hiếm mà người khác bỏ qua.",
+    "ai_effect": "Có khả năng nhận biết dược thảo và linh dược. Có thể phát hiện thuốc quý trong tự nhiên.",
+    "emoji": "🌿"
+  },
+  {
+    "id": "khi_van_chi_tu",
+    "name": "Khí Vận Chi Tử",
+    "description": "Có thể cảm nhận được khí vận của người khác, biết ai đang gặp may mắn hay xui xẻo. Có thể tránh được những nguy hiểm tiềm ẩn.",
+    "ai_effect": "Có khả năng cảm nhận khí vận. Có thể cảnh báo về nguy hiểm hoặc cơ hội sắp đến.",
+    "emoji": "🌀"
+  },
+  {
+    "id": "am_duong_nhi_chi_tu",
+    "name": "Âm Dương Nhị Chi Tử",
+    "description": "Có thể cảm nhận được cả lực lượng dương và âm, có thể điều hòa hai loại lực lượng này. Có khả năng chữa trị và cân bằng.",
+    "ai_effect": "Có khả năng cảm nhận và điều hòa âm dương. Có thể chữa trị hoặc cân bằng năng lượng.",
+    "emoji": "☯️"
+  },
+  {
+    "id": "hoa_nguyet_chi_tu",
+    "name": "Hoa Nguyệt Chi Tử",
+    "description": "Có khả năng cảm nhận được vẻ đẹp trong mọi thứ, có thể tạo ra những tác phẩm nghệ thuật tuyệt vời. Có thể làm cho môi trường xung quanh trở nên đẹp hơn.",
+    "ai_effect": "Có tài năng nghệ thuật, có thể tạo ra tác phẩm đẹp. Có thể làm môi trường xung quanh hài hòa hơn.",
+    "emoji": "🎨"
+  },
+  {
+    "id": "thien_nhan_chi_tu",
+    "name": "Thiên Nhân Chi Tử",
+    "description": "Có khả năng cảm nhận được cảm xúc của người khác, có thể an ủi và giúp đỡ người khác vượt qua khó khăn. Có sức mạnh tinh thần lớn.",
+    "ai_effect": "Có khả năng cảm nhận cảm xúc của người khác. Có thể an ủi, giúp đỡ hoặc được tin tưởng.",
+    "emoji": "💝"
+  },
+  {
+    "id": "vo_ngon_chi_tu",
+    "name": "Vô Ngôn Chi Tử",
+    "description": "Có khả năng giao tiếp mà không cần lời nói, có thể hiểu được ý nghĩ của người khác thông qua ánh mắt và cử chỉ. Có thể tạo ra sự im lặng có sức mạnh.",
+    "ai_effect": "Có khả năng giao tiếp không lời, có thể hiểu ý nghĩ của người khác qua ánh mắt và cử chỉ.",
+    "emoji": "🤐"
+  },
+  {
+    "id": "hon_don_the",
+    "name": "Hỗn Độn Thể",
+    "description": "Thể chất đặc biệt, có thể hấp thu mọi loại linh khí mà không bị xung đột. Có khả năng thích ứng với mọi môi trường.",
+    "ai_effect": "Có thể chất đặc biệt, có thể hấp thu mọi loại linh khí. Có thể tu luyện ở những nơi người khác không thể.",
+    "emoji": "💫"
+  },
+  {
+    "id": "pham_the",
+    "name": "Phàm Thể",
+    "description": "Thể chất bình thường, không có thiên phú đặc biệt. Nhưng với ý chí kiên định, vẫn có thể đạt được thành tựu lớn.",
+    "ai_effect": "Thể chất bình thường, không có thiên phú đặc biệt. Phải nỗ lực nhiều hơn nhưng có ý chí kiên định.",
+    "emoji": "✨"
+  }
+]
+

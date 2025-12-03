@@ -1,9 +1,4 @@
-"""
-Cultivation Simulator - Standalone Game
-"""
+# Cultivation Simulator Package
+# Standalone version - no relative imports needed
 
-from .game import CultivationSimulator
-from .schemas import CharacterData, GameState
-
-__all__ = ['CultivationSimulator', 'CharacterData', 'GameState']
-
+__version__ = "1.0.0"

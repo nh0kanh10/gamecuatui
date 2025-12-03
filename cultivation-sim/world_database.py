@@ -17,8 +17,9 @@ class WorldDatabase:
     Modding-friendly: Chỉ cần sửa JSON, không cần sửa code
     """
     
-    def __init__(self, data_dir: str = "data"):
+    def __init__(self, data_dir: str = "data", optimizations=None):
         self.data_dir = Path(data_dir)
+        self._optimizations = optimizations  # Store for RAM cache access
         self.sects: Dict[str, Dict] = {}
         self.techniques: Dict[str, Dict] = {}
         self.races: Dict[str, Dict] = {}
@@ -126,7 +127,14 @@ class WorldDatabase:
     # --- SECT METHODS ---
     
     def get_sect(self, sect_id: str) -> Optional[Dict]:
-        """Get sect by ID"""
+        """Get sect by ID - Uses RAM cache if available"""
+        # Try optimizations cache first (faster)
+        if hasattr(self, '_optimizations') and self._optimizations:
+            cached_sect = self._optimizations.db_cache.get('sects', sect_id)
+            if cached_sect:
+                return cached_sect
+        
+        # Fallback to standard lookup
         return self.sects.get(sect_id)
     
     def get_sect_bonus(self, sect_id: str) -> str:
@@ -201,7 +209,14 @@ class WorldDatabase:
     # --- TECHNIQUE METHODS ---
     
     def get_technique(self, tech_id: str) -> Optional[Dict]:
-        """Get technique by ID"""
+        """Get technique by ID - Uses RAM cache if available"""
+        # Try optimizations cache first (faster)
+        if hasattr(self, '_optimizations') and self._optimizations:
+            cached_tech = self._optimizations.db_cache.get('techniques', tech_id)
+            if cached_tech:
+                return cached_tech
+        
+        # Fallback to standard lookup
         return self.techniques.get(tech_id)
     
     def check_technique_requirements(
@@ -294,7 +309,14 @@ class WorldDatabase:
     # --- LOCATION METHODS ---
     
     def get_location(self, loc_id: str) -> Optional[Dict]:
-        """Get location by ID"""
+        """Get location by ID - Uses RAM cache if available"""
+        # Try optimizations cache first (faster)
+        if hasattr(self, '_optimizations') and self._optimizations:
+            cached_loc = self._optimizations.db_cache.get('locations', loc_id)
+            if cached_loc:
+                return cached_loc
+        
+        # Fallback to standard lookup
         return self.locations.get(loc_id)
     
     def get_locations_by_region(self, region: str) -> List[Dict]:
@@ -383,7 +405,14 @@ class WorldDatabase:
     # --- ARTIFACT METHODS ---
     
     def get_artifact(self, artifact_id: str) -> Optional[Dict]:
-        """Get artifact by ID"""
+        """Get artifact by ID - Uses RAM cache if available"""
+        # Try optimizations cache first (faster)
+        if hasattr(self, '_optimizations') and self._optimizations:
+            cached_artifact = self._optimizations.db_cache.get('artifacts', artifact_id)
+            if cached_artifact:
+                return cached_artifact
+        
+        # Fallback to standard lookup
         return self.artifacts.get(artifact_id)
     
     def get_artifacts_by_tier(self, tier: str) -> List[Dict]:
@@ -425,7 +454,14 @@ class WorldDatabase:
     # --- ITEM METHODS ---
     
     def get_item(self, item_id: str) -> Optional[Dict]:
-        """Get item by ID"""
+        """Get item by ID - Uses RAM cache if available"""
+        # Try optimizations cache first (faster)
+        if hasattr(self, '_optimizations') and self._optimizations:
+            cached_item = self._optimizations.db_cache.get('items', item_id)
+            if cached_item:
+                return cached_item
+        
+        # Fallback to standard lookup
         return self.items.get(item_id)
     
     def get_items_by_type(self, item_type: str) -> List[Dict]:

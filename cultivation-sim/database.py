@@ -26,24 +26,35 @@ def init_database(db_path: str):
     cursor = conn.cursor()
     
     # Game state table
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS game_state (
-                save_id TEXT PRIMARY KEY,
-                age INTEGER DEFAULT 0,
-                gender TEXT,
-                talent TEXT,
-                race TEXT,
-                background TEXT,
-                story TEXT,
-                name TEXT,
-                choices_json TEXT,
-                cultivation_json TEXT,
-                resources_json TEXT,
-                attributes_json TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS game_state (
+            save_id TEXT PRIMARY KEY,
+            age INTEGER DEFAULT 0,
+            gender TEXT,
+            talent TEXT,
+            race TEXT,
+            background TEXT,
+            story TEXT,
+            name TEXT,
+            choices_json TEXT,
+            cultivation_json TEXT,
+            resources_json TEXT,
+            attributes_json TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    
+    # Migrate: Add missing columns if table exists but columns are missing
+    cursor.execute("PRAGMA table_info(game_state)")
+    columns = [row[1] for row in cursor.fetchall()]
+    
+    if 'attributes_json' not in columns:
+        try:
+            cursor.execute("ALTER TABLE game_state ADD COLUMN attributes_json TEXT")
+            conn.commit()
+        except sqlite3.OperationalError:
+            pass  # Column might already exist or table doesn't exist yet
     
     # Memory tables (riêng cho cultivation sim)
     cursor.execute("""

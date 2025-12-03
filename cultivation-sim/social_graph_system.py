@@ -312,7 +312,7 @@ class SocialGraphSystem:
                     continue
                 
                 # Value decreases with distance
-                propagated_value = int(value / (distance + 1)))
+                propagated_value = int(value / (distance + 1))
                 self.add_interaction(
                     entity_id,
                     neighbor_id,

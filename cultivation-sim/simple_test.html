@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Cultivation Game - Test UI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            opacity: 0.9;
+        }
+        
+        .game-area {
+            padding: 30px;
+        }
+        
+        .character-info {
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .stat {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .narrative-box {
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            line-height: 1.8;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .narrative-box h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .choices-box {
+            margin-bottom: 20px;
+        }
+        
+        .choices-box h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .choice-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-size: 1em;
+        }
+        
+        .choice-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .choice-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+        
+        .error {
+            background: #fee;
+            border: 2px solid #fcc;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+        
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+        
+        footer {
+            background: #f7f7f7;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .comparison-note {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .comparison-note h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌟 Cultivation Simulator</h1>
+            <p>Simple Version - Chỉ 280 lines Python!</p>
+        </header>
+        
+        <div class="game-area">
+            <div class="comparison-note">
+                <h4>💡 So Sánh với Complex Version:</h4>
+                <p><strong>Simple:</strong> 280 lines | 1 file | AI handles everything</p>
+                <p><strong>Complex:</strong> 5,000+ lines | 20+ files | Manual tracking</p>
+                <p><strong>Kết quả:</strong> Giống nhau! Simple wins! 🎯</p>
+            </div>
+            
+            <div class="character-info" id="characterInfo" style="display: none;">
+                <div class="stat">
+                    <div class="stat-label">Tên</div>
+                    <div class="stat-value" id="charName">-</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Tuổi</div>
+                    <div class="stat-value" id="charAge">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Giới tính</div>
+                    <div class="stat-value" id="charGender">-</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Thiên phú</div>
+                    <div class="stat-value" id="charTalent">-</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Lượt chơi</div>
+                    <div class="stat-value" id="turnCount">0</div>
+                </div>
+            </div>
+            
+            <div id="errorBox" class="error" style="display: display: none;"></div>
+            
+            <div class="narrative-box" id="narrativeBox">
+                <h3>📖 Câu Chuyện</h3>
+                <p id="narrative">Nhấn "Bắt đầu game mới" để bắt đầu...</p>
+            </div>
+            
+            <div class="choices-box" id="choicesBox" style="display: none;">
+                <h3>🎯 Lựa Chọn</h3>
+                <div id="choices"></div>
+            </div>
+            
+            <div id="loadingBox" class="loading" style="display: none;">
+                <p>⏳ Đang xử lý...</p>
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" id="newGameBtn">🎮 Bắt đầu game mới</button>
+                <button class="btn btn-secondary" id="saveBtn" style="display: none;">💾 Lưu game</button>
+                <button class="btn btn-secondary" id="loadBtn">📂 Tải game</button>
+            </div>
+        </div>
+        
+        <footer>
+            <p><strong>Backend:</strong> simple_game.py (port 8001)</p>
+            <p>Powered by Gemini 2.5 Flash ⚡</p>
+            <p style="margin-top: 10px; font-size: 0.85em;">
+                <a href="/COMPARISON.md" target="_blank">📊 Xem so sánh chi tiết</a>
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        let gameState = null;
+        let currentChoices = [];
+        
+        // API endpoint
+        const API_BASE = 'http://localhost:8001';
+        
+        // Elements
+        const narrativeBox = document.getElementById('narrative');
+        const choicesDiv = document.getElementById('choices');
+        const choicesBox = document.getElementById('choicesBox');
+        const characterInfo = document.getElementById('characterInfo');
+        const loadingBox = document.getElementById('loadingBox');
+        const errorBox = document.getElementById('errorBox');
+        const newGameBtn = document.getElementById('newGameBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const loadBtn = document.getElementById('loadBtn');
+        
+        // Show loading
+        function showLoading() {
+            loadingBox.style.display = 'block';
+            disableChoices();
+        }
+        
+        // Hide loading
+        function hideLoading() {
+            loadingBox.style.display = 'none';
+        }
+        
+        // Show error
+        function showError(message) {
+            errorBox.textContent = '❌ ' + message;
+            errorBox.style.display = 'block';
+            setTimeout(() => {
+                errorBox.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Update UI
+        function updateUI(data) {
+            console.log('Updating UI with:', data);
+            
+            // Update narrative
+            if (data.narrative) {
+                narrativeBox.innerHTML = '<h3>📖 Câu Chuyện</h3>' + 
+                    data.narrative.replace(/\n/g, '<br>');
+            }
+            
+            // Update character info
+            if (data.character) {
+                characterInfo.style.display = 'grid';
+                document.getElementById('charName').textContent = data.character.name || '-';
+                document.getElementById('charAge').textContent = data.character.age || 0;
+                document.getElementById('charGender').textContent = data.character.gender || '-';
+                document.getElementById('charTalent').textContent = data.character.talent || '-';
+                document.getElementById('turnCount').textContent = data.turn_count || 0;
+                saveBtn.style.display = 'block';
+            }
+            
+            // Update choices
+            if (data.choices && data.choices.length > 0) {
+                currentChoices = data.choices;
+                choicesDiv.innerHTML = '';
+                data.choices.forEach((choice, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'choice-btn';
+                    btn.innerHTML = `<strong>${index + 1}.</strong> ${choice}`;
+                    btn.onclick = () => selectChoice(index);
+                    choicesDiv.appendChild(btn);
+                });
+                choicesBox.style.display = 'block';
+            } else {
+                choicesBox.style.display = 'none';
+            }
+            
+            gameState = data;
+        }
+        
+        // Disable choices
+        function disableChoices() {
+            document.querySelectorAll('.choice-btn').forEach(btn => {
+                btn.classList.add('disabled');
+                btn.disabled = true;
+            });
+        }
+        
+        // New game
+        newGameBtn.onclick = async () => {
+            const name = prompt('Tên nhân vật:', 'Lâm Tiêu') || 'Lâm Tiêu';
+            const gender = prompt('Giới tính (Nam/Nữ):', 'Nam') || 'Nam';
+            const talentNum = prompt('Thiên phú:\n1. Thiên Linh Căn\n2. Bình thường\n3. Phế Vật\n\nChọn (1-3):', '2') || '2';
+            
+            const talentMap = {
+                '1': 'Thiên Linh Căn',
+                '2': 'Bình thường',
+                '3': 'Phế Vật'
+            };
+            const talent = talentMap[talentNum] || 'Bình thường';
+            
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_BASE}/game/new`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: name,
+                        gender: gender,
+                        talent: talent
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(await response.text());
+                }
+                
+                const data = await response.json();
+                updateUI(data);
+            } catch (error) {
+                showError('Lỗi tạo game: ' + error.message);
+                console.error(error);
+            } finally {
+                hideLoading();
+            }
+        };
+        
+        // Select choice
+        async function selectChoice(index) {
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_BASE}/game/choice`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ choice_index: index })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(await response.text());
+                }
+                
+                const data = await response.json();
+                updateUI(data);
+            } catch (error) {
+                showError('Lỗi xử lý lựa chọn: ' + error.message);
+                console.error(error);
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        // Save game
+        saveBtn.onclick = async () => {
+            try {
+                const response = await fetch(`${API_BASE}/game/save`, {
+                    method: 'POST'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(await response.text());
+                }
+                
+                alert('✅ Đã lưu game!');
+            } catch (error) {
+                showError('Lỗi lưu game: ' + error.message);
+            }
+        };
+        
+        // Load game
+        loadBtn.onclick = async () => {
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_BASE}/game/load`, {
+                    method: 'POST'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(await response.text());
+                }
+                
+                const data = await response.json();
+                updateUI(data);
+                alert('✅ Đã tải game!');
+            } catch (error) {
+                showError('Lỗi tải game: ' + error.message);
+                console.error(error);
+            } finally {
+                hideLoading();
+            }
+        };
+        
+        // Check server on load
+        window.onload = async () => {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                if (response.ok) {
+                    console.log('✅ Server ready!');
+                }
+            } catch (error) {
+                showError('⚠️ Server chưa khởi động! Chạy: python simple_server.py');
+            }
+        };
+    </script>
+</body>
+</html>

@@ -10,35 +10,81 @@ echo ========================================
 echo.
 
 :: Check Python
+echo [1/5] Checking Python...
 python --version >nul 2>&1
 if errorlevel 1 (
-    echo ❌ Python not found!
+    echo ❌ Python not found! Please install Python 3.10+
     pause
     exit /b 1
 )
+echo ✅ Python OK
 
-:: Check .env
-if not exist .env (
-    echo ⚠️  Creating .env from template...
-    if exist ..\.env.template (
-        copy ..\.env.template .env >nul
-    )
-    echo    Please add GEMINI_API_KEY to .env
-    timeout /t 2 >nul
+:: Check Node.js
+echo [2/5] Checking Node.js...
+node --version >nul 2>&1
+if errorlevel 1 (
+    echo ❌ Node.js not found! Please install Node.js
+    pause
+    exit /b 1
 )
+echo ✅ Node.js OK
 
-:: Install dependencies
-echo [1/2] Installing dependencies...
-pip install -r requirements.txt
+:: Check dependencies
+echo [3/5] Checking dependencies...
+if not exist "cultivation-ui\node_modules" (
+    echo ⏳ Installing UI dependencies...
+    cd cultivation-ui
+    call npm install
+    cd ..
+)
+echo ✅ Dependencies OK
 
-:: Start server
-echo [2/2] Starting server...
+:: Kill old processes
+echo [4/5] Cleaning up old processes...
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr :8001') do (
+    taskkill /F /PID %%a >nul 2>&1
+)
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr :5173') do (
+    taskkill /F /PID %%a >nul 2>&1
+)
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr :5174') do (
+    taskkill /F /PID %%a >nul 2>&1
+)
+echo ✅ Ports cleaned
+
+:: Start servers
+echo [5/5] Starting servers...
 echo.
-echo 📍 Server: http://localhost:8001
-echo 📍 API Docs: http://localhost:8001/docs
-echo.
-echo Press Ctrl+C to stop
+echo 📍 Backend: http://localhost:8001
+echo 📍 Frontend: http://localhost:5173
 echo.
 
-python server.py
+:: Start backend
+echo ⏳ Starting backend server...
+start "Cultivation Server" cmd /k "cd /d %~dp0 && python server.py"
+timeout /t 5 >nul
 
+:: Start frontend
+echo ⏳ Starting frontend UI...
+start "Cultivation UI" cmd /k "cd /d %~dp0cultivation-ui && npm run dev"
+timeout /t 8 >nul
+
+:: Open browser
+echo ⏳ Opening browser...
+start http://localhost:5173
+
+echo.
+echo ========================================
+echo    ✅ GAME STARTED!
+echo ========================================
+echo.
+echo 💡 Two windows opened:
+echo    1. Backend Server (Python - Port 8001)
+echo    2. Frontend UI (Vite - Port 5173)
+echo.
+echo 🎮 Game should open in browser automatically!
+echo.
+echo ⚠️  Keep both windows open while playing!
+echo 🛑 Close this window anytime to stop.
+echo.
+pause

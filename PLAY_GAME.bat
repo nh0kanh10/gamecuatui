@@ -1,139 +1,183 @@
 @echo off
 chcp 65001 >nul
-title Game Engine - Auto Start
-color 0A
+title Cultivation Simulator - Starting...
+
+:: ============================================
+:: 🚀 QUICK START GAME - ONE CLICK!
+:: ============================================
 
 echo.
 echo ========================================
-echo    🎮 GAME ENGINE - AUTO START 🎮
+echo   🎮 CULTIVATION SIMULATOR
+echo   ⚡ Quick Start (One Click)
 echo ========================================
 echo.
+
+:: Set game directory (absolute path, handle trailing backslash)
+set "GAME_DIR=%~dp0"
+set "GAME_DIR=%GAME_DIR:~0,-1%"
+set "GAME_DIR=%GAME_DIR%\cultivation-sim"
+
+:: Change to game directory
+cd /d "%GAME_DIR%" 2>nul
+if errorlevel 1 (
+    echo ❌ Error: Cannot find cultivation-sim directory
+    echo    Please run this from GameBuild folder
+    pause
+    exit /b 1
+)
 
 :: Check Python
-echo [1/5] Checking Python...
 python --version >nul 2>&1
 if errorlevel 1 (
-    echo ❌ Python not found! Please install Python 3.8+
+    echo ❌ Python not found! Please install Python 3.10+
     pause
     exit /b 1
 )
-echo ✅ Python OK
 
-:: Check Node.js
-echo [2/5] Checking Node.js...
+:: Check Node.js (for frontend)
 node --version >nul 2>&1
 if errorlevel 1 (
-    echo ❌ Node.js not found! Please install Node.js
-    pause
-    exit /b 1
+    echo ⚠️  Node.js not found. Frontend may not work.
+    echo    Continuing with backend only...
+    set "SKIP_FRONTEND=1"
+) else (
+    set "SKIP_FRONTEND=0"
 )
-echo ✅ Node.js OK
 
-:: Check .env file
-echo [3/5] Checking environment...
-if not exist .env (
-    echo ⚠️  .env file not found!
-    if exist .env.template (
-        echo    Creating .env from template...
-        copy .env.template .env >nul
-        echo    ✅ Created .env from template
-        echo    ⚠️  Please edit .env and add your GEMINI_API_KEY!
-        timeout /t 3 >nul
-    ) else (
-        echo    ❌ .env.template not found!
+:: Clean up ports
+echo.
+echo 🔧 Cleaning up ports...
+for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":8001" ^| findstr "LISTENING"') do (
+    taskkill /F /PID %%a >nul 2>&1
+)
+for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":5173" ^| findstr "LISTENING"') do (
+    taskkill /F /PID %%a >nul 2>&1
+)
+timeout /t 1 >nul
+
+:: Check dependencies
+echo.
+echo 📦 Checking dependencies...
+
+:: Check Python packages
+python -c "import fastapi" >nul 2>&1
+if errorlevel 1 (
+    echo ⚠️  Installing Python dependencies...
+    pip install -r requirements.txt
+    if errorlevel 1 (
+        echo ❌ Failed to install Python dependencies
         pause
         exit /b 1
     )
 )
-echo ✅ Environment OK
 
-:: Check API Key
-findstr /C:"GEMINI_API_KEY" .env >nul 2>&1
-if errorlevel 1 (
-    echo ⚠️  GEMINI_API_KEY not found in .env!
-    echo    Please add your API key to .env file
-    pause
-    exit /b 1
-)
-echo ✅ API Key found
-
-:: Install Python dependencies
-echo [4/5] Installing Python dependencies...
-pip install -q -r requirements.txt 2>nul
-if errorlevel 1 (
-    echo ⚠️  Some packages may need manual installation
-)
-echo ✅ Dependencies OK
-
-:: Install React UI dependencies
-echo [5/5] Installing React UI dependencies...
-if not exist react-ui\node_modules (
-    echo    Installing npm packages ^(first time, may take a while^)...
-    pushd react-ui
-    call npm install --silent
-    popd
-    echo    ✅ React UI dependencies installed
-) else (
-    echo ✅ React UI dependencies OK
-)
-
-echo.
-echo ========================================
-echo    🚀 STARTING GAME ENGINE...
-echo ========================================
-echo.
-
-:: Kill existing processes on port 8000
-echo [Cleanup] Checking port 8000...
-netstat -ano | findstr :8000 >nul 2>&1
-if not errorlevel 1 (
-    echo    Port 8000 is in use, killing process...
-    for /f "tokens=5" %%a in ('netstat -ano ^| findstr :8000') do (
-        taskkill /F /PID %%a >nul 2>&1
+:: Check Node packages (if frontend enabled)
+if "%SKIP_FRONTEND%"=="0" (
+    if not exist "cultivation-ui\node_modules" (
+        echo ⚠️  Installing Node.js dependencies...
+        if exist "cultivation-ui\package.json" (
+            cd cultivation-ui
+            call npm install --silent
+            if errorlevel 1 (
+                echo ❌ Failed to install Node.js dependencies
+                cd ..
+                pause
+                exit /b 1
+            )
+            cd ..
+        ) else (
+            echo ❌ Cannot find cultivation-ui\package.json
+            pause
+            exit /b 1
+        )
     )
-    timeout /t 2 >nul
 )
-echo ✅ Port 8000 ready
 
-:: Start Python server in new window
-echo [Server] Starting Python server...
-start "Game Server" cmd /k "python server.py"
+:: Check optimizations
+if exist "optimizations.py" (
+    echo ✅ RAM optimizations available
+    set "HAS_OPTIMIZATIONS=1"
+) else (
+    echo ⚠️  Optimizations not found (optional)
+    set "HAS_OPTIMIZATIONS=0"
+)
+
+:: Start backend server
+echo.
+echo ========================================
+echo   🚀 Starting Backend Server...
+echo ========================================
+echo.
+echo 📍 Server: http://localhost:8001
+echo 📍 API docs: http://localhost:8001/docs
+echo.
+
+start "Cultivation Simulator - Backend" cmd /k "cd /d "%GAME_DIR%" && python -u server.py"
+
+:: Wait for server to start
+echo ⏳ Waiting for server to start...
 timeout /t 3 >nul
 
-:: Wait for server to be ready
-echo [Server] Waiting for server to start...
-:wait_server
-timeout /t 1 >nul
-curl -s http://localhost:8000/health >nul 2>&1
-if errorlevel 1 (
-    goto wait_server
-)
-echo ✅ Server is running!
-
-:: Start React UI in new window
-echo [UI] Starting React UI...
-pushd react-ui
-start "React UI" cmd /k "npm run dev"
-popd
+:: Check if server is running (simple check)
+echo ⏳ Waiting for server...
 timeout /t 5 >nul
+echo ✅ Backend server should be ready!
+
+:: Start frontend (if enabled)
+if "%SKIP_FRONTEND%"=="0" (
+    echo.
+    echo ========================================
+    echo   🎨 Starting Frontend...
+    echo ========================================
+    echo.
+    echo 📍 Frontend: http://localhost:5173
+    echo.
+    
+    if exist "cultivation-ui\package.json" (
+        set "UI_FULL_PATH=%GAME_DIR%\cultivation-ui"
+        :: Verify path exists before starting
+        if exist "%UI_FULL_PATH%" (
+            start "Cultivation Simulator - Frontend" cmd /k "cd /d "%UI_FULL_PATH%" && if exist package.json (npm run dev) else (echo ❌ Error: package.json not found in %UI_FULL_PATH% && pause)"
+            echo ✅ Frontend starting...
+        ) else (
+            echo ❌ Error: Path does not exist: %UI_FULL_PATH%
+            set "SKIP_FRONTEND=1"
+        )
+    ) else (
+        echo ❌ Cannot find cultivation-ui\package.json
+        echo    Expected: %GAME_DIR%\cultivation-ui\package.json
+        set "SKIP_FRONTEND=1"
+    )
+    echo.
+)
 
 :: Open browser
-echo [Browser] Opening game in browser...
+echo ========================================
+echo   ✅ GAME STARTED!
+echo ========================================
+echo.
+echo 🎮 Opening game in browser...
 timeout /t 2 >nul
 start http://localhost:5173
 
 echo.
 echo ========================================
-echo    ✅ GAME STARTED SUCCESSFULLY!
+echo   📝 Instructions:
 echo ========================================
 echo.
-echo 📍 Server: http://localhost:8000
-echo 📍 UI:     http://localhost:5173
+echo ✅ Backend: Running in separate window
+if "%SKIP_FRONTEND%"=="0" (
+    echo ✅ Frontend: Running in separate window
+    echo ✅ Browser: Should open automatically
+) else (
+    echo ⚠️  Frontend: Not available (Node.js missing)
+    echo    Access API at: http://localhost:8001/docs
+)
 echo.
-echo 💡 Tips:
-echo    - Game will open in your browser automatically
-echo    - Keep these windows open while playing
-echo    - Press Ctrl+C in server window to stop
+echo 💡 To stop: Close the server windows or press Ctrl+C
 echo.
-echo Press any key to close this window...
-pause >nul
+echo ========================================
+echo.
+
+pause

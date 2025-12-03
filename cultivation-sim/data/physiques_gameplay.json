@@ -1,0 +1,198 @@
+[
+  {
+    "id": "physique_feire_lingmai",
+    "name": "Phế Linh Mạch",
+    "description": "Linh mạch vỡ nát từ khi sinh ra. Không thể hấp thu linh khí. Bị xem là phế vật trong mọi tông môn.",
+    "tier": "Dị",
+    "element": "Vô",
+    "system_mechanics": {
+      "locks": [
+        "cultivation_qi_absorption",
+        "realm_breakthrough",
+        "internal_techniques"
+      ],
+      "unlocks": [
+        "martial_body_path",
+        "demonization_path",
+        "blood_arts_path",
+        "pill_dependency_path"
+      ],
+      "modifiers": {
+        "cultivation_exp_multiplier": 0.0,
+        "realm_progression": false,
+        "level_up_method": "combat_experience_only"
+      }
+    },
+    "ai_behavior": {
+      "description": "Không bao giờ nhắc 'khí lưu chuyển', 'linh lực tụ hội'... Chỉ mô tả đau nhức, nóng ran, máu chảy, cơ bắp rèn luyện, kiểu phàm nhân.",
+      "forbidden_words": ["linh lực", "chân khí", "tu vi", "nguyên khí", "hấp thu linh khí", "vận chuyển khí", "chuyển hóa chân khí"],
+      "required_style": "phàm nhân dùng thể lực để mạnh lên: cơ bắp đau rát, xương cốt căng ra, máu sôi, ý chí va chạm thực tại"
+    },
+    "ai_prompt": "Nhân vật sở hữu Phế Linh Mạch. Không được miêu tả bất kỳ việc hấp thu linh khí, vận chuyển khí, hay chuyển hóa chân khí. Miêu tả theo phong cách phàm nhân dùng thể lực để mạnh lên: cơ bắp đau rát, xương cốt căng ra, máu sôi, ý chí va chạm thực tại. Không được dùng các từ: 'linh lực', 'chân khí', 'tu vi', 'nguyên khí'."
+  },
+  {
+    "id": "physique_dao_thai_thien_menh",
+    "name": "Đạo Thai Thiên Mệnh",
+    "description": "Sinh ra đã hòa hợp với đạo trời. Chỉ một ánh nhìn, một hơi thở cũng có thể thông suốt thiên lý.",
+    "tier": "Tiên",
+    "element": "Đạo",
+    "system_mechanics": {
+      "locks": [],
+      "unlocks": ["enlightenment_path", "heavenly_insight"],
+      "modifiers": {
+        "enlightenment_rate_multiplier": 4.0,
+        "observation_insight_chance": 0.3,
+        "breakthrough_time_reduction": 0.4,
+        "enlightenment_bonus": {
+          "unlock_talent_branch": true,
+          "permanent_buff_chance": 0.1
+        }
+      }
+    },
+    "ai_behavior": {
+      "description": "AI phải tự động gợi ý ý niệm, chân lý, hình ảnh ngộ đạo. Luôn thêm vài 'luồng nhận thức' – kiểu khai sáng.",
+      "required_style": "ngộ đạo tự nhiên, súc tích, như thể đạo lý tự chảy vào tâm. Được phép thêm hình ảnh trừu tượng: đường đạo, ánh sáng, ảo tưởng, thiên âm"
+    },
+    "ai_prompt": "Nhân vật sở hữu Đạo Thai Thiên Mệnh. Hãy miêu tả quá trình ngộ đạo tự nhiên, súc tích, như thể đạo lý tự chảy vào tâm. Được phép thêm hình ảnh trừu tượng: đường đạo, ánh sáng, ảo tưởng, thiên âm. Tập trung vào 'giây phút thông suốt'."
+  },
+  {
+    "id": "physique_ma_tam_di_thai",
+    "name": "Ma Tâm Dị Thai",
+    "description": "Tâm ma ký sinh trong linh hồn. Tu càng nhanh, ma càng mạnh. Một bước sai là hóa cuồng.",
+    "tier": "Huyền",
+    "element": "Ma",
+    "system_mechanics": {
+      "locks": [],
+      "unlocks": ["demon_cultivation_path"],
+      "modifiers": {
+        "cultivation_speed_multiplier": 3.0,
+        "heart_demon_points_per_cultivation": 1,
+        "heart_demon_threshold": 50,
+        "heart_demon_effects": {
+          "lose_control": true,
+          "random_skill_usage": true,
+          "npc_relationship_penalty": -0.3,
+          "purification_items": ["purification_pill", "enlightenment_herb"]
+        }
+      }
+    },
+    "ai_behavior": {
+      "description": "AI phải thêm 'tiếng thì thầm, ảo giác, bản ngã split'. Mô tả sự giằng xé nội tâm.",
+      "required_style": "thì thầm, ảo giác, sự bùng phát của bản ngã đen tối. Mô tả sự giằng co giữa lý trí và bóng tối"
+    },
+    "ai_prompt": "Nhân vật mang Ma Tâm Dị Thai. Khi miêu tả tu luyện, hãy thêm yếu tố thì thầm, ảo giác, sự bùng phát của bản ngã đen tối. Mô tả sự giằng co giữa lý trí và bóng tối, nhưng vẫn phải giữ cân bằng để không quá dài dòng."
+  },
+  {
+    "id": "physique_ling_gen_vo_tuong",
+    "name": "Linh Căn Vô Tướng",
+    "description": "Không thuộc hệ nào, cũng không bị hệ nào ràng buộc. Linh căn trống rỗng như gương sáng.",
+    "tier": "Dị",
+    "element": "Vô",
+    "system_mechanics": {
+      "locks": [],
+      "unlocks": ["all_element_techniques", "five_elements_fusion"],
+      "modifiers": {
+        "can_learn_all_techniques": true,
+        "technique_growth_multiplier": 0.75,
+        "five_elements_fusion_requirement": 3,
+        "five_elements_fusion_bonus": {
+          "power_multiplier": 1.5,
+          "unlock_fusion_techniques": true
+        }
+      }
+    },
+    "ai_behavior": {
+      "description": "AI mô tả tu luyện như 'nước chảy vào bình trống, dung nạp mọi thứ'.",
+      "required_style": "sự hòa hợp, trống rỗng, dung nạp mọi loại lực. Không nhấn mạnh một hệ nào"
+    },
+    "ai_prompt": "Nhân vật sở hữu Linh Căn Vô Tướng. Khi miêu tả tu luyện, hãy nhấn mạnh sự hòa hợp, trống rỗng, dung nạp mọi loại lực. Không nhấn mạnh một hệ nào."
+  },
+  {
+    "id": "physique_bat_tu_moc_thai",
+    "name": "Bất Tử Mộc Thai",
+    "description": "Sinh cơ mãnh liệt, dù thân thể nát bấy vẫn có thể tái sinh.",
+    "tier": "Thần",
+    "element": "Mộc",
+    "system_mechanics": {
+      "locks": [],
+      "unlocks": ["immortality_path"],
+      "modifiers": {
+        "hp_regen_percent_per_3s": 0.05,
+        "revive_per_week": 1,
+        "revive_hp_percent": 0.3,
+        "fire_weakness_multiplier": 2.0
+      }
+    },
+    "ai_behavior": {
+      "description": "Miêu tả thân thể tái sinh, mọc lại, nhưng dễ bị đốt cháy và tổn thương trước hỏa đạo.",
+      "required_style": "thân thể tái sinh, mọc lại, nhưng dễ bị đốt cháy"
+    },
+    "ai_prompt": "Nhân vật có Bất Tử Mộc Thai: miêu tả thân thể tái sinh, mọc lại, nhưng dễ bị đốt cháy và tổn thương trước hỏa đạo."
+  },
+  {
+    "id": "physique_han_tuy_bang_tam",
+    "name": "Hàn Tủy Băng Tâm",
+    "description": "Tâm như băng, không quỷ, không loạn – nhưng cũng khó cảm xúc.",
+    "tier": "Linh",
+    "element": "Thủy",
+    "system_mechanics": {
+      "locks": [],
+      "unlocks": ["ice_cultivation_path"],
+      "modifiers": {
+        "heart_demon_resistance": 0.8,
+        "cultivation_stability": 1.3,
+        "emotional_buff_reduction": 0.2
+      }
+    },
+    "ai_behavior": {
+      "description": "Miêu tả tâm trí lạnh, suy nghĩ rõ như tuyết tan, không dao động.",
+      "required_style": "tâm trí lạnh, suy nghĩ rõ như tuyết tan, không dao động"
+    },
+    "ai_prompt": "Nhân vật sở hữu Hàn Tủy Băng Tâm, hãy miêu tả tâm trí lạnh, suy nghĩ rõ như tuyết tan, không dao động."
+  },
+  {
+    "id": "physique_hon_don_tien_thai",
+    "name": "Hỗn Độn Tiên Thai",
+    "description": "Lực hỗn độn bao bọc. Mọi quy tắc đều mơ hồ trước hắn.",
+    "tier": "Hỗn Nguyên",
+    "element": "Hỗn Độn",
+    "system_mechanics": {
+      "locks": [],
+      "unlocks": ["chaos_path", "rule_breaking"],
+      "modifiers": {
+        "compatible_all_elements": true,
+        "damage_reduction_percent": 0.1,
+        "breakthrough_requirement_reduction": 0.5,
+        "npc_detection_difficulty": 2.0
+      }
+    },
+    "ai_behavior": {
+      "description": "Mô tả sự hỗn loạn, quy tắc méo mó xung quanh.",
+      "required_style": "sự hỗn loạn, quy tắc méo mó xung quanh"
+    },
+    "ai_prompt": "Nhân vật có Hỗn Độn Tiên Thai: mô tả sự hỗn loạn, quy tắc méo mó xung quanh."
+  },
+  {
+    "id": "physique_tich_diet_chi_cot",
+    "name": "Tịch Diệt Chi Cốt",
+    "description": "Căn cốt mang khí diệt. Linh khí tránh xa, nhưng sát đạo lại hòa hợp.",
+    "tier": "Huyền",
+    "element": "Diệt",
+    "system_mechanics": {
+      "locks": ["normal_qi_absorption"],
+      "unlocks": ["killing_path", "destruction_cultivation"],
+      "modifiers": {
+        "cultivation_speed_multiplier": 0.3,
+        "damage_percent_of_enemy_hp": 0.1,
+        "execution_damage_bonus": 2.0,
+        "killing_techniques_cultivation_boost": true
+      }
+    },
+    "ai_behavior": {
+      "description": "Mô tả sự trống rỗng, lạnh lẽo, hơi thở mang theo sát ý tự nhiên.",
+      "required_style": "sự trống rỗng, lạnh lẽo, hơi thở mang theo sát ý tự nhiên"
+    },
+    "ai_prompt": "Nhân vật có Tịch Diệt Chi Cốt. Mô tả sự trống rỗng, lạnh lẽo, hơi thở mang theo sát ý tự nhiên."
+  }
+]
+
