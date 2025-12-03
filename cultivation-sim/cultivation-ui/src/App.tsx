@@ -109,6 +109,44 @@ function App() {
     }
   }
 
+  async function handleAdvancedAction(action: string, data?: any) {
+    try {
+      // Handle different advanced system actions
+      switch (action) {
+        case 'cast_skill':
+          // Call skill cast API
+          console.log('Cast skill:', data);
+          break;
+        case 'start_combat':
+          // Call combat start API
+          console.log('Start combat:', data);
+          break;
+        case 'attempt_breakthrough':
+          // Call breakthrough API
+          console.log('Attempt breakthrough:', data);
+          break;
+        case 'accept_quest':
+          // Call accept quest API
+          console.log('Accept quest:', data);
+          break;
+        case 'complete_quest':
+          // Call complete quest API
+          console.log('Complete quest:', data);
+          break;
+        default:
+          console.log('Unknown action:', action, data);
+      }
+      
+      // Refresh game state after action
+      if (gameState) {
+        const newState = await api.getState();
+        setGameState(newState);
+      }
+    } catch (error) {
+      console.error('Error handling advanced action:', error);
+    }
+  }
+
   // Menu View
   if (currentView === 'menu') {
     return (
@@ -389,6 +427,14 @@ function App() {
         {/* Main Game Area */}
         <div className="flex-1 overflow-y-auto p-8">
           <div className="max-w-5xl mx-auto space-y-8">
+            {/* Advanced Systems Panel */}
+            {gameState && (
+              <AdvancedSystemsPanel 
+                gameState={gameState} 
+                onAction={handleAdvancedAction}
+              />
+            )}
+            
             {/* Current Narrative */}
             <div className="bg-slate-900/70 backdrop-blur-xl border-2 border-amber-500/30 rounded-2xl p-8 glow-gold">
               <h2 className="text-sm font-bold text-amber-400 mb-4 flex items-center gap-2 uppercase tracking-wider">

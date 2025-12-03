@@ -19,8 +19,12 @@ from schemas import CharacterData, GameState
 
 app = FastAPI(title="Cultivation Simulator API")
 
-# Include advanced systems router
-app.include_router(advanced_router)
+# Try to include advanced systems router (optional)
+try:
+    from server_endpoints_advanced import router as advanced_router
+    app.include_router(advanced_router)
+except ImportError:
+    print("⚠️ Advanced endpoints not available (server_endpoints_advanced.py not found)")
 
 # CORS
 app.add_middleware(

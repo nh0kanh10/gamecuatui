@@ -103,6 +103,11 @@ class CultivationSimulator:
         
         # Initialize ECS Systems
         self._init_ecs_systems()
+        
+        # Initialize player in social graph
+        if hasattr(self, 'social_graph') and self.social_graph:
+            from social_graph_system import PersonalityFacets
+            self.social_graph.add_entity("player", PersonalityFacets())
     
     def _init_ecs_systems(self):
         """Initialize ECS Systems"""
@@ -456,5 +461,84 @@ class CultivationSimulator:
             "relationships": self.relationship_system.get_all_relationships("player") if self.relationship_system else {},
             "location": self._get_location_data(),
             "sect_id": self.current_sect_id,
-            "sect_context": self.game_state.get("sect_context", "")
+            "sect_context": self.game_state.get("sect_context", ""),
+            # Advanced Systems
+            "skills": self._get_available_skills(),
+            "economy": self._get_economy_info(),
+            "social_graph": self._get_social_graph_info(),
+            "formations": self._get_formations_info(),
+            "quests": self._get_quests_info(),
+            "rewrite_destiny_perks": self.game_state.get("rewrite_destiny_perks", []),
+            "tao_souls": self._get_tao_souls_info()
         }
+    
+    def _get_available_skills(self) -> List[Dict[str, Any]]:
+        """Get available skills for player"""
+        # Get player cultivation realm
+        realm = self.cultivation.realm if self.cultivation else "Mortal"
+        
+        # Get skills by realm
+        all_skills = []
+        for skill_id, skill in self.skill_system.skills.items():
+            skill_dict = skill.dict()
+            skill_dict["id"] = skill_id
+            all_skills.append(skill_dict)
+        
+        return all_skills
+    
+    def _get_economy_info(self) -> Dict[str, Any]:
+        """Get economy information"""
+        # Get prices for common items
+        common_items = ["currency_spirit_stone_low", "currency_spirit_stone_mid"]
+        prices = {}
+        for item_id in common_items:
+            price_info = self.economy_system.get_price_info(item_id)
+            if price_info:
+                prices[item_id] = price_info
+        
+        return {
+            "prices": prices,
+            "economic_cycle": self.economy_system.economic_cycle,
+            "active_auctions": len(self.economy_system.active_auctions)
+        }
+    
+    def _get_social_graph_info(self) -> Dict[str, Any]:
+        """Get social graph information"""
+        player_relationships = self.social_graph.get_all_relationships("player")
+        player_centrality = self.social_graph.get_centrality("player")
+        
+        return {
+            "relationships": player_relationships,
+            "centrality": player_centrality,
+            "total_relationships": len(player_relationships)
+        }
+    
+    def _get_formations_info(self) -> List[Dict[str, Any]]:
+        """Get formations information"""
+        formations = []
+        for formation_id, formation_data in self.formation_system.formations.items():
+            bonus = self.formation_system.get_formation_bonus(formation_id)
+            formations.append({
+                "id": formation_id,
+                "bonus": bonus,
+                "node_count": len(formation_data.get("nodes", {}))
+            })
+        return formations
+    
+    def _get_quests_info(self) -> Dict[str, Any]:
+        """Get quests information"""
+        pending = self.quest_generator.get_pending_quests()
+        active = list(self.quest_generator.active_quests.values())
+        
+        return {
+            "pending": [q.dict() for q in pending],
+            "active": [q.dict() for q in active],
+            "completed": len(self.quest_generator.completed_quests)
+        }
+    
+    def _get_tao_souls_info(self) -> List[Dict[str, Any]]:
+        """Get Tao Souls information"""
+        tao_souls = []
+        for soul_id, soul in self.breakthrough_enhanced.tao_souls.items():
+            tao_souls.append(soul.dict())
+        return tao_souls

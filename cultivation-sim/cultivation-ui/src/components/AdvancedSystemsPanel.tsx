@@ -67,7 +67,7 @@ export const AdvancedSystemsPanel: React.FC<AdvancedSystemsPanelProps> = ({
 };
 
 // Skills Tab
-const SkillsTab: React.FC<any> = ({ gameState, onAction }) => {
+const SkillsTab: React.FC<any> = ({ gameState, onAction: _onAction }) => {
   const skills = gameState?.skills || [];
 
   return (
@@ -84,7 +84,7 @@ const SkillsTab: React.FC<any> = ({ gameState, onAction }) => {
               </div>
             </div>
             <button
-              onClick={() => onAction('cast_skill', { skill_id: skill.id })}
+              onClick={() => _onAction('cast_skill', { skill_id: skill.id })}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
             >
               Sử Dụng
@@ -97,7 +97,7 @@ const SkillsTab: React.FC<any> = ({ gameState, onAction }) => {
 };
 
 // Economy Tab
-const EconomyTab: React.FC<any> = ({ gameState, onAction }) => {
+const EconomyTab: React.FC<any> = ({ gameState, onAction: _onAction }) => {
   const economy = gameState?.economy || {};
   const prices = economy.prices || {};
 
@@ -128,7 +128,7 @@ const EconomyTab: React.FC<any> = ({ gameState, onAction }) => {
 };
 
 // Social Tab
-const SocialTab: React.FC<any> = ({ gameState, onAction }) => {
+const SocialTab: React.FC<any> = ({ gameState, onAction: _onAction }) => {
   const social = gameState?.social_graph || {};
   const relationships = social.relationships || {};
 
@@ -159,7 +159,7 @@ const SocialTab: React.FC<any> = ({ gameState, onAction }) => {
 };
 
 // Combat Tab
-const CombatTab: React.FC<any> = ({ gameState, onAction }) => {
+const CombatTab: React.FC<any> = ({ gameState: _gameState, onAction }) => {
   return (
     <div>
       <h4 className="text-white font-semibold mb-3">Chiến Đấu</h4>
@@ -226,7 +226,7 @@ const BreakthroughTab: React.FC<any> = ({ gameState, onAction }) => {
 };
 
 // Naming Tab
-const NamingTab: React.FC<any> = ({ gameState, onAction }) => {
+const NamingTab: React.FC<any> = ({ gameState: _gameState, onAction }) => {
   const [nameType, setNameType] = useState('skill');
   const [generatedName, setGeneratedName] = useState('');
 
