@@ -64,3 +64,10 @@ temp/
 unused/
 *.bak
 *.backup
+
+# Save files (user data, don't commit)
+data/saves/*.db
+cultivation-sim/data/saves/*.db
+*.pkl
+*_backup.db
+memory_backup.db
